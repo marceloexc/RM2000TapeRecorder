@@ -4,7 +4,7 @@ import SettingsAccess
 class WindowController: NSWindowController {
 	override func windowDidLoad() {
 		super.windowDidLoad()
-		window?.center()
+//		window?.center()
 	}
 }
 
@@ -85,6 +85,13 @@ struct rm2000: App {
 		}
 		.windowResizability(.contentSize)
 		.windowStyle(.hiddenTitleBar)
+		
+		Window("Debug", id: "debug-window") {
+			DebugView()
+				.environmentObject(appState)
+				.environmentObject(sampleStorage)
+
+		}.windowToolbarStyle(.expanded)
 		
 		Settings {
 			SettingsView()

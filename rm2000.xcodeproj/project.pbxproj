@@ -32,6 +32,7 @@
 		EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBBFE902CA2590100E987B1 /* Extensions.swift */; };
 		EBBBFE932CA2593900E987B1 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBBFE922CA2593900E987B1 /* Protocols.swift */; };
 		EBCA46E22CACBEE700040159 /* EditSampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA46E12CACBEE700040159 /* EditSampleView.swift */; };
+		EBCADD442D76DA4A00029177 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCADD432D76DA4A00029177 /* DebugView.swift */; };
 		EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF5FEB2CEAD8950047405A /* TitleBar.swift */; };
 		EBDBE35D2D583608004E807F /* NewRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDBE35C2D583606004E807F /* NewRecording.swift */; };
 		EBDBF5EF2D63E037004E807F /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = EBDBF5EE2D63E037004E807F /* SettingsAccess */; };
@@ -66,6 +67,7 @@
 		EBBBFE902CA2590100E987B1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		EBBBFE922CA2593900E987B1 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		EBCA46E12CACBEE700040159 /* EditSampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSampleView.swift; sourceTree = "<group>"; };
+		EBCADD432D76DA4A00029177 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		EBCF5FEB2CEAD8950047405A /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; };
 		EBDBE35C2D583606004E807F /* NewRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecording.swift; sourceTree = "<group>"; };
 		EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RM2000 Tape Recorder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +152,7 @@
 				EB64CD112D14FC5200F2B65E /* SettingsView.swift */,
 				EB13CF3F2D31A36400E2EC4B /* OnboardingView.swift */,
 				EB8313F52D51C14B00B343FF /* InspectorView.swift */,
+				EBCADD432D76DA4A00029177 /* DebugView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB64CD142D1A0E1500F2B65E /* Shared.swift in Sources */,
+				EBCADD442D76DA4A00029177 /* DebugView.swift in Sources */,
 				EBBBFE8D2CA2583800E987B1 /* StreamManager.swift in Sources */,
 				EB63A3022D6A88AB00E35AE6 /* SampleStorage.swift in Sources */,
 				EB63A3042D6A8E2A00E35AE6 /* AppState.swift in Sources */,

@@ -22,7 +22,11 @@ struct MenuBarView: View {
 			}
 		}
 		Button("Print Debug information to console") {
-			_ = print("\(sampleStorage.UserDirectory.files)")
+			
+			for file in sampleStorage.UserDirectory.files {
+				print("\(String(describing: file.url)) - \(String(describing: file.alternateNames)) - \(String(describing: file.creationDate))")
+			}
+			print("\(sampleStorage.UserDirectory.files)")
 		}
 		Divider()
 		Button("Quit RM2000") {

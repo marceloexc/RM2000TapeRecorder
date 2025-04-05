@@ -4,13 +4,13 @@ import SwiftUI
 
 @MainActor
 struct SampleLibraryView: View {
-	@StateObject private var viewModel: SampleBrowserViewModel
+	@StateObject private var viewModel: SampleLibraryViewModel
 	@Environment(\.openURL) private var openURL
 	
 	@State private var totalSamples: Int = 0
 	
 	init() {
-			_viewModel = StateObject(wrappedValue: SampleBrowserViewModel())
+			_viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
 	}
 	
 	var body: some View {
@@ -20,7 +20,7 @@ struct SampleLibraryView: View {
 		} detail: {
 			DetailView(viewModel: viewModel)
 		}
-		.navigationTitle("Sample Browser")
+		.navigationTitle("Sample Library")
 		.navigationSubtitle(String(totalSamples))
 		.toolbar {
 			ToolbarItem {
@@ -39,9 +39,6 @@ struct OpenInFinderButton: View {
 		Button(action: {
 			NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
 		}) {
-//			Label("Open in Finder", image: "Finder")
-//				.scaledToFit()
-//				.frame(width: 34, height: 34)
 			VStack {
 				Image(nsImage: NSWorkspace.shared.icon(forFile: "/System/Library/CoreServices/Finder.app"))
 					.resizable()
@@ -58,7 +55,7 @@ struct OpenInFinderButton: View {
 
 
 @MainActor
-class SampleBrowserViewModel: ObservableObject {
+class SampleLibraryViewModel: ObservableObject {
 	@Published var sampleArray: [Sample] = []
 	@Published var indexedTags: [String] = []
 	@Published var finishedProcessing: Bool = false

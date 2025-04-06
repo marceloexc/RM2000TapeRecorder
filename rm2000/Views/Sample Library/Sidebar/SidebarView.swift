@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SidebarView: View {
-	@ObservedObject var viewModel: SampleBrowserViewModel
+	@ObservedObject var viewModel: SampleLibraryViewModel
 	
 	var body: some View {
 		List(selection: $viewModel.selectedTag) {
@@ -22,7 +22,7 @@ struct SidebarView: View {
 }
 
 #Preview("Sidebar View") {
-	let vm = SampleBrowserViewModel()
+	let vm = SampleLibraryViewModel()
 	vm.indexedTags = ["drums", "bass", "vocals"]
 	vm.finishedProcessing = true
 	return SidebarView(viewModel: vm)

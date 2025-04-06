@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DetailView: View {
-	@ObservedObject var viewModel: SampleBrowserViewModel
+	@ObservedObject var viewModel: SampleLibraryViewModel
 	
 	var body: some View {
 		Group {
@@ -15,7 +15,7 @@ struct DetailView: View {
 }
 
 private struct TaggedRecordingsView: View {
-	@ObservedObject var viewModel: SampleBrowserViewModel
+	@ObservedObject var viewModel: SampleLibraryViewModel
 	let selectedTag: String
 	
 	var body: some View {
@@ -28,7 +28,7 @@ private struct TaggedRecordingsView: View {
 }
 
 struct AllRecordingsView: View {
-	@ObservedObject var viewModel: SampleBrowserViewModel
+	@ObservedObject var viewModel: SampleLibraryViewModel
 	
 	var body: some View {
 		Group {
@@ -87,15 +87,3 @@ struct SampleIndividualListItem: View {
 		}
 	}
 }
-
-//#Preview("Detail View") {
-//	let vm = SampleBrowserViewModel()
-////	vm.directoryContents = [
-////		URL(string: "file:///sample1--drums_bass.wav")!,
-////		URL(string: "file:///sample2--vocals_synth.mp3")!
-////	]
-//	vm.finishedProcessing = true
-//	return DetailView(viewModel: vm)
-//}
-//
-

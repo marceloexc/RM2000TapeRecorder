@@ -75,6 +75,19 @@ class SampleDirectory: ObservableObject {
 			}
 			
 			indexedTags.formUnion(createdSample.tags)
+			
+			let newFilename = self.directory.appendingPathComponent(uglyStringPleaseFixMePleasePlease)
+			
+			Task {
+				do {
+					Logger().info("Attempting encoder")
+					let config = EncodingConfig(outputFormat: .mp3, outputURL: newFilename.appendingPathExtension("mp3"))
+					
+					let encoder = Encoder(fileURL: newFilename)
+					try await encoder.encode(with: config)
+				}
+			}
+
 		} catch {
 			Logger.appState.error("Can't move file")
 		}

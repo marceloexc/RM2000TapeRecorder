@@ -2,10 +2,6 @@ import Foundation
 import OSLog
 import SwiftUI
 
-enum AudioFormat: String {
-	case aac, mp3, alac, opus
-}
-
 struct SettingsView: View {
 
 	@EnvironmentObject private var appState: AppState
@@ -26,8 +22,7 @@ struct SettingsView: View {
 					Picker("Sample File Type", selection: $selectedFileType) {
 						Text("AAC").tag(AudioFormat.aac)
 						Text("Lol thats about it").tag(AudioFormat.mp3).disabled(true)
-						Text("Sorry about that").tag(AudioFormat.alac).disabled(true)
-						Text("Ill try to get at least MP3 support by next week").tag(AudioFormat.opus).disabled(true)
+						Text("Ill try to get at least MP3 support by next week").tag(AudioFormat.wav).disabled(true)
 
 					}
 					.pickerStyle(MenuPickerStyle())

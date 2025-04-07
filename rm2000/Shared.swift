@@ -24,7 +24,7 @@ protocol FileRepresentable {
 	var fileURL: URL { get }
 }
 
-extension NewRecording: FileRepresentable { }
+extension TemporaryActiveRecording: FileRepresentable { }
 extension Sample: FileRepresentable { }
 
 // i borrowed a lot of this from https://github.com/sindresorhus/Gifski/blob/main/Gifski/Utilities.swift

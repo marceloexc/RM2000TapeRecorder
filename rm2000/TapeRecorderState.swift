@@ -5,7 +5,7 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 	@Published var isRecording: Bool = false
 	@Published var currentSampleFilename: String?
 	@Published var showRenameDialogInMainWindow: Bool = false
-	@Published var activeRecording: NewRecording?
+	@Published var currentActiveRecording: TemporaryActiveRecording?
 	@Published var elapsedTimeRecording: TimeInterval = 0
 	
 	private var timer: Timer?
@@ -23,9 +23,9 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 				self.isRecording = true
 			}
 			startTimer()
-			let newRecording = NewRecording()
+			let newRecording = TemporaryActiveRecording()
 			currentSampleFilename = newRecording.fileURL.lastPathComponent
-			self.activeRecording = newRecording 
+			self.currentActiveRecording = newRecording 
 			
 			await recorder.startRecording(to: newRecording.fileURL)
 		}

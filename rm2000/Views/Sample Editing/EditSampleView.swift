@@ -86,8 +86,24 @@ struct EditSampleView<Model: FileRepresentable>: View {
 				.padding(.top, 8)
 				
 				Button("Save Sample") {
-					let staged = Sample(newRecording: model as! NewRecording, title: title, tags: tags, description: description)
-					onComplete(staged)
+					if let newRecording = model as? TemporaryActiveRecording {
+						// handle new recording, create sample as init without fileurl
+						
+						// let stagedSample = Sample(), and then init with title, etc
+						
+						//see if any trimming is needed
+						
+						if let forward = forwardEndTime, let reverse = reverseEndTime {
+							// stagedSample.trimPoints = (forward, reverse)
+						}
+						
+						//onComplete(stagedSample)
+					} else if let establishedSample = model as? Sample {
+						// establishedSample
+					}
+					
+//					let staged = Sample(newRecording: model as! TemporaryActiveRecording, title: title, tags: tags, description: description)
+//					onComplete(staged)
 				}
 				.buttonStyle(.borderedProminent)
 				.padding(.top, 8)

@@ -29,7 +29,7 @@ struct ContentView: View {
 			}
 			
 			.sheet(isPresented: $recordingState.showRenameDialogInMainWindow) {
-				if let newRecording = recordingState.activeRecording {
+				if let newRecording = recordingState.currentActiveRecording {
 					EditSampleView(recording: newRecording) { Sample in
 						
 						// TODO - trainwreck. if i already have to pass in the shared.userdirectory, then this probably belongs in samplestorage itself, not sampledirectory

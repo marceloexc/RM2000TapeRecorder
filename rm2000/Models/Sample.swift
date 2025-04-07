@@ -1,99 +1,69 @@
 import Foundation
 import FZMetadata
 
-let regString = /(.+)--(.+)\.(.+)/
-
 struct Sample: Identifiable {
-
 	var id: UUID
-	let title: String
-	let tags: [String]
 	let fileURL: URL
 	var filename: String?
-	private var storedDescription: String?
-
-	// optionals, dont process them right away on Sample(:_) initialization until they are called
-	// because these are a bit slow
-	// and its faster to get the durations of an array of Sample's with FZMetadata
+	private var _metadata: SampleMetadata
+	
+	var metadata: SampleMetadata {
+		get { return _metadata }
+		set { _metadata = newValue }
+	}
+	
+	var title: String {
+		get { return metadata.title }
+		set { metadata.title = newValue }
+	}
+	
+	var tags: [String] {
+		get { return metadata.tags }
+		set { metadata.tags = newValue }
+	}
+	
 	var description: String? {
-		Sample.getDescription(fileURL: fileURL)
-	}
-
-	var duration: Double? {
-		Sample.getDuration(fileURL: fileURL)
-	}
-	
-	var metadata: MetadataItem {
-		fileURL.metadata!
+		mutating get {
+			metadata.loadDescription(from: fileURL)
+			return metadata.description
+		}
 	}
 	
-	init(newRecording: NewRecording, title: String, tags: String, description: String?) {
+	var fzMetadata: MetadataItem? {
+		fileURL.metadata
+	}
+	
+	// Initialize from an existing recording
+	init(from newRecording: TemporaryActiveRecording) {
 		self.id = newRecording.id
 		self.fileURL = newRecording.fileURL
-		self.title = title
-		self.tags = tags.components(separatedBy: ",")
-		self.storedDescription = description
+		self.filename = fileURL.lastPathComponent
+		self._metadata = SampleMetadata()
 	}
-
+	
 	init?(fileURL: URL) {
-
-		// see if this is actually a valid url
+		// only urls that pass the regex text will be allowed
 		guard Sample.passesRegex(fileURL.lastPathComponent) else {
 			return nil
 		}
-
+		
 		self.id = UUID()
-		self.title = Sample.getTitle(fileURL: fileURL)
-		self.tags = Sample.getTags(fileURL: fileURL)
 		self.fileURL = fileURL
 		self.filename = fileURL.lastPathComponent
+		self._metadata = SampleMetadata(fileURL: fileURL)
 	}
-
-	private static func getTitle(fileURL: URL) -> String {
-		if let match = try? regString.firstMatch(in: fileURL.lastPathComponent)
-		{
-			return String(match.1)
-		}
-		return ""
+	
+	init(fileURL: URL, metadata: SampleMetadata) {
+		self.fileURL = fileURL
+		self._metadata = metadata
+		self.id = UUID()
 	}
-
-	private static func getTags(fileURL: URL) -> [String] {
-		if let match = try? regString.firstMatch(in: fileURL.lastPathComponent)
-		{
-			return String(match.2).components(separatedBy: "_")
-		}
-		return []
-	}
-
-	private static func getDescription(fileURL: URL) -> String? {
-
-		if let metadata = fileURL.metadata {
-			return metadata.description
-		}
-		return nil
-	}
-
-	private static func getDuration(fileURL: URL) -> Double {
-
-		if let metadata = fileURL.metadata {
-			print(metadata.duration!)
-			return metadata.duration?.rawValue ?? 0
-		}
-
-		return 0
-	}
-
+	
 	private static func passesRegex(_ pathName: String) -> Bool {
 		(try? regString.wholeMatch(in: pathName)) != nil
 	}
 	
 	func finalFilename() -> String {
-		
-		// Construct the filename in the format "title--tag1_tag2_tag3.aac"
-		let formattedTags = tags.joined(separator: "_")
-		
-		// TODO - hardcoded file extension string
-		let filename = "\(title)--\(formattedTags).aac"
-		return filename
+		return metadata.finalFilename()
 	}
 }

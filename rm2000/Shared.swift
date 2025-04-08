@@ -22,6 +22,7 @@ enum AudioFormat: String {
 
 protocol FileRepresentable {
 	var fileURL: URL { get }
+	var id: UUID { get }
 }
 
 extension TemporaryActiveRecording: FileRepresentable { }

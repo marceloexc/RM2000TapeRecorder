@@ -87,10 +87,13 @@ struct EditSampleView<Model: FileRepresentable>: View {
 				
 				Button("Save Sample") {
 					
-					let configuration = SampleEditConfiguration()
+					var configuration = SampleEditConfiguration()
+					
+					configuration.directoryDestination = SampleStorage.shared.UserDirectory
 					
 					var metadata = SampleMetadata()
-					metadata.title = "Hello world"
+					metadata.title = title
+					
 //					let staged = Sample(newRecording: model as! TemporaryActiveRecording, title: title, tags: tags, description: description)
 					var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
 					// force unwrap, since we just created it

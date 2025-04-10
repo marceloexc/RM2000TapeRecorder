@@ -30,6 +30,8 @@ class SampleDirectory: ObservableObject {
 	@Published var indexedTags: Set<String> = []
 	var directory: URL
 	private var query = MetadataQuery()
+	
+	let fileManager = FileManager.default
 
 	init(directory: URL) {
 		self.directory = directory
@@ -68,12 +70,24 @@ class SampleDirectory: ObservableObject {
 			do {
 				let encoder = Encoder(fileURL: sample.fileURL)
 				
-				
 				let filename = sample.id.uuidString + ".mp3" // TODO - fix this
 				let tempFilePath = WorkingDirectory.applicationSupportPath().appendingPathComponent(filename)
 				let configuration = EncodingConfig(outputFormat: .mp3, outputURL: tempFilePath)
 				
 				try await encoder.encode(with: configuration)
+				
+				let finalFilename = metadata.finalFilename()
+				
+				print(tempFilePath)
+				print(finalFilename)
+				print(self.directory.appendingPathExtension(finalFilename))
+				
+				try fileManager.moveItem(
+					at: tempFilePath,
+					to: self.directory.appendingPathComponent(finalFilename)
+				)
+				
+				indexedTags.formUnion(metadata.tags)
 			}
 		}
 		
@@ -85,30 +99,6 @@ class SampleDirectory: ObservableObject {
 //			
 //			// and then finally commit everything into a new Sample()
 //			
-//			
-//			let uglyStringPleaseFixMePleasePlease = createdSample.finalFilename()
-//			
-//			try fileManager.moveItem(at: fromFile, to: self.directory.appendingPathComponent(uglyStringPleaseFixMePleasePlease))
-//			
-//			Logger().info("Applying sample edits and moving from \(fromFile) to \(self.directory.appendingPathComponent(uglyStringPleaseFixMePleasePlease))")
-//			
-//			indexedTags.formUnion(createdSample.tags)
-//			
-//			let newFilename = self.directory.appendingPathComponent(uglyStringPleaseFixMePleasePlease)
-//			
-//			Task {
-//				do {
-//					Logger().info("Attempting encoder")
-//					let config = EncodingConfig(outputFormat: .mp3, outputURL: newFilename.appendingPathExtension("mp3"))
-//					
-//					let encoder = Encoder(fileURL: newFilename)
-//					try await encoder.encode(with: config)
-//				}
-//			}
-//
-//		} catch {
-//			Logger.appState.error("Can't move file")
-//		}
 	}
 
 	// todo - this does not belong here!

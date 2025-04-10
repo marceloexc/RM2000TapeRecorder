@@ -55,7 +55,8 @@ class SampleDirectory: ObservableObject {
 		}
 	}
 
-	func applySampleEdits(for sample: FileRepresentable, with metadata: SampleMetadata) {
+	// having a lot of fun with arg labels today :)
+	func applySampleEdits(to sample: FileRepresentable, for metadata: SampleMetadata, with configuration: SampleEditConfiguration) {
 
 		var needsEncoding: Bool = false
 		

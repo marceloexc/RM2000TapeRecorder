@@ -30,10 +30,10 @@ struct ContentView: View {
 			
 			.sheet(isPresented: $recordingState.showRenameDialogInMainWindow) {
 				if let newRecording = recordingState.currentActiveRecording {
-					EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata in
+					EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
 						
 						// TODO - trainwreck. if i already have to pass in the shared.userdirectory, then this probably belongs in samplestorage itself, not sampledirectory
-						SampleStorage.shared.UserDirectory.applySampleEdits(for: FileRepresentable, with: SampleMetadata)
+						SampleStorage.shared.UserDirectory.applySampleEdits(to: FileRepresentable, for: SampleMetadata, with: SampleEditConfiguration)
 						recordingState.showRenameDialogInMainWindow = false
 					}
 				}

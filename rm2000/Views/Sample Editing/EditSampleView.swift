@@ -9,9 +9,9 @@ struct EditSampleView<Model: FileRepresentable>: View {
 	@State private var description: String?
 	@State private var forwardEndTime: CMTime? = nil
 	@State private var reverseEndTime: CMTime? = nil
-	private let onComplete: (FileRepresentable, SampleMetadata) -> Void
+	private let onComplete: (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void
 	
-	init(recording: Model, onComplete: @escaping (FileRepresentable, SampleMetadata) -> Void) {
+	init(recording: Model, onComplete: @escaping (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void) {
 		self.onComplete = onComplete
 		_title = State(initialValue: "")
 		_tags = State(initialValue: "")
@@ -87,29 +87,14 @@ struct EditSampleView<Model: FileRepresentable>: View {
 				
 				Button("Save Sample") {
 					
-					/*
-					if let newRecording = model as? TemporaryActiveRecording {
-						// handle new recording, create sample as init without fileurl
-						
-						// let stagedSample = Sample(), and then init with title, etc
-						
-						//see if any trimming is needed
-						
-						if let forward = forwardEndTime, let reverse = reverseEndTime {
-							// stagedSample.trimPoints = (forward, reverse)
-						}
-						
-						//onComplete(stagedSample)
-					} else if let establishedSample = model as? Sample {
-						// establishedSample
-					}
-					 */
+					let configuration = SampleEditConfiguration()
+					
 					var metadata = SampleMetadata()
 					metadata.title = "Hello world"
 //					let staged = Sample(newRecording: model as! TemporaryActiveRecording, title: title, tags: tags, description: description)
 					var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
 					// force unwrap, since we just created it
-					onComplete(createdSample, metadata)
+					onComplete(createdSample, metadata, configuration)
 				}
 				.buttonStyle(.borderedProminent)
 				.padding(.top, 8)

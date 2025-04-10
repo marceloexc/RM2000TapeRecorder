@@ -1,7 +1,7 @@
 import Foundation
 import OSLog
 
-struct NewRecording {
+struct TemporaryActiveRecording {
 	var id: UUID
 	var fileURL: URL
 	

@@ -54,7 +54,7 @@ struct SampleIndividualListItem: View {
 				Text(sampleItem.title)
 					.font(.title3)
 				HStack(spacing: 8) {
-					ForEach(sampleItem.tags, id:\.self) { tagName in
+					ForEach(Array(sampleItem.tags), id:\.self) { tagName in
 						Text("#"+tagName)
 							.font(.caption)
 							.padding(2)

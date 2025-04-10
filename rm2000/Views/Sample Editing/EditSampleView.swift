@@ -9,9 +9,9 @@ struct EditSampleView<Model: FileRepresentable>: View {
 	@State private var description: String?
 	@State private var forwardEndTime: CMTime? = nil
 	@State private var reverseEndTime: CMTime? = nil
-	private let onComplete: (Sample) -> Void
+	private let onComplete: (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void
 	
-	init(recording: Model, onComplete: @escaping (FileRepresentable) -> Void) {
+	init(recording: Model, onComplete: @escaping (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void) {
 		self.onComplete = onComplete
 		_title = State(initialValue: "")
 		_tags = State(initialValue: "")
@@ -86,8 +86,18 @@ struct EditSampleView<Model: FileRepresentable>: View {
 				.padding(.top, 8)
 				
 				Button("Save Sample") {
-					let staged = Sample(newRecording: model as! NewRecording, title: title, tags: tags, description: description)
-					onComplete(staged)
+					
+					var configuration = SampleEditConfiguration()
+					
+					configuration.directoryDestination = SampleStorage.shared.UserDirectory
+					
+					var metadata = SampleMetadata()
+					metadata.title = title
+					metadata.tagsAsString = tags
+//					let staged = Sample(newRecording: model as! TemporaryActiveRecording, title: title, tags: tags, description: description)
+					var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
+					// force unwrap, since we just created it
+					onComplete(createdSample, metadata, configuration)
 				}
 				.buttonStyle(.borderedProminent)
 				.padding(.top, 8)

@@ -110,6 +110,8 @@ class Encoder {
 
 			} else {
 				print("converting")
+				
+				// FIXME FIXME FIXME - the outputurl cannot be nil! Dont force unwrap!
 				await AudioConverter.convert(input: self.sourceURL!, output: config.outputURL!, format: .mp3)
 			}
 			

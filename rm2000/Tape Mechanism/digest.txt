@@ -1,0 +1,452 @@
+Directory structure:
+└── /./
+    ├── TapeMechanism.swift
+    ├── Encoder/
+    │   └── Encoder.swift
+    ├── StreamManager.swift
+    ├── AudioManager.swift
+    ├── Extensions.swift
+    └── Protocols.swift
+
+================================================
+File: /TapeMechanism.swift
+================================================
+// public facing functions for the main Recording audio logic
+// "tape mechanism" probably isn't the smartest thing to name a piece of code, but its cute
+// so ill keep it like this
+
+import Foundation
+import OSLog
+import CoreMedia
+import ScreenCaptureKit
+
+protocol TapeRecorderDelegate: AnyObject {
+	func tapeRecorderDidStartRecording(_ recorder: TapeRecorder)
+	func tapeRecorderDidStopRecording(_ recorder: TapeRecorder)
+	func tapeRecorder(_ recorder: TapeRecorder, didEncounterError error: Error)
+}
+
+// MARK: - TapeRecorder
+
+class TapeRecorder: NSObject {
+    
+	weak var delegate: TapeRecorderDelegate?
+  
+	private let streamManager: StreamManager
+	private let audioManager: AudioManager
+  
+	private(set) var isRecording: Bool = false
+	
+	private var temporaryFilename: String?
+	
+	private var temporaryDirectory: String?
+    
+	override init() {
+		self.streamManager = StreamManager()
+		self.audioManager = AudioManager()
+		super.init()
+	  
+		self.streamManager.delegate = self
+	}
+  
+	// both public functions - starting and stopping
+  
+	func startRecording(to fileURL: URL) async {
+		guard !isRecording else {
+			Logger.tapeRecorder.warning("Recording is already in progress")
+			return
+		}
+	  
+		
+		Logger.tapeRecorder.info("Destination set as \(fileURL)")
+		
+		do {
+			try await streamManager.setupAudioStream()
+			try audioManager.setupAudioWriter(fileURL: fileURL)
+			try streamManager.startCapture()
+		  
+			isRecording = true
+			delegate?.tapeRecorderDidStartRecording(self)
+			Logger.tapeRecorder.info("Started recording to file: \(fileURL)")
+		} catch {
+			delegate?.tapeRecorder(self, didEncounterError: error)
+			Logger.tapeRecorder.error("Failed to start recording: \(error.localizedDescription)")
+		}
+	}
+  
+	func stopRecording() {
+		guard isRecording else {
+			Logger.tapeRecorder.warning("No active recording to stop")
+			return
+		}
+	  
+		streamManager.stopCapture()
+		audioManager.stopAudioWriter()
+		
+		isRecording = false
+		delegate?.tapeRecorderDidStopRecording(self)
+		Logger.tapeRecorder.info("Stopped recording")
+	}
+}
+
+extension TapeRecorder: StreamManagerDelegate {
+	func streamManager(_ manager: StreamManager, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
+		guard type == .audio else { return }
+	  
+		audioManager.writeSampleBuffer(sampleBuffer)
+	}
+  
+	func streamManager(_ manager: StreamManager, didStopWithError error: Error) {
+		stopRecording()
+		delegate?.tapeRecorder(self, didEncounterError: error)
+	}
+}
+
+
+================================================
+File: /Encoder/Encoder.swift
+================================================
+import SwiftLAME
+import Foundation
+import AVFoundation
+import CoreMedia
+import OSLog
+
+struct AudioConverter {
+	static func convert(input: URL, output: URL, format: AudioFormat) async {
+		guard format == .mp3 else {
+			Logger().error("Unsupported format: \(String(describing: format))")
+			return
+		}
+		
+		do {
+			let progress = Progress()
+			let encoder = try SwiftLameEncoder(
+				sourceUrl: input,
+				configuration: .init(
+					sampleRate: .default,
+					bitrateMode: .constant(320),
+					quality: .best
+				),
+				destinationUrl: output,
+				progress: progress
+			)
+			
+			try await encoder.encode(priority: .userInitiated)
+			Logger().info("Conversion complete")
+		} catch {
+			Logger().error("Conversion failed: \(error.localizedDescription)")
+		}
+	}
+}
+
+
+struct EncodingConfig {
+	
+	let outputFormat: AudioFormat
+	let outputURL: URL?
+	let forwardStartTime: CMTime?
+	let backwardsEndTime: CMTime?
+	
+	init(
+		outputFormat: AudioFormat,
+		outputURL: URL? = nil,
+		forwardStartTime: CMTime? = nil,
+		backwardsEndTime: CMTime? = nil
+	) {
+		self.outputFormat = outputFormat
+		self.outputURL = outputURL
+		self.forwardStartTime = forwardStartTime
+		self.backwardsEndTime = backwardsEndTime
+	}
+}
+
+enum EncodingInputType {
+	case fileURL
+	case pcmBuffer
+	case existingSample
+}
+
+class Encoder {
+	private(set) var isProcessing = false
+	private(set) var sourceType: EncodingInputType
+	
+	private var sourceBuffer: AVAudioPCMBuffer?
+	private var sourceURL: URL?
+	
+	private var needsTrimming: Bool = false
+	
+	init(fileURL: URL?) {
+		self.sourceURL = fileURL
+		self.sourceType = .fileURL
+	}
+	
+	init(pcmBuffer: AVAudioPCMBuffer?) {
+		self.sourceBuffer = pcmBuffer
+		self.sourceType = .pcmBuffer
+	}
+	
+	func encode(with config: EncodingConfig) async throws {
+		
+		if let forwardStart = config.forwardStartTime, let backwardsEnd = config.backwardsEndTime {
+			needsTrimming = true
+		}
+		
+		isProcessing = true
+		
+		switch sourceType {
+		case .pcmBuffer:
+			if needsTrimming {
+				// awesome, we have the pcmBuffer already, just extract it, render as .caf, and then formatconvert
+			}
+		case .fileURL:
+		
+			if needsTrimming {
+				// i cant use formatconverter automatically - i have to convert to pcmbuffer, then render as a .caf, then formatconvert
+				// function here
+				
+				let buffer = getPCMBuffer(fileURL: self.sourceURL!)
+				let extractedBuffer = getExtractedBufferPortion(pcmBuffer: buffer!)
+				let temporaryFileURL = saveTemporaryAudioFile(pcmBuffer: extractedBuffer)
+				
+				guard let tempURL = temporaryFileURL else {
+					Logger().error("Temp file URL was nil.")
+					return
+				}
+			
+				await AudioConverter.convert(input: tempURL, output: config.outputURL!, format: config.outputFormat)
+
+			} else {
+				print("converting")
+				await AudioConverter.convert(input: self.sourceURL!, output: config.outputURL!, format: .mp3)
+			}
+			
+		case .existingSample:
+			print("nil")
+		}
+	}
+	
+	private func getPCMBuffer(fileURL: URL) -> AVAudioPCMBuffer? {
+		
+		do {
+			let audioFile = try! AVAudioFile(forReading: fileURL)
+			
+			let format = audioFile.processingFormat
+			let frameCount = AVAudioFrameCount(audioFile.length)
+			
+			guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else {
+				Logger().error("Failed to create AVAudioPCMBuffer for \(audioFile)")
+				return nil
+			}
+			
+			try audioFile.read(into: buffer)
+
+			return buffer
+		} catch {
+			Logger().error("Error: \(error.localizedDescription)")
+			return nil
+		}
+	}
+	
+	private func getExtractedBufferPortion(pcmBuffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer {
+		return pcmBuffer
+	}
+	
+	private func saveTemporaryAudioFile(pcmBuffer: AVAudioPCMBuffer) -> URL? {
+		
+		let temporaryFilename = UUID().uuidString + ".caf"
+		
+		do {
+			let outputURL = WorkingDirectory.applicationSupportPath().appendingPathComponent(temporaryFilename)
+			
+			let outputFile = try AVAudioFile(forWriting: outputURL, settings: pcmBuffer.format.settings)
+			try outputFile.write(from: pcmBuffer)
+			
+			Logger().info("Successfully wrote temporary audiofile as \(temporaryFilename)")
+			
+			return outputURL
+		} catch {
+			Logger().error("Error: \(error.localizedDescription)")
+			return nil
+		}
+	}
+	
+	private func saveToFile() {
+		
+	}
+}
+
+
+================================================
+File: /StreamManager.swift
+================================================
+//
+//  StreamManager.swift
+//  rm2000
+//
+//  Created by Marcelo Mendez on 9/23/24.
+//
+
+import Foundation
+import ScreenCaptureKit
+
+class StreamManager: NSObject, SCStreamDelegate {
+    
+	weak var delegate: StreamManagerDelegate?
+	private var stream: SCStream?
+    
+	func setupAudioStream() async throws {
+		let streamConfiguration = SCStreamConfiguration()
+		streamConfiguration.width = 2
+		streamConfiguration.height = 2
+		streamConfiguration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale.max)
+		streamConfiguration.showsCursor = true
+		streamConfiguration.sampleRate = 48000
+		streamConfiguration.channelCount = 2
+		streamConfiguration.capturesAudio = true
+		streamConfiguration.minimumFrameInterval = CMTime(seconds: 1.0 / 2.0, preferredTimescale: 600)
+	  
+		let availableContent = try await SCShareableContent.current
+		guard let display = availableContent.displays.first(where: { $0.displayID == CGMainDisplayID() }) else {
+			throw NSError(domain: "RecordingError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Can't find display with ID \(CGMainDisplayID()) in sharable content"])
+		}
+	  
+		let filter = SCContentFilter(display: display, excludingApplications: [], exceptingWindows: [])
+		stream = SCStream(filter: filter, configuration: streamConfiguration, delegate: self)
+	}
+  
+	func startCapture() throws {
+		guard let stream = stream else {
+			throw NSError(domain: "RecordingError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Stream not prepared"])
+		}
+	  
+		try stream.addStreamOutput(self, type: .audio, sampleHandlerQueue: .global())
+		stream.startCapture()
+	}
+  
+	func stopCapture() {
+		stream?.stopCapture()
+		stream = nil
+	}
+  
+	// make scstreamdelegate ghappy
+  
+	func stream(_ stream: SCStream, didStopWithError error: Error) {
+		delegate?.streamManager(self, didStopWithError: error)
+	}
+}
+
+
+extension StreamManager: SCStreamOutput {
+	func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
+		delegate?.streamManager(self, didOutputSampleBuffer: sampleBuffer, of: type)
+	}
+}
+
+
+================================================
+File: /AudioManager.swift
+================================================
+//
+//  AudioManager.swift
+//  rm2000
+//
+//  Created by Marcelo Mendez on 9/23/24.
+//
+
+import Foundation
+import AVFAudio
+import OSLog
+
+class AudioManager {
+	
+	func setupAudioWriter(fileURL: URL) throws {
+		audioFile = try AVAudioFile(forWriting: fileURL, settings: encodingParams, commonFormat: .pcmFormatFloat32, interleaved: false)
+	}
+  
+	func writeSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
+		guard sampleBuffer.isValid, let samples = sampleBuffer.asPCMBuffer else {
+			Logger.audioManager.warning("Invalid sample buffer or conversion failed")
+			return
+		}
+	  
+		do {
+			try audioFile?.write(from: samples)
+		} catch {
+			Logger.audioManager.error("Couldn't write samples: \(error.localizedDescription)")
+		}
+	}
+  
+	func stopAudioWriter() {
+		audioFile = nil
+	}
+	
+	private var audioFile: AVAudioFile?
+  
+	private let encodingParams: [String: Any] = [
+		AVFormatIDKey: kAudioFormatMPEG4AAC,
+		AVSampleRateKey: 48000,
+		AVNumberOfChannelsKey: 2,
+		AVEncoderBitRateKey: 128000
+	]
+}
+
+
+================================================
+File: /Extensions.swift
+================================================
+//
+//  Extensions.swift
+//  rm2000
+//
+//  Created by Marcelo Mendez on 9/23/24.
+//
+
+import OSLog
+import Foundation
+import CoreMedia
+import AVFAudio
+
+extension CMSampleBuffer {
+	var asPCMBuffer: AVAudioPCMBuffer? {
+		try? self.withAudioBufferList { audioBufferList, _ -> AVAudioPCMBuffer? in
+			guard let absd = self.formatDescription?.audioStreamBasicDescription else {
+				Logger.audioManager.error("Failed setting description for basic audio stream")
+				return nil
+			}
+			guard let format = AVAudioFormat(standardFormatWithSampleRate: absd.mSampleRate, channels: absd.mChannelsPerFrame) else {
+				Logger.audioManager.error("Failed formatting the audio file with the set sample size of \(absd.mSampleRate)")
+				return nil
+			}
+			return AVAudioPCMBuffer(pcmFormat: format, bufferListNoCopy: audioBufferList.unsafePointer)
+		}
+	}
+}
+
+extension Logger {
+	static let tapeRecorder = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "TapeRecorder")
+	static let streamManager = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "StreamManager")
+	static let audioManager = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "AudioManager")
+}
+
+
+================================================
+File: /Protocols.swift
+================================================
+//
+//  Protocols.swift
+//  rm2000
+//
+//  Created by Marcelo Mendez on 9/23/24.
+//
+
+import Foundation
+import CoreMedia
+import ScreenCaptureKit
+
+protocol StreamManagerDelegate: AnyObject {
+	func streamManager(_ manager: StreamManager, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType)
+	func streamManager(_ manager: StreamManager, didStopWithError error: Error)
+}
+
+

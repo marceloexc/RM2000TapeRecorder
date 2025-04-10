@@ -30,6 +30,8 @@ class SampleDirectory: ObservableObject {
 	@Published var indexedTags: Set<String> = []
 	var directory: URL
 	private var query = MetadataQuery()
+	
+	let fileManager = FileManager.default
 
 	init(directory: URL) {
 		self.directory = directory
@@ -55,44 +57,51 @@ class SampleDirectory: ObservableObject {
 		}
 	}
 
-	func applySampleEdits(fromFile: URL, createdSample: Sample) {
+	// having a lot of fun with arg labels today :)
+	func applySampleEdits(to sample: FileRepresentable, for metadata: SampleMetadata, with configuration: SampleEditConfiguration) {
 
-		let fileManager = FileManager.default
-
-		do {
-			
-			// TODO - hardcoded
-			let uglyStringPleaseFixMePleasePlease = createdSample.finalFilename()
-			
-			try fileManager.moveItem(at: fromFile, to: self.directory.appendingPathComponent(uglyStringPleaseFixMePleasePlease))
-			
-			Logger().info("Applying sample edits and moving from \(fromFile) to \(self.directory.appendingPathComponent(uglyStringPleaseFixMePleasePlease))")
-
-			// TODO - this is ugly
-			if !((createdSample.description?.isEmpty) != nil) {
-				setDescriptionFieldInFile(
-					createdSample, (createdSample.description ?? ""))
-			}
-			
-			indexedTags.formUnion(createdSample.tags)
-			
-			let newFilename = self.directory.appendingPathComponent(uglyStringPleaseFixMePleasePlease)
-			
-			Task {
-				do {
-					Logger().info("Attempting encoder")
-					let config = EncodingConfig(outputFormat: .mp3, outputURL: newFilename.appendingPathExtension("mp3"))
-					
-					let encoder = Encoder(fileURL: newFilename)
-					try await encoder.encode(with: config)
-				}
-			}
-
-		} catch {
-			Logger.appState.error("Can't move file")
+		var needsEncoding: Bool = false
+		
+		if (sample is TemporaryActiveRecording) {
+			needsEncoding = true
 		}
+		
+		Task {
+			do {
+				let encoder = Encoder(fileURL: sample.fileURL)
+				
+				let filename = sample.id.uuidString + ".mp3" // TODO - fix this
+				let tempFilePath = WorkingDirectory.applicationSupportPath().appendingPathComponent(filename)
+				let configuration = EncodingConfig(outputFormat: .mp3, outputURL: tempFilePath)
+				
+				try await encoder.encode(with: configuration)
+				
+				let finalFilename = metadata.finalFilename()
+				
+				print(tempFilePath)
+				print(finalFilename)
+				print(self.directory.appendingPathExtension(finalFilename))
+				
+				try fileManager.moveItem(
+					at: tempFilePath,
+					to: self.directory.appendingPathComponent(finalFilename)
+				)
+				
+				indexedTags.formUnion(metadata.tags)
+			}
+		}
+		
+//		do {
+//			
+//			// first encode with a temp name + .mp3
+//			
+//			// then get a ref to the file, move it
+//			
+//			// and then finally commit everything into a new Sample()
+//			
 	}
 
+	// todo - this does not belong here!
 	private func setDescriptionFieldInFile(
 		_ createdSample: Sample, _ description: String
 	) {
@@ -179,4 +188,6 @@ class SampleDirectory: ObservableObject {
 		}
 		query.start()
 	}
+	
+//	private func
 }

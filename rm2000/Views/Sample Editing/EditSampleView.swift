@@ -93,7 +93,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 					
 					var metadata = SampleMetadata()
 					metadata.title = title
-					
+					metadata.tagsAsString = tags
 //					let staged = Sample(newRecording: model as! TemporaryActiveRecording, title: title, tags: tags, description: description)
 					var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
 					// force unwrap, since we just created it

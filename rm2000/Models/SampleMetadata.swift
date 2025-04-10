@@ -4,7 +4,7 @@ let regString = /(.+)--(.+)\.(.+)/
 
 struct SampleMetadata {
 	var title: String = ""
-	var tags: [String] = []
+	var tags: Set<String> = []
 	var description: String? = ""
 	var fileFormat: AudioFormat = .wav
 	var group: URL?
@@ -16,7 +16,7 @@ struct SampleMetadata {
 	init(fileURL: URL) {
 		if let match = try? regString.firstMatch(in: fileURL.lastPathComponent) {
 			self.title = String(match.1)
-			self.tags = String(match.2).components(separatedBy: "_")
+			self.tags = Set(String(match.2).components(separatedBy: "_"))
 		}
 	}
 	
@@ -25,6 +25,17 @@ struct SampleMetadata {
 			description = SampleMetadata.getDescription(fileURL: fileURL)
 		}
 	}
+	
+	var tagsAsString: String {
+		get { tags.sorted().joined(separator: ",") }
+		set {
+			tags = Set(newValue
+				.components(separatedBy: ",")
+				.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+				.filter { !$0.isEmpty })
+		}
+	}
+
 	
 	private static func getDescription(fileURL: URL) -> String? {
 		fileURL.metadata?.description

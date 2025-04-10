@@ -17,7 +17,7 @@ struct Sample: Identifiable {
 		set { metadata.title = newValue }
 	}
 	
-	var tags: [String] {
+	var tags: Set<String> {
 		get { return metadata.tags }
 		set { metadata.tags = newValue }
 	}

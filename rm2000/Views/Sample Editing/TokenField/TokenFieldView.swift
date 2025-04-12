@@ -104,19 +104,42 @@ public struct TokenField<Data>: View, NSViewRepresentable where Data: RandomAcce
 	public func makeNSView(context: Context) -> NSTokenField {
 		let tf = NSTokenField()
 		tf.autoresizingMask = [.width, .height]
-		tf.tokenStyle = .plainSquared
+		tf.tokenStyle = .rounded
 		tf.setContentHuggingPriority(.defaultLow, for: .vertical)
 		
-		tf.objectValue = data
+		tf.controlSize = .regular
+		tf.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+		tf.placeholderString = "Enter tags here"
+		
+		tf.isBezeled = false // prevent ugly border style
+		tf.isBordered = true
+		
+		// Layer-based styling
+		tf.wantsLayer = true
+		tf.layer?.cornerRadius = 6
+		tf.layer?.masksToBounds = true
+		tf.layer?.backgroundColor = NSColor.controlBackgroundColor.cgColor
+		
+		tf.appearance = NSApp.effectiveAppearance
+		
+		tf.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			tf.heightAnchor.constraint(greaterThanOrEqualToConstant: 24)
+		])
+		
 		let cell = tf.cell as? NSTokenFieldCell
-		cell?.setCellAttribute(.cellIsBordered, to: 1)
 		cell?.tokenStyle = .rounded
+		
 		context.coordinator.data = _data
 		context.coordinator.conversion = self.conversion
 		tf.delegate = context.coordinator
+		
 		tf.lineBreakMode = .byTruncatingMiddle
+		tf.objectValue = data
+		
 		return tf
 	}
+
 	
 	public func updateNSView(_ nsView: NSTokenField, context: Context) {
 		if let b = nsView.superview?.bounds {

@@ -115,7 +115,7 @@ struct TokenInputField: View {
 	let suggestions = SampleStorage.shared.UserDirectory.indexedTags
 	
 	var body: some View {
-		TokenField(.init(get: { Array(tags) }, set: { tags = Set($0) })) // stupid...
+		TokenField(.init(get: { Array(tags) }, set: { tags = Set($0) })) // converting set<string> to [string]...stupid...
 			.completions([String](suggestions))
 	}
 }
@@ -129,8 +129,7 @@ struct PreviewFilenameView: View {
 	var body: some View {
 		Text(generatePreviewFilename())
 			.font(.system(size: 12, weight: .regular, design: .monospaced))
-			.foregroundColor(Color(red: 1, green: 0.6, blue: 0)) // Warmer orange
-			.shadow(color: .orange.opacity(0.4), radius: 1, x: 0, y: 0) // Glow effect
+			.foregroundColor(Color(red: 1, green: 0.6, blue: 0))
 			.padding(4)
 			.frame(maxWidth: .infinity)
 			.background(Color.black)

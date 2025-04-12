@@ -27,6 +27,8 @@
 		EB8313F62D51C14C00B343FF /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8313F52D51C14B00B343FF /* InspectorView.swift */; };
 		EB8642642DA4A41C00D4883B /* SampleMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8642632DA4A41900D4883B /* SampleMetadata.swift */; };
 		EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */; };
+		EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7D82DAB20E000160799 /* GeneralTabView.swift */; };
+		EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */; };
 		EBAF02632C8A132800520D44 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF02622C8A132800520D44 /* Logging.swift */; };
 		EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */; };
 		EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */; };
@@ -70,6 +72,8 @@
 		EB8313F52D51C14B00B343FF /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		EB8642632DA4A41900D4883B /* SampleMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleMetadata.swift; sourceTree = "<group>"; };
 		EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditConfiguration.swift; sourceTree = "<group>"; };
+		EBACB7D82DAB20E000160799 /* GeneralTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTabView.swift; sourceTree = "<group>"; };
+		EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingTabView.swift; sourceTree = "<group>"; };
 		EBAF02622C8A132800520D44 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryActiveRecording.swift; sourceTree = "<group>"; };
 		EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditOperation.swift; sourceTree = "<group>"; };
@@ -162,7 +166,9 @@
 		EB467BD22D9208BF007E19E8 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				EBACB7D82DAB20E000160799 /* GeneralTabView.swift */,
 				EB64CD112D14FC5200F2B65E /* SettingsView.swift */,
+				EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -394,6 +400,7 @@
 				EB63A3022D6A88AB00E35AE6 /* SampleStorage.swift in Sources */,
 				EB63A3042D6A8E2A00E35AE6 /* AppState.swift in Sources */,
 				EBE4E94A2C43244D00397EF2 /* ContentView.swift in Sources */,
+				EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */,
 				EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */,
 				EBAF02632C8A132800520D44 /* Logging.swift in Sources */,
 				EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */,
@@ -420,6 +427,7 @@
 				EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */,
 				EB1565122D558F2100A3D339 /* Sample.swift in Sources */,
 				EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */,
+				EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

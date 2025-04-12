@@ -22,4 +22,9 @@ struct TemporaryActiveRecording {
 		self.fileURL = WorkingDirectory.applicationSupportPath()
 			.appendingPathComponent("\(id.uuidString).aac")
 	}
+	
+	init(fileURL: URL) {
+		self.fileURL = fileURL
+		self.id = UUID()
+	}
 }

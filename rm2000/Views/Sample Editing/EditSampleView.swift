@@ -1,11 +1,13 @@
 import SwiftUI
+import Combine
 import CoreMedia
+import TokenField
 
 struct EditSampleView<Model: FileRepresentable>: View {
 	
 	let model: Model
 	@State private var title: String
-	@State private var tags: String
+	@State private var tags: Set<String>
 	@State private var description: String?
 	@State private var forwardEndTime: CMTime? = nil
 	@State private var reverseEndTime: CMTime? = nil
@@ -14,7 +16,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 	init(recording: Model, onComplete: @escaping (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void) {
 		self.onComplete = onComplete
 		_title = State(initialValue: "")
-		_tags = State(initialValue: "")
+		_tags = State(initialValue: Set<String>())
 		_description = State(initialValue: "")
 		self.model = recording
 	}
@@ -41,8 +43,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 					Text("Tags (comma-separated)")
 						.font(.caption)
 						.foregroundColor(.secondary)
-					TextField("Enter Tags", text: $tags)
-						.textFieldStyle(RoundedBorderTextFieldStyle())
+					TokenInputField(tags: $tags)
 				}
 				DisclosureGroup("Additional Settings") {
 					VStack(alignment: .leading, spacing: 4) {
@@ -81,7 +82,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 					Text("Preview:")
 						.font(.caption)
 						.foregroundColor(.secondary)
-					PreviewFilenameView(title: $title, tags: $tags)
+//					PreviewFilenameView(title: $title, tags: $tags)
 				}
 				.padding(.top, 8)
 				
@@ -93,7 +94,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 					
 					var metadata = SampleMetadata()
 					metadata.title = title
-					metadata.tagsAsString = tags
+					metadata.tags = tags
 //					let staged = Sample(newRecording: model as! TemporaryActiveRecording, title: title, tags: tags, description: description)
 					var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
 					// force unwrap, since we just created it
@@ -107,6 +108,18 @@ struct EditSampleView<Model: FileRepresentable>: View {
 		}
 	}
 }
+
+struct TokenInputField: View {
+	
+	@Binding var tags: Set<String>
+	let suggestions = SampleStorage.shared.UserDirectory.indexedTags
+	
+	var body: some View {
+		TokenField(.init(get: { Array(tags) }, set: { tags = Set($0) })) // stupid...
+			.completions([String](suggestions))
+	}
+}
+
 
 struct PreviewFilenameView: View {
 	@State var previewFilename: String = ""
@@ -126,5 +139,13 @@ struct PreviewFilenameView: View {
 	// TODO - hardcoded file extension string
 	private func generatePreviewFilename() -> String {
 		return ("\(title)__\(tags).aac")
+	}
+}
+
+#Preview {
+	let testFile = URL(fileURLWithPath: "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")
+	let recording = TemporaryActiveRecording(fileURL: testFile)
+	return EditSampleView(recording: recording) { _, _, _ in
+		// Empty completion handler
 	}
 }

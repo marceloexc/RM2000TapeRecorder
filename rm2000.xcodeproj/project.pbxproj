@@ -45,6 +45,7 @@
 		EBE4E94A2C43244D00397EF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE4E9492C43244D00397EF2 /* ContentView.swift */; };
 		EBE4E94C2C43244F00397EF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBE4E94B2C43244F00397EF2 /* Assets.xcassets */; };
 		EBE4E94F2C43244F00397EF2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBE4E94E2C43244F00397EF2 /* Preview Assets.xcassets */; };
+		EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */; };
 		EBFCB1102D77987800A9A226 /* FZMetadata in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB10F2D77987800A9A226 /* FZMetadata */; };
 		EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB1122D77988600A9A226 /* SettingsAccess */; };
 /* End PBXBuildFile section */
@@ -65,6 +66,7 @@
 		EB63A3032D6A8E2800E35AE6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		EB64CD112D14FC5200F2B65E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		EB64CD132D1A0E1500F2B65E /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		EB8159732DA989B40087B19A /* Example__sample.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = Example__sample.aac; sourceTree = "<group>"; };
 		EB8313F12D4DCDD600B343FF /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		EB8313F32D4DF59700B343FF /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		EB8313F52D51C14B00B343FF /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		EBE4E9592C43245000397EF2 /* rm2000Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000Tests.swift; sourceTree = "<group>"; };
 		EBE4E9632C43245000397EF2 /* rm2000UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000UITests.swift; sourceTree = "<group>"; };
 		EBE4E9652C43245000397EF2 /* rm2000UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +129,7 @@
 		EB296DE52D653468008427DF /* Sample Editing */ = {
 			isa = PBXGroup;
 			children = (
+				EBF9507E2DA995E20060CF03 /* TokenField */,
 				EB296DF22D653556008427DF /* TrimmingPlayerView.swift */,
 				EBCA46E12CACBEE700040159 /* EditSampleView.swift */,
 			);
@@ -291,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				EBE4E9592C43245000397EF2 /* rm2000Tests.swift */,
+				EB8159732DA989B40087B19A /* Example__sample.aac */,
 			);
 			path = rm2000Tests;
 			sourceTree = "<group>";
@@ -303,6 +308,14 @@
 				EBE4E9652C43245000397EF2 /* rm2000UITestsLaunchTests.swift */,
 			);
 			path = rm2000UITests;
+			sourceTree = "<group>";
+		};
+		EBF9507E2DA995E20060CF03 /* TokenField */ = {
+			isa = PBXGroup;
+			children = (
+				EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */,
+			);
+			path = TokenField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -404,6 +417,7 @@
 				EBBBFE862CA1F57300E987B1 /* MenuBar.swift in Sources */,
 				EB8313F62D51C14C00B343FF /* InspectorView.swift in Sources */,
 				EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */,
+				EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */,
 				EB8642642DA4A41C00D4883B /* SampleMetadata.swift in Sources */,
 				EBCA46E22CACBEE700040159 /* EditSampleView.swift in Sources */,
 				EB5C8FCC2D99DBDD00C4C3C2 /* Encoder.swift in Sources */,

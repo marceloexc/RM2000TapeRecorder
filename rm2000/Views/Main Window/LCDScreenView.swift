@@ -16,6 +16,7 @@ struct LCDScreenView: View {
 					VStack(alignment: .leading, spacing: 4) {
 						LCDTextCaption("STEREO 44.1kHz")
 						LCDTextCaption("16 BIT")
+						VUMeter()
 					}
 					Spacer()
 				}
@@ -39,7 +40,22 @@ struct LCDScreenView: View {
 	private func timeString(_ time: TimeInterval) -> String {
 		let minutes = Int(time) / 60
 		let seconds = Int(time) % 60
-		return String(format: " %02d:%02d ", minutes, seconds)
+		return String(format: "%02d:%02d", minutes, seconds)
+	}
+}
+
+struct VUMeter: View {
+	
+	@State var volumeAsString = ""
+	
+	var body: some View {
+		Text(volumeAsString)
+			.onReceive(NotificationCenter.default.publisher(for: .audioLevelUpdated)) { levels in
+				if var level = levels.userInfo?["level"] as? Float {
+					level *= 100
+					volumeAsString = String(format: "VOLUME %.4f", level)
+				}
+			}
 	}
 }
 

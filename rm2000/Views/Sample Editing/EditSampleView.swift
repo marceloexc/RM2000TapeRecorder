@@ -54,35 +54,13 @@ struct EditSampleView<Model: FileRepresentable>: View {
 							.font(.system(size: 14, weight: .medium, design: .rounded)) // Uses a rounded, medium-weight system font
 							.lineSpacing(10) // Sets the line spacing to 10 points
 							.border(Color.gray, width: 1)
-						
-						Text("Convert Format")
-							.font(.caption)
-							.foregroundColor(.secondary)
-						Menu {
-							Button {
-								// do something
-							} label: {
-								Text("Linear")
-								Image(systemName: "arrow.down.right.circle")
-							}
-							Button {
-								// do something
-							} label: {
-								Text("Radial")
-								Image(systemName: "arrow.up.and.down.circle")
-							}
-						} label: {
-							Text("Style")
-							Image(systemName: "tag.circle")
-						}
-						
 					}.padding(.top, 8)
 				}
 				VStack(alignment: .leading, spacing: 4) {
 					Text("Preview:")
 						.font(.caption)
 						.foregroundColor(.secondary)
-//					PreviewFilenameView(title: $title, tags: $tags)
+					PreviewFilenameView(title: $title, tags: $tags)
 				}
 				.padding(.top, 8)
 				
@@ -124,7 +102,9 @@ struct TokenInputField: View {
 struct PreviewFilenameView: View {
 	@State var previewFilename: String = ""
 	@Binding var title: String
-	@Binding var tags: String
+	@Binding var tags: Set<String>
+	
+	@State private var sortedTagsArray: [String] = []
 	
 	var body: some View {
 		Text(generatePreviewFilename())
@@ -133,11 +113,25 @@ struct PreviewFilenameView: View {
 			.padding(4)
 			.frame(maxWidth: .infinity)
 			.background(Color.black)
+			.contentTransition(.numericText())
+			.animation(.easeInOut, value: title)
+			.onChange(of: tags) { newTags in
+				sortedTagsArray = newTags.sorted()
+			}
+			.onAppear {
+				sortedTagsArray = tags.sorted()
+			}
 	}
 	
 	// TODO - hardcoded file extension string
 	private func generatePreviewFilename() -> String {
-		return ("\(title)__\(tags).aac")
+		var taggedString = ""
+		
+		for tag in sortedTagsArray {
+			taggedString.append("\(tag)-")
+		}
+		
+		return "\(title)__\(taggedString).aac"
 	}
 }
 

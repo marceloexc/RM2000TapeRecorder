@@ -39,8 +39,9 @@ class AudioManager {
 		}
 		
 		// calculate root mean square
+		// https://stackoverflow.com/a/43789556
 		let channelCount = Int(samples.format.channelCount)
-		let frameLength = samples.frameLength
+		let arraySize = samples.frameLength
 		let bufferPointer = samples.floatChannelData!
 		
 		var sumOfSquares: Float = 0.0
@@ -51,7 +52,7 @@ class AudioManager {
 			let channelData = bufferPointer[channel]
 			
 			// sum square of all samples
-			for frame in 0..<Int(frameLength) {
+			for frame in 0..<Int(arraySize) {
 				let sample = channelData[frame]
 				sumOfSquares += sample * sample
 				sampleCount += 1
@@ -64,7 +65,7 @@ class AudioManager {
 		// calculate RMS
 		let rms = sqrt(sumOfSquares / Float(sampleCount))
 		
-		return rms
+		return pow(rms, 0.3)
 	}
 	func stopAudioWriter() {
 		audioFile = nil

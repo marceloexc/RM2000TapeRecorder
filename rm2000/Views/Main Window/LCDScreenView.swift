@@ -11,25 +11,28 @@ struct LCDScreenView: View {
 				.frame(width: 300)
 				.offset(x: 0, y: 0)
 			
-			VStack(alignment: .leading) {
-				HStack {
-					VStack(alignment: .leading, spacing: 4) {
-						LCDTextCaption("STEREO 44.1kHz")
-						LCDTextCaption("16 BIT")
-						VUMeter()
+			HStack {
+				VStack(alignment: .leading) {
+					HStack {
+						VStack(alignment: .leading, spacing: 4) {
+							LCDTextCaption("STEREO 44.1kHz")
+							LCDTextCaption("16 BIT")
+						}.frame(width: 100)
+						Spacer()
 					}
-					Spacer()
+					
+					LCDTextBig("M4A")
+						.padding(.top, 15)
+					if recordingState.isRecording {
+						LCDTextBig(timeString(recordingState.elapsedTimeRecording))
+					} else {
+						LCDTextBig("STBY")
+					}
 				}
 				
-				LCDTextBig("M4A")
-					.padding(.top, 15)
-				if recordingState.isRecording {
-					LCDTextBig(timeString(recordingState.elapsedTimeRecording))
-				} else {
-					LCDTextBig("STBY")
-				}
-			}
-			.frame(width: 200, height: 168)
+				VUMeter()
+			}	.frame(width: 200, height: 168)
+
 			
 			Image("LCDOuterGlow")
 				.resizable()
@@ -46,16 +49,30 @@ struct LCDScreenView: View {
 
 struct VUMeter: View {
 	
-	@State var volumeAsString = ""
+	@State var volumeAsString: Float = 0.0
 	
 	var body: some View {
-		Text(volumeAsString)
+		GeometryReader
+		{ geometry in
+			ZStack(alignment: .bottom){
+				
+				// Colored rectangle in back of ZStack
+				Rectangle()
+					.fill(LinearGradient(gradient: Gradient(colors: [.red, .yellow, .green]), startPoint: .top, endPoint: .center))
+				Rectangle()
+					.fill(Color.black)
+					.mask(Rectangle().padding(.bottom, geometry.size.height * CGFloat(self.volumeAsString)))
+					.animation(.easeOut(duration: 0.05))
+			}
+			.padding(geometry.size.width * 0.2)
 			.onReceive(NotificationCenter.default.publisher(for: .audioLevelUpdated)) { levels in
 				if var level = levels.userInfo?["level"] as? Float {
-					level *= 100
-					volumeAsString = String(format: "VOLUME %.4f", level)
+					volumeAsString = level
+				} else {
+					volumeAsString = 0.0
 				}
 			}
+		}
 	}
 }
 

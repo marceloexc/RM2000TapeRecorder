@@ -11,34 +11,45 @@ struct LCDScreenView: View {
 				.frame(width: 300)
 				.offset(x: 0, y: 0)
 			
-			HStack {
-				VStack(alignment: .leading) {
-					HStack {
-						VStack(alignment: .leading, spacing: 4) {
-							LCDTextCaption("STEREO 44.1kHz")
-							LCDTextCaption("16 BIT")
-						}.frame(width: 100)
-						Spacer()
-					}
-					
-					LCDTextBig("M4A")
-						.padding(.top, 15)
-					if recordingState.isRecording {
-						LCDTextBig(timeString(recordingState.elapsedTimeRecording))
-					} else {
-						LCDTextBig("STBY")
-					}
-				}
-				
-				VUMeter()
-			}	.frame(width: 200, height: 168)
-
+			LCDScreenSymbols()
 			
 			Image("LCDOuterGlow")
 				.resizable()
 				.frame(width: 330)
 		}
 	}
+
+}
+
+struct LCDScreenSymbols: View {
+	@EnvironmentObject private var recordingState: TapeRecorderState
+	
+	
+	var body: some View {
+		HStack {
+			VStack(alignment: .leading) {
+				HStack {
+					VStack(alignment: .leading, spacing: 4) {
+						LCDTextCaption("STEREO 44.1kHz")
+						LCDTextCaption("16 BIT")
+					}.frame(width: 100)
+					Spacer()
+				}
+				
+				LCDTextBig("M4A")
+					.padding(.top, 15)
+				if recordingState.isRecording {
+					LCDTextBig(timeString(recordingState.elapsedTimeRecording))
+				} else {
+					LCDTextBig("STBY")
+				}
+			}.frame(maxWidth: 150)
+			
+			VUMeter()
+				.frame(width: 50, height: 155)
+		}	.frame(width: 200, height: 168)
+	}
+	
 	
 	private func timeString(_ time: TimeInterval) -> String {
 		let minutes = Int(time) / 60

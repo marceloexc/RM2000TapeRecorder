@@ -5,11 +5,21 @@ struct LCDScreenView: View {
 	
 	var body: some View {
 		ZStack {
-			Image("LCDScreenEmptyTemp")
-				.resizable()
-				.scaledToFit()
-				.frame(width: 300)
-				.offset(x: 0, y: 0)
+			
+			if recordingState.isRecording {
+				Image("LCDScreenFrameRecording")
+					.resizable()
+					.scaledToFit()
+					.frame(width: 300)
+					.offset(x: 0, y: 0)
+			} else {
+				Image("LCDScreenFrameInactive")
+					.resizable()
+					.scaledToFit()
+					.frame(width: 300)
+					.offset(x: 0, y: 0)
+			}
+
 			
 			VStack(alignment: .leading) {
 				HStack {

@@ -21,12 +21,28 @@ struct LCDScreenView: View {
 			}
 
 			
+			LCDScreenSymbols()
+			
+			Image("LCDOuterGlow")
+				.resizable()
+				.frame(width: 330)
+		}
+	}
+
+}
+
+struct LCDScreenSymbols: View {
+	@EnvironmentObject private var recordingState: TapeRecorderState
+	
+	
+	var body: some View {
+		HStack(alignment: .center) {
 			VStack(alignment: .leading) {
 				HStack {
 					VStack(alignment: .leading, spacing: 4) {
 						LCDTextCaption("STEREO 44.1kHz")
 						LCDTextCaption("16 BIT")
-					}
+					}.frame(width: 100)
 					Spacer()
 				}
 				
@@ -34,22 +50,55 @@ struct LCDScreenView: View {
 					.padding(.top, 15)
 				if recordingState.isRecording {
 					LCDTextBig(timeString(recordingState.elapsedTimeRecording))
+						.frame(maxWidth: 150, alignment: .leading)
 				} else {
 					LCDTextBig("STBY")
+						.frame(maxWidth: 150, alignment: .leading)
 				}
-			}
-			.frame(width: 200, height: 168)
+			}/*.frame(maxWidth: 170, alignment: .leading)*/
 			
-			Image("LCDOuterGlow")
-				.resizable()
-				.frame(width: 330)
-		}
+			VUMeter()
+				.colorEffect(Shader(function: .init(library: .default, name: "dotMatrix"), arguments: []))
+				.shadow(color: .black.opacity(0.35), radius: 1, x: 2, y: 4)
+				.frame(width: 40, height: 155)
+		}	.frame(width: 200, height: 168)
 	}
+	
 	
 	private func timeString(_ time: TimeInterval) -> String {
 		let minutes = Int(time) / 60
 		let seconds = Int(time) % 60
-		return String(format: " %02d:%02d ", minutes, seconds)
+		return String(format: "%02d:%02d", minutes, seconds)
+	}
+}
+
+struct VUMeter: View {
+	
+	@State var volumeAsString: Float = 0.0
+	
+	var body: some View {
+		GeometryReader
+		{ geometry in
+			ZStack(alignment: .bottom){
+				
+				// Colored rectangle in back of ZStack
+				Rectangle()
+					.fill(Color("LCDTextColor"))
+					.frame(height: geometry.size.height * CGFloat(self.volumeAsString))
+					.animation(.easeOut(duration:0.05))
+				
+				// idle blocks for volume
+				Rectangle()
+					.fill(Color.black.opacity(0.2))			}
+			.padding(geometry.size.width * 0.2)
+			.onReceive(NotificationCenter.default.publisher(for: .audioLevelUpdated)) { levels in
+				if var level = levels.userInfo?["level"] as? Float {
+					volumeAsString = level
+				} else {
+					volumeAsString = 0.0
+				}
+			}
+		}
 	}
 }
 
@@ -108,4 +157,11 @@ struct LCDTextBig: View {
 #Preview("LCD Screen") {
 	LCDScreenView()
 		.environmentObject(TapeRecorderState())
+}
+
+#Preview("LCD Symbols") {
+	LCDScreenSymbols()
+		.environmentObject(TapeRecorderState())
+		.border(.black)
+		.padding()
 }

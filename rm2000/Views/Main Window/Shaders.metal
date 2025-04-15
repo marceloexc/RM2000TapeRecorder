@@ -1,4 +1,4 @@
-// put this in a file called Shaders.metal
+// https://stackoverflow.com/a/79176991
 #include <metal_stdlib>
 using namespace metal;
 

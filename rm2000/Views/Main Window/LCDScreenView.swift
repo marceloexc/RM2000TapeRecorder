@@ -49,7 +49,7 @@ struct LCDScreenSymbols: View {
 			
 			VUMeter()
 				.colorEffect(Shader(function: .init(library: .default, name: "dotMatrix"), arguments: []))
-				.shadow(color: .black.opacity(0.25), radius: 1, x: 2, y: 4)
+				.shadow(color: .black.opacity(0.35), radius: 1, x: 2, y: 4)
 				.frame(width: 40, height: 155)
 		}	.frame(width: 200, height: 168)
 	}
@@ -73,12 +73,13 @@ struct VUMeter: View {
 				
 				// Colored rectangle in back of ZStack
 				Rectangle()
-					.fill(LinearGradient(gradient: Gradient(colors: [.red, .yellow, .green]), startPoint: .top, endPoint: .center))
+					.fill(Color("LCDTextColor"))
+					.frame(height: geometry.size.height * CGFloat(self.volumeAsString))
+					.animation(.easeOut(duration:0.05))
+				
+				// idle blocks for volume
 				Rectangle()
-					.fill(Color.black)
-					.mask(Rectangle().padding(.bottom, geometry.size.height * CGFloat(self.volumeAsString)))
-					.animation(.easeOut(duration: 0.05))
-			}
+					.fill(Color.black.opacity(0.2))			}
 			.padding(geometry.size.width * 0.2)
 			.onReceive(NotificationCenter.default.publisher(for: .audioLevelUpdated)) { levels in
 				if var level = levels.userInfo?["level"] as? Float {

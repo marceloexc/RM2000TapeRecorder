@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EB1565122D558F2100A3D339 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1565112D558F1F00A3D339 /* Sample.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
+		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
 		EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */; };
 		EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BCD2D920849007E19E8 /* OnboardingView.swift */; };
 		EB467BD42D920919007E19E8 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BD32D920917007E19E8 /* Buttons.swift */; };
@@ -53,6 +54,7 @@
 /* Begin PBXFileReference section */
 		EB1565112D558F1F00A3D339 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
+		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryView.swift; sourceTree = "<group>"; };
 		EB467BCD2D920849007E19E8 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		EB467BD32D920917007E19E8 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 		EB467BD02D92087C007E19E8 /* Main Window */ = {
 			isa = PBXGroup;
 			children = (
+				EB2ECD522DADD7F6005D1E06 /* Shaders.metal */,
 				EB467BD72D920D2C007E19E8 /* LCDScreenView.swift */,
 				EB467BD32D920917007E19E8 /* Buttons.swift */,
 				EBE4E9492C43244D00397EF2 /* ContentView.swift */,
@@ -432,6 +435,7 @@
 				EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */,
 				EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */,
 				EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */,
+				EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */,
 				EB1565122D558F2100A3D339 /* Sample.swift in Sources */,
 				EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */,
 			);
@@ -590,7 +594,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.2025.3;
 				PRODUCT_BUNDLE_IDENTIFIER = marceloexc.rm2000;
 				PRODUCT_NAME = "RM2000 Tape Recorder";
@@ -627,7 +631,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.2025.3;
 				PRODUCT_BUNDLE_IDENTIFIER = marceloexc.rm2000;
 				PRODUCT_NAME = "RM2000 Tape Recorder";

@@ -26,7 +26,7 @@ struct LCDScreenSymbols: View {
 	
 	
 	var body: some View {
-		HStack {
+		HStack(alignment: .center) {
 			VStack(alignment: .leading) {
 				HStack {
 					VStack(alignment: .leading, spacing: 4) {
@@ -40,13 +40,17 @@ struct LCDScreenSymbols: View {
 					.padding(.top, 15)
 				if recordingState.isRecording {
 					LCDTextBig(timeString(recordingState.elapsedTimeRecording))
+						.frame(maxWidth: 150, alignment: .leading)
 				} else {
 					LCDTextBig("STBY")
+						.frame(maxWidth: 150, alignment: .leading)
 				}
-			}.frame(maxWidth: 150)
+			}/*.frame(maxWidth: 170, alignment: .leading)*/
 			
 			VUMeter()
-				.frame(width: 50, height: 155)
+				.colorEffect(Shader(function: .init(library: .default, name: "dotMatrix"), arguments: []))
+				.shadow(color: .black.opacity(0.25), radius: 1, x: 2, y: 4)
+				.frame(width: 40, height: 155)
 		}	.frame(width: 200, height: 168)
 	}
 	
@@ -142,4 +146,11 @@ struct LCDTextBig: View {
 #Preview("LCD Screen") {
 	LCDScreenView()
 		.environmentObject(TapeRecorderState())
+}
+
+#Preview("LCD Symbols") {
+	LCDScreenSymbols()
+		.environmentObject(TapeRecorderState())
+		.border(.black)
+		.padding()
 }

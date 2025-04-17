@@ -156,7 +156,6 @@ class SampleDirectory: ObservableObject {
 						Logger.appState.info("New content detected: \(String(describing: new.url)) for \(self?.directory)")
 						self?.files.append(createdSample)
 						self?.indexedTags.formUnion(createdSample.tags)
-						print(self?.indexedTags as Any)
 					} else {
 						Logger.appState.info("Newly added content rejected: \(String(describing: new.url))")
 					}

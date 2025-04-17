@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import OSLog
+import KeyboardShortcuts
 
 @MainActor final class AppState: ObservableObject {
 	static let shared = AppState()
@@ -38,6 +39,15 @@ import OSLog
 	private var openWindowAction: OpenWindowAction?
 	
 	init() {
+		KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
+			Task {
+				await displayTestingGlobalNotication()
+				// TapeRecorderState().startRecording()
+				
+				// todo - add a taperecorderstate singleton
+			}
+		}
+		
 		if let bookmarkData = sampleDirectoryBookmark {
 			restoreBookmarkAccess(with: bookmarkData)
 		}

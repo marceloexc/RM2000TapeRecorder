@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import AVKit
+import KeyboardShortcuts
 
 struct WorkingDirectory {
 	static let appIdentifier = "com.marceloexc.rm2000"
@@ -14,6 +15,10 @@ struct WorkingDirectory {
 
 		return path
 	}
+}
+
+extension KeyboardShortcuts.Name {
+	static let recordGlobalShortcut = Self("recordGlobalShortcut", default: .init(.g, modifiers: [.command, .option]))
 }
 
 enum AudioFormat: String {

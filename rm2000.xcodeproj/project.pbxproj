@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EB1565122D558F2100A3D339 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1565112D558F1F00A3D339 /* Sample.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
+		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
 		EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */; };
 		EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BCD2D920849007E19E8 /* OnboardingView.swift */; };
 		EB467BD42D920919007E19E8 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BD32D920917007E19E8 /* Buttons.swift */; };
@@ -29,6 +30,8 @@
 		EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */; };
 		EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7D82DAB20E000160799 /* GeneralTabView.swift */; };
 		EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */; };
+		EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */; };
+		EB90E5A32DB192D80067194C /* UserNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB90E5A22DB192D30067194C /* UserNotifications.swift */; };
 		EBAF02632C8A132800520D44 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF02622C8A132800520D44 /* Logging.swift */; };
 		EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */; };
 		EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */; };
@@ -47,6 +50,7 @@
 		EBE4E94A2C43244D00397EF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE4E9492C43244D00397EF2 /* ContentView.swift */; };
 		EBE4E94C2C43244F00397EF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBE4E94B2C43244F00397EF2 /* Assets.xcassets */; };
 		EBE4E94F2C43244F00397EF2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBE4E94E2C43244F00397EF2 /* Preview Assets.xcassets */; };
+		EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */; };
 		EBFCB1102D77987800A9A226 /* FZMetadata in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB10F2D77987800A9A226 /* FZMetadata */; };
 		EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB1122D77988600A9A226 /* SettingsAccess */; };
 /* End PBXBuildFile section */
@@ -54,6 +58,7 @@
 /* Begin PBXFileReference section */
 		EB1565112D558F1F00A3D339 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
+		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryView.swift; sourceTree = "<group>"; };
 		EB467BCD2D920849007E19E8 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		EB467BD32D920917007E19E8 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -67,6 +72,7 @@
 		EB63A3032D6A8E2800E35AE6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		EB64CD112D14FC5200F2B65E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		EB64CD132D1A0E1500F2B65E /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		EB8159732DA989B40087B19A /* Example__sample.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = Example__sample.aac; sourceTree = "<group>"; };
 		EB8313F12D4DCDD600B343FF /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		EB8313F32D4DF59700B343FF /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		EB8313F52D51C14B00B343FF /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
@@ -74,6 +80,7 @@
 		EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditConfiguration.swift; sourceTree = "<group>"; };
 		EBACB7D82DAB20E000160799 /* GeneralTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTabView.swift; sourceTree = "<group>"; };
 		EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingTabView.swift; sourceTree = "<group>"; };
+		EB90E5A22DB192D30067194C /* UserNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifications.swift; sourceTree = "<group>"; };
 		EBAF02622C8A132800520D44 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryActiveRecording.swift; sourceTree = "<group>"; };
 		EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditOperation.swift; sourceTree = "<group>"; };
@@ -98,6 +105,7 @@
 		EBE4E9592C43245000397EF2 /* rm2000Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000Tests.swift; sourceTree = "<group>"; };
 		EBE4E9632C43245000397EF2 /* rm2000UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000UITests.swift; sourceTree = "<group>"; };
 		EBE4E9652C43245000397EF2 /* rm2000UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +114,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBFCB1102D77987800A9A226 /* FZMetadata in Frameworks */,
+				EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
 				EB5C8FC92D99DA7600C4C3C2 /* SwiftLAME in Frameworks */,
 			);
@@ -130,6 +139,7 @@
 		EB296DE52D653468008427DF /* Sample Editing */ = {
 			isa = PBXGroup;
 			children = (
+				EBF9507E2DA995E20060CF03 /* TokenField */,
 				EB296DF22D653556008427DF /* TrimmingPlayerView.swift */,
 				EBCA46E12CACBEE700040159 /* EditSampleView.swift */,
 			);
@@ -147,6 +157,7 @@
 		EB467BD02D92087C007E19E8 /* Main Window */ = {
 			isa = PBXGroup;
 			children = (
+				EB2ECD522DADD7F6005D1E06 /* Shaders.metal */,
 				EB467BD72D920D2C007E19E8 /* LCDScreenView.swift */,
 				EB467BD32D920917007E19E8 /* Buttons.swift */,
 				EBE4E9492C43244D00397EF2 /* ContentView.swift */,
@@ -218,6 +229,7 @@
 		EBBBFE842CA1F55100E987B1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EB90E5A22DB192D30067194C /* UserNotifications.swift */,
 				EB467BD02D92087C007E19E8 /* Main Window */,
 				EB467BD12D9208B3007E19E8 /* Menu Bar */,
 				EB296DE52D653468008427DF /* Sample Editing */,
@@ -297,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				EBE4E9592C43245000397EF2 /* rm2000Tests.swift */,
+				EB8159732DA989B40087B19A /* Example__sample.aac */,
 			);
 			path = rm2000Tests;
 			sourceTree = "<group>";
@@ -309,6 +322,14 @@
 				EBE4E9652C43245000397EF2 /* rm2000UITestsLaunchTests.swift */,
 			);
 			path = rm2000UITests;
+			sourceTree = "<group>";
+		};
+		EBF9507E2DA995E20060CF03 /* TokenField */ = {
+			isa = PBXGroup;
+			children = (
+				EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */,
+			);
+			path = TokenField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,6 +352,7 @@
 				EBFCB10F2D77987800A9A226 /* FZMetadata */,
 				EBFCB1122D77988600A9A226 /* SettingsAccess */,
 				EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */,
+				EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -364,6 +386,7 @@
 				EBA5E5782D7796F800D415DB /* XCLocalSwiftPackageReference "../../Downloads/FZMetadata-main" */,
 				EBFCB1112D77988600A9A226 /* XCRemoteSwiftPackageReference "SettingsAccess" */,
 				EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */,
+				EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -411,6 +434,7 @@
 				EBBBFE862CA1F57300E987B1 /* MenuBar.swift in Sources */,
 				EB8313F62D51C14C00B343FF /* InspectorView.swift in Sources */,
 				EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */,
+				EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */,
 				EB8642642DA4A41C00D4883B /* SampleMetadata.swift in Sources */,
 				EBCA46E22CACBEE700040159 /* EditSampleView.swift in Sources */,
 				EB5C8FCC2D99DBDD00C4C3C2 /* Encoder.swift in Sources */,
@@ -425,9 +449,11 @@
 				EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */,
 				EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */,
 				EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */,
+				EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */,
 				EB1565122D558F2100A3D339 /* Sample.swift in Sources */,
 				EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */,
 				EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */,
+				EB90E5A32DB192D80067194C /* UserNotifications.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,7 +610,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.2025.3;
 				PRODUCT_BUNDLE_IDENTIFIER = marceloexc.rm2000;
 				PRODUCT_NAME = "RM2000 Tape Recorder";
@@ -621,7 +647,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.2025.3;
 				PRODUCT_BUNDLE_IDENTIFIER = marceloexc.rm2000;
 				PRODUCT_NAME = "RM2000 Tape Recorder";
@@ -670,6 +696,14 @@
 				minimumVersion = 0.1.0;
 			};
 		};
+		EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
 		EBFCB1112D77988600A9A226 /* XCRemoteSwiftPackageReference "SettingsAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/orchetect/SettingsAccess";
@@ -685,6 +719,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */;
 			productName = SwiftLAME;
+		};
+		EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
 		};
 		EBFCB10F2D77987800A9A226 /* FZMetadata */ = {
 			isa = XCSwiftPackageProductDependency;

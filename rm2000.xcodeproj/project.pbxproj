@@ -29,6 +29,7 @@
 		EB8642642DA4A41C00D4883B /* SampleMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8642632DA4A41900D4883B /* SampleMetadata.swift */; };
 		EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */; };
 		EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */; };
+		EB90E5A32DB192D80067194C /* UserNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB90E5A22DB192D30067194C /* UserNotifications.swift */; };
 		EBAF02632C8A132800520D44 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF02622C8A132800520D44 /* Logging.swift */; };
 		EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */; };
 		EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */; };
@@ -75,6 +76,7 @@
 		EB8313F52D51C14B00B343FF /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		EB8642632DA4A41900D4883B /* SampleMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleMetadata.swift; sourceTree = "<group>"; };
 		EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditConfiguration.swift; sourceTree = "<group>"; };
+		EB90E5A22DB192D30067194C /* UserNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifications.swift; sourceTree = "<group>"; };
 		EBAF02622C8A132800520D44 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryActiveRecording.swift; sourceTree = "<group>"; };
 		EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditOperation.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 		EBBBFE842CA1F55100E987B1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EB90E5A22DB192D30067194C /* UserNotifications.swift */,
 				EB467BD02D92087C007E19E8 /* Main Window */,
 				EB467BD12D9208B3007E19E8 /* Menu Bar */,
 				EB296DE52D653468008427DF /* Sample Editing */,
@@ -442,6 +445,7 @@
 				EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */,
 				EB1565122D558F2100A3D339 /* Sample.swift in Sources */,
 				EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */,
+				EB90E5A32DB192D80067194C /* UserNotifications.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

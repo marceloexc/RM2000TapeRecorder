@@ -5,7 +5,7 @@ struct DetailView: View {
 	
 	var body: some View {
 		Group {
-			if let selectedTag = viewModel.selectedTag {
+			if let selectedTag = viewModel.currentSelection {
 				TaggedRecordingsView(viewModel: viewModel, selectedTag: selectedTag)
 			} else {
 				AllRecordingsView(viewModel: viewModel)
@@ -19,7 +19,7 @@ private struct TaggedRecordingsView: View {
 	let selectedTag: String
 	
 	var body: some View {
-		List(viewModel.sampleArray) { sample in
+		List(viewModel.listOfAllSamples) { sample in
 			if sample.tags.contains(selectedTag) {
 				SampleIndividualListItem(sampleItem: sample)
 			}
@@ -33,7 +33,7 @@ struct AllRecordingsView: View {
 	var body: some View {
 		Group {
 			if viewModel.finishedProcessing {
-				List(viewModel.sampleArray) { sample in
+				List(viewModel.listOfAllSamples) { sample in
 					SampleIndividualListItem(sampleItem: sample)
 				}
 				.listStyle(.plain)
@@ -55,7 +55,7 @@ struct SampleIndividualListItem: View {
 					.font(.title3)
 				HStack(spacing: 8) {
 					ForEach(Array(sampleItem.tags), id:\.self) { tagName in
-						Text("#"+tagName)
+						Text(tagName)
 							.font(.caption)
 							.padding(2)
 							.background(Color.gray.opacity(0.2))
@@ -86,4 +86,9 @@ struct SampleIndividualListItem: View {
 			}
 		}
 	}
+}
+
+#Preview {
+	SampleLibraryView()
+		.environmentObject(SampleStorage.shared)
 }

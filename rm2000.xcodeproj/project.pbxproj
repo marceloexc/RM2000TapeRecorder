@@ -23,6 +23,9 @@
 		EB63A3042D6A8E2A00E35AE6 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB63A3032D6A8E2800E35AE6 /* AppState.swift */; };
 		EB64CD122D14FC5200F2B65E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB64CD112D14FC5200F2B65E /* SettingsView.swift */; };
 		EB64CD142D1A0E1500F2B65E /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB64CD132D1A0E1500F2B65E /* Shared.swift */; };
+		EB801B372DB47DDE009632D0 /* RecordingGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB801B362DB47DDE009632D0 /* RecordingGlyph.swift */; };
+		EB801B392DB48011009632D0 /* SourceGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB801B382DB48011009632D0 /* SourceGlyph.swift */; };
+		EB801B3B2DB4809B009632D0 /* ErrorGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB801B3A2DB4809B009632D0 /* ErrorGlyph.swift */; };
 		EB8313F22D4DCDD600B343FF /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8313F12D4DCDD600B343FF /* SidebarView.swift */; };
 		EB8313F42D4DF59700B343FF /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8313F32D4DF59700B343FF /* DetailView.swift */; };
 		EB8313F62D51C14C00B343FF /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8313F52D51C14B00B343FF /* InspectorView.swift */; };
@@ -74,6 +77,9 @@
 		EB63A3032D6A8E2800E35AE6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		EB64CD112D14FC5200F2B65E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		EB64CD132D1A0E1500F2B65E /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		EB801B362DB47DDE009632D0 /* RecordingGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingGlyph.swift; sourceTree = "<group>"; };
+		EB801B382DB48011009632D0 /* SourceGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceGlyph.swift; sourceTree = "<group>"; };
+		EB801B3A2DB4809B009632D0 /* ErrorGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorGlyph.swift; sourceTree = "<group>"; };
 		EB8159732DA989B40087B19A /* Example__sample.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = Example__sample.aac; sourceTree = "<group>"; };
 		EB8313F12D4DCDD600B343FF /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		EB8313F32D4DF59700B343FF /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -236,6 +242,9 @@
 			children = (
 				EBB435972DB42514006F9439 /* VUMeterView.swift */,
 				EBB435992DB42546006F9439 /* SegmentedCircleView.swift */,
+				EB801B362DB47DDE009632D0 /* RecordingGlyph.swift */,
+				EB801B382DB48011009632D0 /* SourceGlyph.swift */,
+				EB801B3A2DB4809B009632D0 /* ErrorGlyph.swift */,
 			);
 			path = Glyphs;
 			sourceTree = "<group>";
@@ -443,11 +452,13 @@
 				EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */,
 				EB467BD62D9209CA007E19E8 /* AppDelegate.swift in Sources */,
 				EB8313F22D4DCDD600B343FF /* SidebarView.swift in Sources */,
+				EB801B3B2DB4809B009632D0 /* ErrorGlyph.swift in Sources */,
 				EBBBFE932CA2593900E987B1 /* Protocols.swift in Sources */,
 				EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */,
 				EBBBFE862CA1F57300E987B1 /* MenuBar.swift in Sources */,
 				EB8313F62D51C14C00B343FF /* InspectorView.swift in Sources */,
 				EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */,
+				EB801B372DB47DDE009632D0 /* RecordingGlyph.swift in Sources */,
 				EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */,
 				EB8642642DA4A41C00D4883B /* SampleMetadata.swift in Sources */,
 				EBB435982DB42514006F9439 /* VUMeterView.swift in Sources */,
@@ -464,6 +475,7 @@
 				EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */,
 				EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */,
 				EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */,
+				EB801B392DB48011009632D0 /* SourceGlyph.swift in Sources */,
 				EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */,
 				EB1565122D558F2100A3D339 /* Sample.swift in Sources */,
 				EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */,

@@ -39,7 +39,13 @@ struct LCDSymbolGlyphs: View {
 						LCDTextCaptionWithGradient("STEREO 44.1kHz")
 
 						let hello = [true, true, false, true, false, true, true, true]
-						SegmentedCircleView(segments: hello)
+						HStack {
+							SegmentedCircleView(segments: hello)
+							
+							RecordingGlyph()
+							SourceGlyph()
+							ErrorGlyph()
+						}
 					}.frame(width: 100, height: 40)
 				}
 				

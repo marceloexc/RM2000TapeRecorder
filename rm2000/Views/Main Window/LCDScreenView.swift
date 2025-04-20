@@ -38,15 +38,14 @@ struct LCDSymbolGlyphs: View {
 					VStack(alignment: .leading, spacing: 4) {
 						LCDTextCaptionWithGradient("STEREO 44.1kHz")
 
-						let hello = [true, true, false, true, false, true, true, true]
 						HStack {
-							SegmentedCircleView(segments: hello)
-							
+							DonutSpinner()
+							DonutSpinner()
 							RecordingGlyph()
 							SourceGlyph()
 							ErrorGlyph()
 						}
-					}.frame(width: 100, height: 40)
+					}.frame(width: 125, height: 40)
 				}
 				
 				LCDTextBig("M4A")

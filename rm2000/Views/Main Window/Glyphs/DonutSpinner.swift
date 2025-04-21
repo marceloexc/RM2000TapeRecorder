@@ -38,7 +38,7 @@ struct DonutSpinner: View {
 							startAngle: .degrees(Double(index) * (360.0 / Double(wedgeCount))),
 							endAngle: .degrees(Double(index) * (360.0 / Double(wedgeCount)) + wedgeAngle)
 						)
-						.fill(index == activeWedgeIndex ? Color("LCDTextColor") : Color.black.opacity(0.34))
+						.fill(index == activeWedgeIndex ? Color("LCDTextColor") : Color("LCDTextColor").opacity(0.25))
 					)
 				}
 			}

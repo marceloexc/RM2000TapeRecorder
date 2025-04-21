@@ -12,7 +12,7 @@ struct RecordingGlyph: View {
 			Image(systemName: "recordingtape")
 				.rotationEffect(.degrees(180))
 				.fontWeight(.black)
-				.foregroundColor(.black.opacity(0.35))
+				.foregroundColor(Color("LCDTextColor").opacity(0.25))
     }
 }
 

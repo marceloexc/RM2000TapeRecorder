@@ -11,7 +11,7 @@ struct SourceGlyph: View {
     var body: some View {
 			Image(systemName: "desktopcomputer")
 				.fontWeight(.black)
-				.foregroundColor(.black.opacity(0.35))
+				.foregroundColor(Color("LCDTextColor").opacity(0.25))
     }
 }
 

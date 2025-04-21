@@ -34,11 +34,11 @@ struct LCDSymbolGlyphs: View {
 	var body: some View {
 		HStack(alignment: .center) {
 			VStack(alignment: .leading) {
-				HStack {
+				HStack { // top half
 					VStack(alignment: .leading, spacing: 4) {
 						LCDTextCaptionWithGradient("STEREO 44.1kHz")
-
-						HStack {
+						
+						HStack(spacing: 6) {
 							DonutSpinner()
 							DonutSpinner()
 							RecordingGlyph()
@@ -46,18 +46,21 @@ struct LCDSymbolGlyphs: View {
 							ErrorGlyph()
 						}
 					}.frame(width: 125, height: 40)
+						.padding(.trailing, -20)
 				}
 				
-				LCDTextBig("M4A")
-					.padding(.top, 15)
-				if recordingState.isRecording {
-					LCDTextBigWithGradient(timeString(recordingState.elapsedTimeRecording))
-						.frame(maxWidth: 150, alignment: .leading)
-				} else {
-					LCDTextBigWithGradient("STBY")
-						.frame(maxWidth: 150, alignment: .leading)
-				}
-			}/*.frame(maxWidth: 170, alignment: .leading)*/
+				VStack(alignment: .leading) {
+					LCDTextBig("M4A")
+					
+					if recordingState.isRecording {
+						LCDTextBigWithGradient(timeString(recordingState.elapsedTimeRecording))
+							.frame(maxWidth: 150, alignment: .leading)
+					} else {
+						LCDTextBigWithGradient("STBY")
+							.frame(maxWidth: 150, alignment: .leading)
+					}
+				}.padding(.leading, 3)
+			}
 			
 			VUMeter()
 				.mask(LinearGradient(
@@ -68,7 +71,10 @@ struct LCDSymbolGlyphs: View {
 				))
 				.colorEffect(Shader(function: .init(library: .default, name: "dotMatrix"), arguments: []))
 				.shadow(color: .black.opacity(0.35), radius: 1, x: 2, y: 4)
-				.frame(width: 40, height: 155)
+
+				.frame(width: 60, height: 155)
+				.padding(.leading, -20)
+			// todo - too close. claustrophobic
 		}	.frame(width: 200, height: 168)
 	}
 	
@@ -186,11 +192,4 @@ struct LCDTextBigWithGradient: View {
 		.environmentObject(TapeRecorderState())
 		.border(.black)
 		.padding()
-}
-
-#Preview("Segmented Circle") {
-	
-	let hello = [true, true, false, true, false, true, true, true]
-	let segments = Array(repeating: true, count: 8)
-	SegmentedCircleView(segments: hello)
 }

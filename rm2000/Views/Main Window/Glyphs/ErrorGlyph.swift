@@ -11,7 +11,7 @@ struct ErrorGlyph: View {
     var body: some View {
 			Image(systemName: "exclamationmark.triangle")
 				.fontWeight(.black)
-				.foregroundColor(.black.opacity(0.35))
+				.foregroundColor(Color("LCDTextColor").opacity(0.25))
     }
 }
 

@@ -38,7 +38,6 @@
 		EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */; };
 		EBAF02632C8A132800520D44 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF02622C8A132800520D44 /* Logging.swift */; };
 		EBB435982DB42514006F9439 /* VUMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB435972DB42514006F9439 /* VUMeterView.swift */; };
-		EBB4359A2DB42546006F9439 /* SegmentedCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB435992DB42546006F9439 /* SegmentedCircleView.swift */; };
 		EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */; };
 		EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */; };
 		EBBBFE862CA1F57300E987B1 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBBFE852CA1F57300E987B1 /* MenuBar.swift */; };
@@ -93,7 +92,6 @@
 		EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingTabView.swift; sourceTree = "<group>"; };
 		EBAF02622C8A132800520D44 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		EBB435972DB42514006F9439 /* VUMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VUMeterView.swift; sourceTree = "<group>"; };
-		EBB435992DB42546006F9439 /* SegmentedCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedCircleView.swift; sourceTree = "<group>"; };
 		EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryActiveRecording.swift; sourceTree = "<group>"; };
 		EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditOperation.swift; sourceTree = "<group>"; };
 		EBBBFE852CA1F57300E987B1 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
@@ -243,7 +241,6 @@
 			isa = PBXGroup;
 			children = (
 				EBB435972DB42514006F9439 /* VUMeterView.swift */,
-				EBB435992DB42546006F9439 /* SegmentedCircleView.swift */,
 				EB801B362DB47DDE009632D0 /* RecordingGlyph.swift */,
 				EB801B382DB48011009632D0 /* SourceGlyph.swift */,
 				EB801B3A2DB4809B009632D0 /* ErrorGlyph.swift */,
@@ -483,7 +480,6 @@
 				EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */,
 				EB1565122D558F2100A3D339 /* Sample.swift in Sources */,
 				EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */,
-				EBB4359A2DB42546006F9439 /* SegmentedCircleView.swift in Sources */,
 				EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */,
 				EB90E5A32DB192D80067194C /* UserNotifications.swift in Sources */,
 			);

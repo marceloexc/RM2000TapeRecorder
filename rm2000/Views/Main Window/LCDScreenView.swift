@@ -19,48 +19,62 @@ struct LCDScreenView: View {
 					.frame(width: 300)
 					.offset(x: 0, y: 0)
 			}
-
-			
-			LCDScreenSymbols()
+			LCDSymbolGlyphs()
 			
 			Image("LCDOuterGlow")
 				.resizable()
 				.frame(width: 330)
 		}
 	}
-
 }
 
-struct LCDScreenSymbols: View {
+struct LCDSymbolGlyphs: View {
 	@EnvironmentObject private var recordingState: TapeRecorderState
-	
-	
+
 	var body: some View {
 		HStack(alignment: .center) {
 			VStack(alignment: .leading) {
-				HStack {
+				HStack { // top half
 					VStack(alignment: .leading, spacing: 4) {
-						LCDTextCaption("STEREO 44.1kHz")
-						LCDTextCaption("16 BIT")
-					}.frame(width: 100)
-					Spacer()
+						LCDTextCaptionWithGradient("STEREO 44.1kHz")
+						
+						HStack(spacing: 6) {
+							DonutSpinner()
+							DonutSpinner()
+							RecordingGlyph()
+							SourceGlyph()
+							ErrorGlyph()
+						}
+					}.frame(width: 125, height: 40)
+						.padding(.trailing, -20)
 				}
 				
-				LCDTextBig("M4A")
-					.padding(.top, 15)
-				if recordingState.isRecording {
-					LCDTextBig(timeString(recordingState.elapsedTimeRecording))
-						.frame(maxWidth: 150, alignment: .leading)
-				} else {
-					LCDTextBig("STBY")
-						.frame(maxWidth: 150, alignment: .leading)
-				}
-			}/*.frame(maxWidth: 170, alignment: .leading)*/
+				VStack(alignment: .leading) {
+					LCDTextBig("M4A")
+					
+					if recordingState.isRecording {
+						LCDTextBigWithGradient(timeString(recordingState.elapsedTimeRecording))
+							.frame(maxWidth: 150, alignment: .leading)
+					} else {
+						LCDTextBigWithGradient("STBY")
+							.frame(maxWidth: 150, alignment: .leading)
+					}
+				}.padding(.leading, 3)
+			}
 			
 			VUMeter()
+				.mask(LinearGradient(
+					colors: [Color(hex: 0x220300, alpha: 0.02),
+									 Color(hex: 0x220300)],
+					startPoint: .bottom,
+					endPoint: .top
+				))
 				.colorEffect(Shader(function: .init(library: .default, name: "dotMatrix"), arguments: []))
 				.shadow(color: .black.opacity(0.35), radius: 1, x: 2, y: 4)
-				.frame(width: 40, height: 155)
+
+				.frame(width: 60, height: 155)
+				.padding(.leading, -20)
+			// todo - too close. claustrophobic
 		}	.frame(width: 200, height: 168)
 	}
 	
@@ -69,36 +83,6 @@ struct LCDScreenSymbols: View {
 		let minutes = Int(time) / 60
 		let seconds = Int(time) % 60
 		return String(format: "%02d:%02d", minutes, seconds)
-	}
-}
-
-struct VUMeter: View {
-	
-	@State var volumeAsString: Float = 0.0
-	
-	var body: some View {
-		GeometryReader
-		{ geometry in
-			ZStack(alignment: .bottom){
-				
-				// Colored rectangle in back of ZStack
-				Rectangle()
-					.fill(Color("LCDTextColor"))
-					.frame(height: geometry.size.height * CGFloat(self.volumeAsString))
-					.animation(.easeOut(duration:0.05))
-				
-				// idle blocks for volume
-				Rectangle()
-					.fill(Color.black.opacity(0.2))			}
-			.padding(geometry.size.width * 0.2)
-			.onReceive(NotificationCenter.default.publisher(for: .audioLevelUpdated)) { levels in
-				if var level = levels.userInfo?["level"] as? Float {
-					volumeAsString = level
-				} else {
-					volumeAsString = 0.0
-				}
-			}
-		}
 	}
 }
 
@@ -135,6 +119,26 @@ struct LCDTextCaption: View {
 	}
 }
 
+struct LCDTextCaptionWithGradient: View {
+	var title: String
+	
+	init(_ title: String) {
+		self.title = title
+	}
+	
+	var body: some View {
+		Text(title)
+			.foregroundStyle(LinearGradient(
+				colors: [Color(hex: 0x220300, alpha: 0.32),
+								 Color(hex: 0x220300)],
+				startPoint: .top,
+				endPoint: .bottom
+			))
+			.shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
+			.font(Font.tasaFont)
+	}
+}
+
 struct LCDTextBig: View {
 	var title: String
 	
@@ -154,13 +158,37 @@ struct LCDTextBig: View {
 	}
 }
 
+struct LCDTextBigWithGradient: View {
+	var title: String
+	
+	init(_ title: String) {
+		self.title = title
+	}
+	
+	var body: some View {
+		Text(" \(title) ")
+			.foregroundStyle(LinearGradient(
+				colors: [Color(hex: 0x220300, alpha: 0.32),
+								 Color(hex: 0x220300)],
+				startPoint: .bottom,
+				endPoint: .top
+			))
+			.shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
+			.font(Font.tachyoFont)
+			.fontWeight(.medium)
+			.fixedSize()
+			.offset(x: -15)
+			.kerning(-1.5)
+	}
+}
+
 #Preview("LCD Screen") {
 	LCDScreenView()
 		.environmentObject(TapeRecorderState())
 }
 
 #Preview("LCD Symbols") {
-	LCDScreenSymbols()
+	LCDSymbolGlyphs()
 		.environmentObject(TapeRecorderState())
 		.border(.black)
 		.padding()

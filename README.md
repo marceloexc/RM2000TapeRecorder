@@ -10,7 +10,7 @@ RM2000 Tape Recorder is a lightweight audio sampling tool for macOS. quickly rec
 
 > [!NOTE]
 >
-> RM2000 is currently under heavy development - a TestFlight version will open for beta-testing before the App Store release
+> RM2000 is currently under heavy development - however, a TestFlight version to test for bugs and crashes is publicly [available here](https://rm2000.app)
 
 ## power of persuasion
 

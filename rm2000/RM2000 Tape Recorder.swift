@@ -35,6 +35,7 @@ struct RM2000TapeRecorderApp: App {
 		Settings {
 			SettingsView()
 				.environmentObject(appState)
+				.environmentObject(recordingState)
 		}
 	}
 }

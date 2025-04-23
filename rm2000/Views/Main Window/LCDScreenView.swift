@@ -50,7 +50,7 @@ struct LCDSymbolGlyphs: View {
 				}
 				
 				VStack(alignment: .leading) {
-					LCDTextBig("M4A")
+					LCDTextBig(recordingState.sampleRecordAudioFormat.asString.uppercased())
 					
 					if recordingState.isRecording {
 						LCDTextBigWithGradient(timeString(recordingState.elapsedTimeRecording))

@@ -2,7 +2,7 @@ import SwiftUI
 import OSLog
 
 class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
-	@Published var isRecording: Bool = false
+	@Published var status: RecordingState = .idle
 	@Published var currentSampleFilename: String?
 	@Published var showRenameDialogInMainWindow: Bool = false
 	@Published var currentActiveRecording: TemporaryActiveRecording?
@@ -20,7 +20,7 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 	func startRecording() {
 		Task {
 			await MainActor.run {
-				self.isRecording = true
+				self.status = .recording
 			}
 			startTimer()
 			let newRecording = TemporaryActiveRecording()
@@ -53,13 +53,13 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 	
 	func tapeRecorderDidStopRecording(_ recorder: TapeRecorder) {
 		Task { @MainActor in
-			self.isRecording = false
+			self.status = .idle
 		}
 	}
 	
 	func tapeRecorder(_ recorder: TapeRecorder, didEncounterError error: Error) {
 		Task { @MainActor in
-			self.isRecording = false
+			self.status = .idle
 			Logger.sharedStreamState.error("Recording error: \(error.localizedDescription)")
 			// You might want to update UI or show an alert here
 		}

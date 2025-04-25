@@ -16,12 +16,12 @@ struct MenuBarView: View {
 			appDelegate.showMainWindow()
 		}
 		
-		if recordingState.isRecording {
+		if recordingState.status == .recording {
 			ElapsedTime(textString: $recordingState.elapsedTimeRecording)
 		}
 		
-		Button(recordingState.isRecording ? "Stop Recording" : "Start Recording") {
-			if recordingState.isRecording {
+		Button(recordingState.status == .recording ? "Stop Recording" : "Start Recording") {
+			if recordingState.status == .recording {
 				Logger.sharedStreamState.info("Changing state in the menubar")
 				recordingState.stopRecording()
 			} else {

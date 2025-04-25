@@ -20,7 +20,7 @@ struct ContentView: View {
 				}
 				.padding(.top, -5)
 
-				if recordingState.isRecording {
+				if recordingState.status == .recording {
 					ActiveRecordButton(onPress: stopRecording)
 				} else {
 					StandbyRecordButton(onPress: startRecording)

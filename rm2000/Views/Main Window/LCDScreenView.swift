@@ -6,7 +6,7 @@ struct LCDScreenView: View {
 	var body: some View {
 		ZStack {
 			
-			if recordingState.isRecording {
+			if recordingState.status == .recording {
 				Image("LCDScreenFrameRecording")
 					.resizable()
 					.scaledToFit()
@@ -52,7 +52,7 @@ struct LCDSymbolGlyphs: View {
 				VStack(alignment: .leading) {
 					LCDTextBig(recordingState.sampleRecordAudioFormat.asString.uppercased())
 					
-					if recordingState.isRecording {
+					if recordingState.status == .recording {
 						LCDTextBigWithGradient(timeString(recordingState.elapsedTimeRecording))
 							.frame(maxWidth: 150, alignment: .leading)
 					} else {

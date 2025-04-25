@@ -56,6 +56,7 @@
 		EBE4E94C2C43244F00397EF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBE4E94B2C43244F00397EF2 /* Assets.xcassets */; };
 		EBE4E94F2C43244F00397EF2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBE4E94E2C43244F00397EF2 /* Preview Assets.xcassets */; };
 		EBF3A1D92DB981FA00BF0944 /* AudioFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */; };
+		EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */; };
 		EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */; };
 		EBFCB1102D77987800A9A226 /* FZMetadata in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB10F2D77987800A9A226 /* FZMetadata */; };
 		EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB1122D77988600A9A226 /* SettingsAccess */; };
@@ -117,6 +118,7 @@
 		EBE4E9632C43245000397EF2 /* rm2000UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000UITests.swift; sourceTree = "<group>"; };
 		EBE4E9652C43245000397EF2 /* rm2000UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFormat.swift; sourceTree = "<group>"; };
+		EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingStateEnum.swift; sourceTree = "<group>"; };
 		EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,6 +140,7 @@
 		EB1565102D558F0700A3D339 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */,
 				EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */,
 				EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */,
 				EB8642632DA4A41900D4883B /* SampleMetadata.swift */,
@@ -472,6 +475,7 @@
 				EBBBFE8B2CA2569600E987B1 /* TapeMechanism.swift in Sources */,
 				EBE4E9482C43244D00397EF2 /* RM2000 Tape Recorder.swift in Sources */,
 				EB467BD82D920D34007E19E8 /* LCDScreenView.swift in Sources */,
+				EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */,
 				EBBBFE8F2CA2588A00E987B1 /* AudioManager.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,
 				EB467BD42D920919007E19E8 /* Buttons.swift in Sources */,

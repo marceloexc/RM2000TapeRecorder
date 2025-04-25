@@ -1,44 +1,54 @@
 import SwiftUI
 
+enum spinnerGlyphDirection {
+	case clockwise, counterclockwise
+}
+
 struct DonutSpinner: View {
-	var wedgeCount: Int = 8
+	let direction: spinnerGlyphDirection
+	var wedgeCount: Int = 11
 	var gapAngle: Double = 2
 	var strokeWidth: CGFloat = 1.0
 	var innerRadiusRatio: CGFloat = 0.3
+	let active: Bool
 	
 	@State private var activeWedgeIndex: Int = 0
 	
 	var body: some View {
 		GeometryReader { geometry in
-			// Calculate the outer radius based on the available space
 			let size = min(geometry.size.width, geometry.size.height)
 			let outerRadius = (size / 2) - (strokeWidth / 2)
 			let innerRadius = outerRadius * innerRadiusRatio
+			let baseAngle = 360.0 / Double(wedgeCount)
+			let offsetAngle = -105.0 // Make wedge 0 appear at the top
 			
 			ZStack {
-				// Base donut shape
 				DonutShape(outerRadius: outerRadius, innerRadius: innerRadius)
 					.stroke(.clear, lineWidth: strokeWidth)
 				
-				// Stationary wedges with outlines
 				ForEach(0..<wedgeCount, id: \.self) { index in
-					let wedgeAngle = (360.0 / Double(wedgeCount)) - gapAngle
+					
+					let wedgeAngle = baseAngle - gapAngle
+					let startAngle = Double(index) * baseAngle + offsetAngle
+					let endAngle = startAngle + wedgeAngle
 					
 					DonutWedgeShape(
 						outerRadius: outerRadius,
 						innerRadius: innerRadius,
-						startAngle: .degrees(Double(index) * (360.0 / Double(wedgeCount))),
-						endAngle: .degrees(Double(index) * (360.0 / Double(wedgeCount)) + wedgeAngle)
+						startAngle: .degrees(startAngle),
+						endAngle: .degrees(endAngle)
 					)
 					.stroke(Color.clear, lineWidth: strokeWidth)
 					.background(
 						DonutWedgeShape(
 							outerRadius: outerRadius,
 							innerRadius: innerRadius,
-							startAngle: .degrees(Double(index) * (360.0 / Double(wedgeCount))),
-							endAngle: .degrees(Double(index) * (360.0 / Double(wedgeCount)) + wedgeAngle)
+							startAngle: .degrees(startAngle),
+							endAngle: .degrees(endAngle)
 						)
-						.fill(index == activeWedgeIndex ? Color("LCDTextColor") : Color("LCDTextColor").opacity(0.25))
+						.fill(index == activeWedgeIndex
+									? Color("LCDTextColor")
+									: Color("LCDTextColor").opacity(0.25))
 					)
 				}
 			}
@@ -46,18 +56,28 @@ struct DonutSpinner: View {
 		}
 		.aspectRatio(1, contentMode: .fit)
 		.onAppear {
-			startAnimation()
+			if active {
+				startAnimation()
+			} else {
+				activeWedgeIndex = -1
+			}
 		}
 	}
 	
 	func startAnimation() {
 		Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { timer in
 			withAnimation {
-				activeWedgeIndex = (activeWedgeIndex + 1) % wedgeCount
+				switch direction {
+				case .clockwise:
+					activeWedgeIndex = (activeWedgeIndex + 1) % wedgeCount
+				case .counterclockwise:
+					activeWedgeIndex = (activeWedgeIndex - 1 + wedgeCount) % wedgeCount
+				}
 			}
 		}
 	}
 }
+
 
 struct DonutShape: Shape {
 	var outerRadius: CGFloat
@@ -139,7 +159,7 @@ struct DonutWedgeShape: Shape {
 }
 
 #Preview("Donut Spinner") {
-	DonutSpinner()
+//	DonutSpinner(direction: .clockwise)
 }
 #Preview("LCD Screen") {
 	LCDScreenView()

@@ -7,6 +7,8 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 	@Published var showRenameDialogInMainWindow: Bool = false
 	@Published var currentActiveRecording: TemporaryActiveRecording?
 	@Published var elapsedTimeRecording: TimeInterval = 0
+	@AppStorage("sample_record_audio_format") var sampleRecordAudioFormat: AudioFormat = .mp3
+
 	
 	private var timer: Timer?
 	

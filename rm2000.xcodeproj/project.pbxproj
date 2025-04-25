@@ -460,6 +460,7 @@
 				EB8313F22D4DCDD600B343FF /* SidebarView.swift in Sources */,
 				EB801B3B2DB4809B009632D0 /* ErrorGlyph.swift in Sources */,
 				EBBBFE932CA2593900E987B1 /* Protocols.swift in Sources */,
+				EBF3A1D92DB981FA00BF0944 /* AudioFormat.swift in Sources */,
 				EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */,
 				EBBBFE862CA1F57300E987B1 /* MenuBar.swift in Sources */,
 				EB8313F62D51C14C00B343FF /* InspectorView.swift in Sources */,

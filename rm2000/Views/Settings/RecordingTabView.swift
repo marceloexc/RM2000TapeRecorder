@@ -6,6 +6,7 @@ struct RecordingTabView: View {
 	@State private var showFileChooser: Bool = false
 	@Binding var workingDirectory: URL?
 	@EnvironmentObject var appState: AppState
+	@EnvironmentObject var recordingState: TapeRecorderState
 	
     var body: some View {
 			Form {
@@ -64,10 +65,10 @@ struct RecordingTabView: View {
 						Spacer()
 						Picker("Sample File Type", selection: $selectedFileType) {
 							Text("AAC").tag(AudioFormat.aac)
-							Text("MP3").tag(AudioFormat.mp3).disabled(true)
-							Text("WAV").tag(AudioFormat.wav).disabled(true)
-							Text("FLAC").tag(AudioFormat.flac).disabled(true)
-							
+							Text("MP3").tag(AudioFormat.mp3)
+							Text("WAV").tag(AudioFormat.wav)
+							Text("FLAC").tag(AudioFormat.flac)
+						
 						}
 						.frame(width:200)
 						.labelsHidden() //misbehaves otherwise
@@ -75,10 +76,14 @@ struct RecordingTabView: View {
 						.clipped()
 						.onChange(of: selectedFileType) { newValue in
 							Logger.appState.info("New audio format of \(newValue) selected")
-							selectedFileType = newValue
+							
+							recordingState.sampleRecordAudioFormat = newValue
 						}
 					}
 				}
+				
+			}.onAppear {
+				selectedFileType = recordingState.sampleRecordAudioFormat
 			}
     }
 }
@@ -86,6 +91,7 @@ struct RecordingTabView: View {
 #Preview {
 	RecordingTabView(workingDirectory: .constant(URL(string: "file:///Users/user/Documents")!))
 		.environmentObject(AppState.shared)
+		.environmentObject(TapeRecorderState())
 		.padding()
 		.frame(width: 350)
 }

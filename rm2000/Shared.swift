@@ -35,10 +35,6 @@ extension Color {
 	}
 }
 
-enum AudioFormat: String {
-	case aac, mp3, flac, wav
-}
-
 protocol FileRepresentable {
 	var fileURL: URL { get }
 	var id: UUID { get }

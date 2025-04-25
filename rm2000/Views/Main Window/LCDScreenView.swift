@@ -39,8 +39,8 @@ struct LCDSymbolGlyphs: View {
 						LCDTextCaptionWithGradient("STEREO 44.1kHz")
 						
 						HStack(spacing: 6) {
-							DonutSpinner()
-							DonutSpinner()
+							DonutSpinner(direction: .counterclockwise)
+							DonutSpinner(direction: .clockwise)
 							RecordingGlyph()
 							SourceGlyph()
 							ErrorGlyph()

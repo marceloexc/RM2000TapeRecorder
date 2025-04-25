@@ -10,6 +10,7 @@ struct DonutSpinner: View {
 	var gapAngle: Double = 2
 	var strokeWidth: CGFloat = 1.0
 	var innerRadiusRatio: CGFloat = 0.3
+	let active: Bool
 	
 	@State private var activeWedgeIndex: Int = 0
 	
@@ -55,7 +56,11 @@ struct DonutSpinner: View {
 		}
 		.aspectRatio(1, contentMode: .fit)
 		.onAppear {
-			startAnimation()
+			if active {
+				startAnimation()
+			} else {
+				activeWedgeIndex = -1
+			}
 		}
 	}
 	
@@ -154,7 +159,7 @@ struct DonutWedgeShape: Shape {
 }
 
 #Preview("Donut Spinner") {
-	DonutSpinner(direction: .clockwise)
+//	DonutSpinner(direction: .clockwise)
 }
 #Preview("LCD Screen") {
 	LCDScreenView()

@@ -39,8 +39,16 @@ struct LCDSymbolGlyphs: View {
 						LCDTextCaptionWithGradient("STEREO 44.1kHz")
 						
 						HStack(spacing: 6) {
-							DonutSpinner(direction: .counterclockwise)
-							DonutSpinner(direction: .clockwise)
+							
+							// todo - just make donutsspinner have an @EnvrionmentObject of recordingState
+							if recordingState.status == .recording {
+								DonutSpinner(direction: .counterclockwise, active: true)
+								DonutSpinner(direction: .clockwise, active: true)
+							} else {
+								DonutSpinner(direction: .counterclockwise, active: false)
+								DonutSpinner(direction: .clockwise, active: false)
+							}
+
 							RecordingGlyph()
 							SourceGlyph()
 							ErrorGlyph()

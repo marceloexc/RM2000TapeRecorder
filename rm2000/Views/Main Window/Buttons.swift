@@ -16,7 +16,12 @@ struct UtilityButtons: View {
 				.renderingMode(.original)
 		}.buttonStyle(AnimatedButtonStyle())
 		
-		Button(action: { print("Source Button pressed") }) {
+		Menu {
+			Button("None of these work yet!", action: { print("Selected Microphone") }).disabled(true)
+			Button("Microphone", action: { print("Selected Microphone") })
+			Button("System Audio", action: { print("Selected System Audio") })
+			Button("External Device", action: { print("Selected External Device") })
+		} label: {
 			Image("SourceButton")
 		}
 		.buttonStyle(AnimatedButtonStyle())

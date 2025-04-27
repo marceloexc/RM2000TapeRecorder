@@ -31,11 +31,26 @@ struct SampleLibraryView: View {
 			DetailView(viewModel: viewModel)
 		}
 		.toolbar(id: "rm2000.main-toolbar"){
-			ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction) {
-				OpenInFinderButton()
+			ToolbarItem(id: "rm2000.share.button") {
+				ShareSampleButton()
+			}
+			ToolbarItem(id: "rm2000.spacer") {
+				Spacer()
 			}
 			ToolbarItem(id: "rm2000.import-sample-button", placement: .primaryAction) {
 				ImportSampleButton()
+			}
+			ToolbarItem(id: "rm2000.spacer") {
+				Spacer()
+			}
+			ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction) {
+				OpenInFinderButton()
+			}
+			
+			ToolbarItem(id: "rm2000.divider", placement: .primaryAction) {
+				HStack {
+					Divider()
+				}
 			}
 			ToolbarItem(id: "rm2000.picker", placement: .primaryAction) {
 				Picker("View settings", selection: $selection) {
@@ -54,9 +69,6 @@ struct SampleLibraryView: View {
 			}
 			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
 				Slider(value: $sliderValue, in: 0...100)
-			}
-			ToolbarItem(id: "rm2000.spacer", placement: .favoritesBar) {
-				Spacer()
 			}
 			
 			/*
@@ -143,12 +155,26 @@ struct OpenInFinderButton: View {
 	}
 }
 
+struct ShareSampleButton: View {
+	var body: some View {
+		Button(action: {
+			print("Shared button pressed")
+		}) {
+			Label("Share Sample", systemImage: "square.and.arrow.up")
+				.fontWeight(.black)
+				.foregroundStyle(.orange)
+		}
+		.buttonStyle(.borderless)
+		.padding(.bottom, 3) // or else it looks weirdly positioned!
+	}
+}
+
 struct ImportSampleButton: View {
 	var body: some View {
 		Button(action: {
 			NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
 		}) {
-			Label("Import Sample", systemImage: "plus.circle.fill")
+			Label("Import Sample", systemImage: "plus")
 					.fontWeight(.black)
 					.foregroundStyle(.green)
 		}

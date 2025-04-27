@@ -26,9 +26,6 @@ struct RM2000TapeRecorderApp: App {
 			OnboardingView(viewModel: OnboardingViewModel())
 				.environmentObject(appState)
 		}
-		WindowGroup("Inspector", id: "inspector") {
-			InspectorView()
-		}
 		.windowResizability(.contentSize)
 		.windowStyle(.hiddenTitleBar)
 

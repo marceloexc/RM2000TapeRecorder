@@ -19,11 +19,16 @@ private struct TaggedRecordingsView: View {
 	let selectedTag: String
 	
 	var body: some View {
-		List(viewModel.listOfAllSamples) { sample in
-			if sample.tags.contains(selectedTag) {
-				SampleIndividualListItem(sampleItem: sample)
+		
+		if viewModel.finishedProcessing {
+			List(viewModel.listOfAllSamples) { sample in
+				if sample.tags.contains(selectedTag) {
+					SampleIndividualListItem(sampleItem: sample)
+				}
 			}
 		}
+		
+
 	}
 }
 

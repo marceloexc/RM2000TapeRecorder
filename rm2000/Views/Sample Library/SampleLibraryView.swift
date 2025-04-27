@@ -105,7 +105,10 @@ struct SampleLibraryView: View {
 		.toolbarRole(.editor)
 		.navigationTitle("Sample Library")
 		.navigationSubtitle("\(currentSamplesInView) Samples")
-
+		.onAppear {
+			// automatically set toolbar to "Icon and Label"
+			setToolbarStyle()
+		}
 		.task {
 			currentSamplesInView = viewModel.listOfAllSamples.count
 		}
@@ -115,16 +118,10 @@ struct SampleLibraryView: View {
 
 struct SidebarButton: View {
 	var body: some View {
-		Button(action: toggleSidebar, label: {
-			Image(systemName: "sidebar.leading")
-		})
+		Button(action: toggleSidebar) {
+			Label("Reveal Sidebar", systemImage: "sidebar.leading")
+		}
 	}
-}
-
-private func toggleSidebar() {
-#if os(macOS)
-	NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
-#endif
 }
 
 struct OpenInFinderButton: View {
@@ -132,16 +129,16 @@ struct OpenInFinderButton: View {
 		Button(action: {
 			NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
 		}) {
-			VStack {
+			Label {
+				Text("Open in Finder")
+			} icon: {
 				Image(nsImage: NSWorkspace.shared.icon(forFile: "/System/Library/CoreServices/Finder.app"))
-					.resizable()
-					.scaledToFit()
-					.frame(width: 20, height: 20)
-				Text("Show in Finder")
-					.font(.caption)
+									.resizable()
+									.scaledToFit()
+									.frame(width: 25, height: 25)
 			}
 		}
-		.buttonStyle(PlainButtonStyle())
+		.buttonStyle(.plain)
 		.help("Open in Finder")
 	}
 }
@@ -158,6 +155,24 @@ struct ImportSampleButton: View {
 		.buttonStyle(.borderless)
 		.help("Import a Sample")
 	}
+}
+
+private func toggleSidebar() {
+#if os(macOS)
+	NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+#endif
+}
+
+
+private func setToolbarStyle() {
+#if os(macOS)
+	if let window = NSApp.windows.first(where: { $0.isKeyWindow }),
+		 let toolbar = window.toolbar {
+		toolbar.displayMode = .iconAndLabel
+		toolbar.allowsUserCustomization = true
+		toolbar.autosavesConfiguration = true
+	}
+#endif
 }
 
 @MainActor

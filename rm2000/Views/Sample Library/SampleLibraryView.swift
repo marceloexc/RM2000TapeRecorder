@@ -12,7 +12,7 @@ struct SampleLibraryView: View {
 	
 	@State private var currentSamplesInView: Int = 0
 	@State private var selection = "Apple"
-	@State private var showInspector: Bool = true
+	@State private var showInspector: Bool = false
 	
 	@State private var sliderValue = 50.0
 	

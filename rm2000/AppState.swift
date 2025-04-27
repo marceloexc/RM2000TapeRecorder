@@ -5,6 +5,8 @@ import KeyboardShortcuts
 
 @MainActor final class AppState: ObservableObject {
 	static let shared = AppState()
+	@Environment(\.openWindow) var openWindow
+
 	
 	@AppStorage("completedOnboarding") var hasCompletedOnboarding: Bool = false {
 		didSet {
@@ -42,6 +44,7 @@ import KeyboardShortcuts
 		KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
 			Task {
 				await displayTestingGlobalNotication()
+				openWindow(id: "hud")
 				// TapeRecorderState().startRecording()
 				
 				// todo - add a taperecorderstate singleton

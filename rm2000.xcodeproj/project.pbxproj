@@ -58,7 +58,8 @@
 		EBCA8F8B2D7918BB0041B03B /* TASAExplorer-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EBCA8F8A2D7918BB0041B03B /* TASAExplorer-SemiBold.otf */; };
 		EBCA8F8F2D7A952D0041B03B /* Credits.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = EBCA8F8E2D7A952D0041B03B /* Credits.rtfd */; };
 		EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF5FEB2CEAD8950047405A /* TitleBar.swift */; };
-		EBD14DD62DCBF8780038A3A1 /* FZSwiftUtils in Frameworks */ = {isa = PBXBuildFile; productRef = EBD14DD52DCBF8780038A3A1 /* FZSwiftUtils */; };
+		EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */; };
+		EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = EBD114F52DCBFEA5003ABBB9 /* FluidGradient */; };
 		EBDF782E2D80146E00941981 /* Tachyo.otf in Resources */ = {isa = PBXBuildFile; fileRef = EBDF782D2D80146E00941981 /* Tachyo.otf */; };
 		EBE4E9482C43244D00397EF2 /* RM2000 Tape Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE4E9472C43244D00397EF2 /* RM2000 Tape Recorder.swift */; };
 		EBE4E94A2C43244D00397EF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE4E9492C43244D00397EF2 /* ContentView.swift */; };
@@ -132,6 +133,7 @@
 		EBCA8F8A2D7918BB0041B03B /* TASAExplorer-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TASAExplorer-SemiBold.otf"; sourceTree = "<group>"; };
 		EBCA8F8E2D7A952D0041B03B /* Credits.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; path = Credits.rtfd; sourceTree = "<group>"; };
 		EBCF5FEB2CEAD8950047405A /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; };
+		EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDWindowView.swift; sourceTree = "<group>"; };
 		EBDF782D2D80146E00941981 /* Tachyo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tachyo.otf; sourceTree = "<group>"; };
 		EBDF782F2D8016A700941981 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RM2000 Tape Recorder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,10 +158,10 @@
 				EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
 				EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */,
-				EBD14DD62DCBF8780038A3A1 /* FZSwiftUtils in Frameworks */,
 				EB5C8FC92D99DA7600C4C3C2 /* SwiftLAME in Frameworks */,
 				EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */,
 				EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */,
+				EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				EB90E5A22DB192D30067194C /* UserNotifications.swift */,
+				EBD114F22DCBFE8D003ABBB9 /* HUD Window */,
 				EB467BD02D92087C007E19E8 /* Main Window */,
 				EB467BD12D9208B3007E19E8 /* Menu Bar */,
 				EB296DE52D653468008427DF /* Sample Editing */,
@@ -322,6 +325,14 @@
 				EBBBFE922CA2593900E987B1 /* Protocols.swift */,
 			);
 			path = "Tape Mechanism";
+			sourceTree = "<group>";
+		};
+		EBD114F22DCBFE8D003ABBB9 /* HUD Window */ = {
+			isa = PBXGroup;
+			children = (
+				EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */,
+			);
+			path = "HUD Window";
 			sourceTree = "<group>";
 		};
 		EBE4E93B2C43244D00397EF2 = {
@@ -426,7 +437,7 @@
 				EB12BC9D2DC808680011B7FF /* DSWaveformImage */,
 				EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */,
 				EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */,
-				EBD14DD52DCBF8780038A3A1 /* FZSwiftUtils */,
+				EBD114F52DCBFEA5003ABBB9 /* FluidGradient */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -462,7 +473,7 @@
 				EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */,
 				EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */,
-				EBD14DD42DCBF8780038A3A1 /* XCRemoteSwiftPackageReference "FZSwiftUtils" */,
+				EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -528,6 +539,7 @@
 				EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */,
 				EBBBFE8F2CA2588A00E987B1 /* AudioManager.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,
+				EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */,
 				EB467BD42D920919007E19E8 /* Buttons.swift in Sources */,
 				EB8313F42D4DF59700B343FF /* DetailView.swift in Sources */,
 				EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */,
@@ -800,12 +812,12 @@
 				minimumVersion = 2.3.0;
 			};
 		};
-		EBD14DD42DCBF8780038A3A1 /* XCRemoteSwiftPackageReference "FZSwiftUtils" */ = {
+		EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/flocked/FZSwiftUtils";
+			repositoryURL = "https://github.com/Cindori/FluidGradient";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.8;
+				minimumVersion = 1.0.0;
 			};
 		};
 		EBFCB1112D77988600A9A226 /* XCRemoteSwiftPackageReference "SettingsAccess" */ = {
@@ -844,10 +856,10 @@
 			package = EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
 		};
-		EBD14DD52DCBF8780038A3A1 /* FZSwiftUtils */ = {
+		EBD114F52DCBFEA5003ABBB9 /* FluidGradient */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EBD14DD42DCBF8780038A3A1 /* XCRemoteSwiftPackageReference "FZSwiftUtils" */;
-			productName = FZSwiftUtils;
+			package = EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */;
+			productName = FluidGradient;
 		};
 		EBFCB1122D77988600A9A226 /* SettingsAccess */ = {
 			isa = XCSwiftPackageProductDependency;

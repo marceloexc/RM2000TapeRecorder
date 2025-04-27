@@ -29,57 +29,55 @@ struct SampleLibraryView: View {
 				.toolbar(removing: .sidebarToggle)
 		} detail: {
 			DetailView(viewModel: viewModel)
-				.toolbar(id: "rm2000.main-toolbar"){
-					if viewModel.finishedProcessing {
-						
-						ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction) {
-							OpenInFinderButton()
-						}
-						ToolbarItem(id: "rm2000.import-sample-button", placement: .primaryAction) {
-							ImportSampleButton()
-						}
-						ToolbarItem(id: "rm2000.picker", placement: .primaryAction) {
-							Picker("View settings", selection: $selection) {
-								Label("Grid", systemImage: "square.grid.2x2")
-								Label("List", systemImage: "list.bullet")
-							}.pickerStyle(.inline)
-						}
-						ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
-							Picker("View settings", selection: $selection) {
-								Label("Grid", systemImage: "play.fill")
-								Label("List", systemImage: "forward.fill")
-							}.pickerStyle(.inline)
-						}
-						ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
-							SidebarButton()
-						}
-						ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
-							Slider(value: $sliderValue, in: 0...100)
-						}
-						ToolbarItem(id: "rm2000.spacer", placement: .favoritesBar) {
-							Spacer()
-						}
-					}
-					/*
-					 theres this gnarly bug where if i select "Icon and Text" in the
-					 context menu of the toolbar, the sidebar button (now with the
-					 text) will cause the app to freeze. I dont know what causes this.
-					 Even apples official tutorial apps, downloaded from their dev site
-					 and built with xcode, which are meant to show the engineering
-					 prowess of swifui, have this same bug. So i guess no customiziable
-					 toolbars!
-					 
-					 This is why all of the buttons have a hacky workaround where I just
-					 put a Text with a caption font for it to act like "Icon and Text" is
-					 on. Which is the correct way all toolbars should be...
-					 
-					 */
-					
-					// UUID() as the id's to workaround a nasty swiftui bug
-					
-					// or else they just wont show up...stupid...
-
-				}
+		}
+		.toolbar(id: "rm2000.main-toolbar"){
+			ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction) {
+				OpenInFinderButton()
+			}
+			ToolbarItem(id: "rm2000.import-sample-button", placement: .primaryAction) {
+				ImportSampleButton()
+			}
+			ToolbarItem(id: "rm2000.picker", placement: .primaryAction) {
+				Picker("View settings", selection: $selection) {
+					Label("Grid", systemImage: "square.grid.2x2")
+					Label("List", systemImage: "list.bullet")
+				}.pickerStyle(.inline)
+			}
+			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
+				Picker("View settings", selection: $selection) {
+					Label("Grid", systemImage: "play.fill")
+					Label("List", systemImage: "forward.fill")
+				}.pickerStyle(.inline)
+			}
+			ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
+				SidebarButton()
+			}
+			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
+				Slider(value: $sliderValue, in: 0...100)
+			}
+			ToolbarItem(id: "rm2000.spacer", placement: .favoritesBar) {
+				Spacer()
+			}
+			
+			/*
+			 theres this gnarly bug where if i select "Icon and Text" in the
+			 context menu of the toolbar, the sidebar button (now with the
+			 text) will cause the app to freeze. I dont know what causes this.
+			 Even apples official tutorial apps, downloaded from their dev site
+			 and built with xcode, which are meant to show the engineering
+			 prowess of swifui, have this same bug. So i guess no customiziable
+			 toolbars!
+			 
+			 This is why all of the buttons have a hacky workaround where I just
+			 put a Text with a caption font for it to act like "Icon and Text" is
+			 on. Which is the correct way all toolbars should be...
+			 
+			 */
+			
+			// UUID() as the id's to workaround a nasty swiftui bug
+			
+			// or else they just wont show up...stupid...
+			
 		}
 		.inspector(isPresented: $showInspector) {
 			let testFile = URL(fileURLWithPath: "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")

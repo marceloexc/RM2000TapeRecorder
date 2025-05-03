@@ -153,7 +153,7 @@
 		EB296DE52D653468008427DF /* Sample Editing */ = {
 			isa = PBXGroup;
 			children = (
-				EBF9507E2DA995E20060CF03 /* TokenField */,
+				EB7AA1D12DC5CE6A0025A63C /* Components */,
 				EB296DF22D653556008427DF /* TrimmingPlayerView.swift */,
 				EBCA46E12CACBEE700040159 /* EditSampleView.swift */,
 			);
@@ -205,6 +205,14 @@
 				EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */,
 			);
 			path = Encoder;
+			sourceTree = "<group>";
+		};
+		EB7AA1D12DC5CE6A0025A63C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		EB8313EF2D4DCCD200B343FF /* Sample Library */ = {
@@ -348,14 +356,6 @@
 				EBE4E9652C43245000397EF2 /* rm2000UITestsLaunchTests.swift */,
 			);
 			path = rm2000UITests;
-			sourceTree = "<group>";
-		};
-		EBF9507E2DA995E20060CF03 /* TokenField */ = {
-			isa = PBXGroup;
-			children = (
-				EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */,
-			);
-			path = TokenField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

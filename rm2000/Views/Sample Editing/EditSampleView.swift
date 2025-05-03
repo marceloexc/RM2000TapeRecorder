@@ -2,22 +2,13 @@ import SwiftUI
 import Combine
 import CoreMedia
 
+
+
 struct EditSampleView<Model: FileRepresentable>: View {
-	
-	let model: Model
-	@State private var title: String
-	@State private var tags: Set<String>
-	@State private var description: String?
-	@State private var forwardEndTime: CMTime? = nil
-	@State private var reverseEndTime: CMTime? = nil
-	private let onComplete: (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void
+	@StateObject private var viewModel: EditSampleViewModel<Model>
 	
 	init(recording: Model, onComplete: @escaping (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void) {
-		self.onComplete = onComplete
-		_title = State(initialValue: "")
-		_tags = State(initialValue: Set<String>())
-		_description = State(initialValue: "")
-		self.model = recording
+		_viewModel = StateObject(wrappedValue: EditSampleViewModel(recording: recording, onComplete: onComplete))
 	}
 	
 	var body: some View {
@@ -26,15 +17,15 @@ struct EditSampleView<Model: FileRepresentable>: View {
 				Text("Rename Recording")
 					.font(.headline)
 				TrimmingPlayerView(
-					recording: model,
-					forwardEndTime: $forwardEndTime,
-					reverseEndTime: $reverseEndTime)
+					recording: viewModel.model,
+					forwardEndTime: $viewModel.forwardEndTime,
+					reverseEndTime: $viewModel.reverseEndTime)
 				
 				VStack(alignment: .leading, spacing: 4) {
 					Text("Title")
 						.font(.caption)
 						.foregroundColor(.secondary)
-					TextField("New Filename", text: $title)
+					TextField("New Filename", text: $viewModel.title)
 						.textFieldStyle(RoundedBorderTextFieldStyle())
 				}
 				
@@ -42,7 +33,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 					Text("Tags (comma-separated)")
 						.font(.caption)
 						.foregroundColor(.secondary)
-					TokenInputField(tags: $tags)
+					TokenInputField(tags: $viewModel.tags)
 				}
 				DisclosureGroup("Additional Settings") {
 					VStack(alignment: .leading, spacing: 4) {
@@ -59,23 +50,12 @@ struct EditSampleView<Model: FileRepresentable>: View {
 					Text("Preview:")
 						.font(.caption)
 						.foregroundColor(.secondary)
-					PreviewFilenameView(title: $title, tags: $tags)
+					PreviewFilenameView<Model>(viewModel: viewModel)
 				}
 				.padding(.top, 8)
 				
 				Button("Save Sample") {
-					
-					var configuration = SampleEditConfiguration()
-					
-					configuration.directoryDestination = SampleStorage.shared.UserDirectory
-					
-					var metadata = SampleMetadata()
-					metadata.title = title
-					metadata.tags = tags
-//					let staged = Sample(newRecording: model as! TemporaryActiveRecording, title: title, tags: tags, description: description)
-					var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
-					// force unwrap, since we just created it
-					onComplete(createdSample, metadata, configuration)
+					viewModel.saveSample()
 				}
 				.buttonStyle(.borderedProminent)
 				.padding(.top, 8)
@@ -97,33 +77,58 @@ struct TokenInputField: View {
 	}
 }
 
-
-struct PreviewFilenameView: View {
-	@State var previewFilename: String = ""
-	@Binding var title: String
-	@Binding var tags: Set<String>
-	
-	@State private var sortedTagsArray: [String] = []
+struct PreviewFilenameView<Model: FileRepresentable>: View {
+	@ObservedObject var viewModel: EditSampleViewModel<Model>
 	
 	var body: some View {
-		Text(generatePreviewFilename())
+		Text(viewModel.generatePreviewFilename())
 			.font(.system(size: 12, weight: .regular, design: .monospaced))
 			.foregroundColor(Color(red: 1, green: 0.6, blue: 0))
 			.padding(4)
 			.frame(maxWidth: .infinity)
 			.background(Color.black)
 			.contentTransition(.numericText())
-			.animation(.easeInOut, value: title)
-			.onChange(of: tags) { newTags in
-				sortedTagsArray = newTags.sorted()
-			}
-			.onAppear {
-				sortedTagsArray = tags.sorted()
-			}
+			.animation(.easeInOut, value: viewModel.title)
+			.animation(.easeInOut, value: viewModel.tags)
+	}
+}
+
+@MainActor
+class EditSampleViewModel<Model: FileRepresentable>: ObservableObject {
+	@State var title: String = ""
+	@State var tags: Set<String> = []
+	@State var description: String = ""
+	@State var forwardEndTime: CMTime? = nil
+	@State var reverseEndTime: CMTime? = nil
+	
+	let model: Model
+	private let onComplete: (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void
+	var sortedTagsArray: [String] {
+		return tags.sorted()
+	}
+	
+	init(recording: Model, onComplete: @escaping (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void) {
+		self.onComplete = onComplete
+		self.model = recording
+	}
+	
+	func saveSample() {
+		var configuration = SampleEditConfiguration()
+		
+		configuration.directoryDestination = SampleStorage.shared.UserDirectory
+		
+		var metadata = SampleMetadata()
+		metadata.title = title
+		metadata.tags = tags
+		metadata.description = description.isEmpty ? nil: description
+		let createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
+		// force unwrap, since we just created it
+		onComplete(createdSample, metadata, configuration)
 	}
 	
 	// TODO - hardcoded file extension string
-	private func generatePreviewFilename() -> String {
+
+	func generatePreviewFilename() -> String {
 		var taggedString = ""
 		
 		for tag in sortedTagsArray {
@@ -132,6 +137,7 @@ struct PreviewFilenameView: View {
 		
 		return "\(title)__\(taggedString).aac"
 	}
+	
 }
 
 #Preview {

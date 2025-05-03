@@ -206,7 +206,8 @@ class SampleLibraryViewModel: ObservableObject {
 	@Published var listOfAllSamples: [Sample] = []
 	@Published var indexedTags: [String] = []
 	@Published var finishedProcessing: Bool = false
-	@Published var currentSelection: String?
+	@Published var sidebarSelection: String?
+	@Published var detailSelection: SampleListItemModel?
 	
 	private var sampleStorage: SampleStorage
 	private var cancellables = Set<AnyCancellable>()
@@ -229,6 +230,22 @@ class SampleLibraryViewModel: ObservableObject {
 				self?.indexedTags = Array(newTags).sorted()
 			}
 			.store(in: &cancellables)
+	}
+}
+
+struct SampleListItemModel: Identifiable {
+	var id: UUID
+	var text: String
+	var file: FileRepresentable
+	
+	init(file: FileRepresentable) {
+		self.id = UUID()
+		self.file = file
+		if let sample = file as? Sample {
+			self.text = sample.title
+		} else {
+			self.text = file.fileURL.absoluteString
+		}
 	}
 }
 

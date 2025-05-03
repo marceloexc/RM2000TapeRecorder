@@ -5,7 +5,7 @@ struct DetailView: View {
 	
 	var body: some View {
 		Group {
-			if let selectedTag = viewModel.currentSelection {
+			if let selectedTag = viewModel.sidebarSelection {
 				TaggedRecordingsView(viewModel: viewModel, selectedTag: selectedTag)
 			} else {
 				AllRecordingsView(viewModel: viewModel)
@@ -21,9 +21,10 @@ private struct TaggedRecordingsView: View {
 	var body: some View {
 		
 		if viewModel.finishedProcessing {
-			List(viewModel.listOfAllSamples) { sample in
+			List(viewModel.listOfAllSamples, selection: $viewModel.detailSelection) { sample in
 				if sample.tags.contains(selectedTag) {
-					SampleIndividualListItem(sampleItem: sample)
+					let itemModel = SampleListItemModel(file: sample)
+					SampleIndividualListItem(sample: itemModel)
 				}
 			}
 		}
@@ -38,8 +39,10 @@ struct AllRecordingsView: View {
 	var body: some View {
 		Group {
 			if viewModel.finishedProcessing {
-				List(viewModel.listOfAllSamples) { sample in
-					SampleIndividualListItem(sampleItem: sample)
+				List(viewModel.listOfAllSamples, selection: $viewModel.detailSelection) { sample in
+					
+					let itemModel = SampleListItemModel(file: sample)
+					SampleIndividualListItem(sample: itemModel)
 				}
 				.listStyle(.plain)
 			} else {
@@ -51,21 +54,24 @@ struct AllRecordingsView: View {
 
 struct SampleIndividualListItem: View {
 	@Environment(\.openWindow) var openWindow
-	var sampleItem: Sample
+	var sample: SampleListItemModel
 	
 	var body: some View {
 		HStack {
 			VStack(alignment: .leading, spacing: 4) {
-				Text(sampleItem.title)
+				Text(sample.text)
 					.font(.title3)
 				HStack(spacing: 8) {
-					ForEach(Array(sampleItem.tags), id:\.self) { tagName in
-						Text(tagName)
-							.font(.caption)
-							.padding(2)
-							.background(Color.gray.opacity(0.2))
-							.cornerRadius(3)
-					}
+					
+					// todo - make tag its each view component
+					// so that we can check if we need it by seeing if SampleListModel is Sample or not
+//					ForEach(Array(sample.tags), id:\.self) { tagName in
+//						Text(tagName)
+//							.font(.caption)
+//							.padding(2)
+//							.background(Color.gray.opacity(0.2))
+//							.cornerRadius(3)
+//					}
 				}
 			}
 			
@@ -83,11 +89,11 @@ struct SampleIndividualListItem: View {
 		}
 		.contentShape(Rectangle())
 		.onTapGesture(count: 2) {
-			NSWorkspace.shared.open(sampleItem.fileURL)
+			NSWorkspace.shared.open(sample.file.fileURL)
 		}
 		.contextMenu {
 			Button("Open File") {
-				NSWorkspace.shared.open(sampleItem.fileURL)
+				NSWorkspace.shared.open(sample.file.fileURL)
 			}
 		}
 	}

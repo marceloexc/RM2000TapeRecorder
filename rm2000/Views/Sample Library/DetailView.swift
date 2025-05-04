@@ -5,7 +5,7 @@ struct DetailView: View {
 	
 	var body: some View {
 		Group {
-			if let selectedTag = viewModel.currentSelection {
+			if let selectedTag = viewModel.sidebarSelection {
 				TaggedRecordingsView(viewModel: viewModel, selectedTag: selectedTag)
 			} else {
 				AllRecordingsView(viewModel: viewModel)
@@ -21,9 +21,11 @@ private struct TaggedRecordingsView: View {
 	var body: some View {
 		
 		if viewModel.finishedProcessing {
-			List(viewModel.listOfAllSamples) { sample in
+			List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
 				if sample.tags.contains(selectedTag) {
-					SampleIndividualListItem(sampleItem: sample)
+					let itemModel = SampleListItemModel(file: sample)
+					SampleIndividualListItem(sample: itemModel)
+						.tag(sample.id)
 				}
 			}
 		}
@@ -38,10 +40,24 @@ struct AllRecordingsView: View {
 	var body: some View {
 		Group {
 			if viewModel.finishedProcessing {
-				List(viewModel.listOfAllSamples) { sample in
-					SampleIndividualListItem(sampleItem: sample)
+				List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
+					
+					let itemModel = SampleListItemModel(file: sample)
+					let _ = print("Now selected from all recordings: :\(viewModel.detailSelection)")
+
+					SampleIndividualListItem(sample: itemModel)
+						.tag(sample)
+					/*
+					 todo - fix this bug where, when uncommented below,
+					 selecting the list item will only work when selecting
+					 the background, not the text
+					 
+					 
+					 .onTapGesture(count: 2) {
+					 NSWorkspace.shared.open(sample.fileURL)
+					 }
+					 */
 				}
-				.listStyle(.plain)
 			} else {
 				ProgressView("Loading recordings...")
 			}
@@ -51,20 +67,22 @@ struct AllRecordingsView: View {
 
 struct SampleIndividualListItem: View {
 	@Environment(\.openWindow) var openWindow
-	var sampleItem: Sample
+	var sample: SampleListItemModel
 	
 	var body: some View {
 		HStack {
 			VStack(alignment: .leading, spacing: 4) {
-				Text(sampleItem.title)
+				Text("\(sample.text) - \(sample.id)")
 					.font(.title3)
-				HStack(spacing: 8) {
-					ForEach(Array(sampleItem.tags), id:\.self) { tagName in
-						Text(tagName)
-							.font(.caption)
-							.padding(2)
-							.background(Color.gray.opacity(0.2))
-							.cornerRadius(3)
+				if let sampleObj = sample.file as? Sample, !sampleObj.tags.isEmpty {
+					HStack(spacing: 8) {
+						ForEach(Array(sampleObj.tags), id: \.self) { tagName in
+							Text(tagName)
+								.font(.caption)
+								.padding(2)
+								.background(Color.gray.opacity(0.2))
+								.cornerRadius(3)
+						}
 					}
 				}
 			}
@@ -81,13 +99,9 @@ struct SampleIndividualListItem: View {
 				.controlSize(.small)
 			}
 		}
-		.contentShape(Rectangle())
-		.onTapGesture(count: 2) {
-			NSWorkspace.shared.open(sampleItem.fileURL)
-		}
 		.contextMenu {
 			Button("Open File") {
-				NSWorkspace.shared.open(sampleItem.fileURL)
+				NSWorkspace.shared.open(sample.file.fileURL)
 			}
 		}
 	}

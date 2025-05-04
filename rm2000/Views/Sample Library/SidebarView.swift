@@ -4,7 +4,7 @@ struct SidebarView: View {
 	@ObservedObject var viewModel: SampleLibraryViewModel
 	
 	var body: some View {
-		List(selection: $viewModel.currentSelection) {
+		List(selection: $viewModel.sidebarSelection) {
 			Section(header: Text("Collections")) {
 				NavigationLink {
 					AllRecordingsView(viewModel: viewModel)

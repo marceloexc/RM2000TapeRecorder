@@ -30,6 +30,7 @@ class SampleDirectory: ObservableObject {
 	@Published var indexedTags: Set<String> = []
 	var directory: URL
 	private var query = MetadataQuery()
+	private var processedFilePaths: Set<String> = []
 	
 	let fileManager = FileManager.default
 
@@ -45,9 +46,14 @@ class SampleDirectory: ObservableObject {
 				at: self.directory, includingPropertiesForKeys: nil)
 
 			for fileURL in directoryContents {
-				if let SampleFile = Sample(fileURL: fileURL) {
-					files.append(SampleFile)
-					indexedTags.formUnion(SampleFile.tags)
+				// Only add files we haven't processed yet
+				let filePath = fileURL.path
+				if !processedFilePaths.contains(filePath) {
+					if let SampleFile = Sample(fileURL: fileURL) {
+						files.append(SampleFile)
+						indexedTags.formUnion(SampleFile.tags)
+						processedFilePaths.insert(filePath)
+					}
 				}
 			}
 			Logger.appState.info("Added \(directoryContents.count) files as FZMetadata to \(self.directory.description)")
@@ -134,16 +140,7 @@ class SampleDirectory: ObservableObject {
 	private func setupDirectoryWatching() {
 		query.searchLocations = [self.directory]
 		
-		/*
-		 UTType doesnt have a specific type for aac audio so this is whats needed
-		 
-		 Stupid...
-		 
-		 or...maybe im stupid...maybe these shouldnt be .aac files at all, and should be .m4a
-		 
-		 https://en.wikipedia.org/wiki/Advanced_Audio_Coding
-		 */
-		query.predicate = { $0.contentType == [.mp3, .wav, UTType("public.aac-audio")] }
+		query.predicate = { $0.contentType == [.mp3, .wav] }
 		
 		query.monitorResults = true
 		
@@ -151,15 +148,25 @@ class SampleDirectory: ObservableObject {
 			DispatchQueue.main.async {
 				
 				for new in difference.added {
-					
-					if let createdSample = Sample(fileURL: new.url!) {
-						Logger.appState.info("New content detected: \(String(describing: new.url)) for \(self?.directory)")
-						self?.files.append(createdSample)
-						self?.indexedTags.formUnion(createdSample.tags)
-					} else {
-						Logger.appState.info("Newly added content rejected: \(String(describing: new.url))")
+					if let fileUrl = new.url {
+						let filePath = fileUrl.path
+						
+						// Check if we've already processed this file path
+						if !(self?.processedFilePaths.contains(filePath) ?? false) {
+							if let createdSample = Sample(fileURL: fileUrl) {
+								Logger.appState.info("New content detected: \(String(describing: fileUrl)) for \(self?.directory)")
+								self?.files.append(createdSample)
+								self?.indexedTags.formUnion(createdSample.tags)
+								self?.processedFilePaths.insert(filePath)
+							} else {
+								Logger.appState.info("Newly added content rejected: \(String(describing: fileUrl))")
+							}
+						} else {
+							Logger.appState.info("Skipping duplicate file: \(String(describing: fileUrl))")
+						}
 					}
 				}
+				
 				for changed in difference.changed {
 					if let movedSample = Sample(fileURL: changed.url!) {
 						print("\(movedSample) has moved!")
@@ -173,9 +180,10 @@ class SampleDirectory: ObservableObject {
 						if !fileManager.fileExists(atPath: removed.url!.path) {
 							Logger.appState.info("Deleting sample from library: \(String(describing: removed.url))")
 							
-							// Remove from files array
+							// Remove from files array and processed paths
 							if let index = self?.files.firstIndex(where: { $0.fileURL == deletedSample.fileURL }) {
 								self?.files.remove(at: index)
+								self?.processedFilePaths.remove(removed.url!.path)
 							}
 							Logger.appState.info("Content removed: \(String(describing: removed.url))")
 						} else {
@@ -187,6 +195,4 @@ class SampleDirectory: ObservableObject {
 		}
 		query.start()
 	}
-	
-//	private func
 }

@@ -1,7 +1,7 @@
 import Foundation
 import FZMetadata
 
-struct Sample: Identifiable {
+struct Sample: Identifiable, Hashable {
 	var id: UUID
 	let fileURL: URL
 	var filename: String?
@@ -65,5 +65,15 @@ struct Sample: Identifiable {
 	
 	func finalFilename() -> String {
 		return metadata.finalFilename()
+	}
+	
+	// MARK: - Hashable Conformance, to be fair don't uderstand yet what it does
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
+	
+	static func == (lhs: Sample, rhs: Sample) -> Bool {
+		return lhs.id == rhs.id
 	}
 }

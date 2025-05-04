@@ -92,12 +92,20 @@ struct SampleLibraryView: View {
 			
 		}
 		.inspector(isPresented: $showInspector) {
-			let testFile = URL(fileURLWithPath: "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")
-			let recording = TemporaryActiveRecording(fileURL: testFile)
-			EditSampleView(recording: recording) { _, _, _ in
-				// Empty completion handler
+			if let sampleListID = viewModel.detailSelection {
+				Text(sampleListID.uuidString)
+			} else {
+				Text("nil")
 			}
-			.inspectorColumnWidth(min: 90, ideal: 300, max: 400)
+			
+			Text("This is still broken...")
+			
+//			let testFile = URL(fileURLWithPath: "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")
+//			let recording = TemporaryActiveRecording(fileURL: testFile)
+//			EditSampleView(recording: recording) { _, _, _ in
+//				// Empty completion handler
+//			}
+			.inspectorColumnWidth(min: 200, ideal: 300, max: 400)
 			.toolbar(id: "rm2000.inspector.toolbar") {
 				
 				ToolbarItem(id: "rm2000.spacer") {
@@ -128,96 +136,24 @@ struct SampleLibraryView: View {
 	}
 }
 
-struct SidebarButton: View {
-	var body: some View {
-		Button(action: toggleSidebar) {
-			Label("Reveal Sidebar", systemImage: "sidebar.leading")
-		}
-	}
-}
-
-struct OpenInFinderButton: View {
-	var body: some View {
-		Button(action: {
-			NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
-		}) {
-			Label {
-				Text("Open in Finder")
-			} icon: {
-				Image(nsImage: NSWorkspace.shared.icon(forFile: "/System/Library/CoreServices/Finder.app"))
-									.resizable()
-									.scaledToFit()
-									.frame(width: 25, height: 25)
-			}
-		}
-		.buttonStyle(.plain)
-		.help("Open in Finder")
-	}
-}
-
-struct ShareSampleButton: View {
-	var body: some View {
-		Button(action: {
-			print("Shared button pressed")
-		}) {
-			Label("Share Sample", systemImage: "square.and.arrow.up")
-				.fontWeight(.black)
-				.foregroundStyle(.orange)
-		}
-		.buttonStyle(.borderless)
-		.padding(.bottom, 3) // or else it looks weirdly positioned!
-	}
-}
-
-struct ImportSampleButton: View {
-	var body: some View {
-		Button(action: {
-			NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
-		}) {
-			Label("Import Sample", systemImage: "plus")
-					.fontWeight(.black)
-					.foregroundStyle(.green)
-		}
-		.buttonStyle(.borderless)
-		.help("Import a Sample")
-	}
-}
-
-private func toggleSidebar() {
-#if os(macOS)
-	NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
-#endif
-}
-
-
-private func setToolbarStyle() {
-#if os(macOS)
-	if let window = NSApp.windows.first(where: { $0.isKeyWindow }),
-		 let toolbar = window.toolbar {
-		toolbar.displayMode = .iconAndLabel
-		toolbar.allowsUserCustomization = true
-		toolbar.autosavesConfiguration = true
-	}
-#endif
-}
-
 @MainActor
 class SampleLibraryViewModel: ObservableObject {
 	@Published var listOfAllSamples: [Sample] = []
 	@Published var indexedTags: [String] = []
 	@Published var finishedProcessing: Bool = false
-	@Published var currentSelection: String?
+	@Published var sidebarSelection: String?
+	@Published var detailSelection: SampleListItemModel.ID?
 	
 	private var sampleStorage: SampleStorage
 	private var cancellables = Set<AnyCancellable>()
 	
-	@MainActor
 	init(sampleStorage: SampleStorage = SampleStorage.shared) {
 		self.sampleStorage = sampleStorage
 		
 		sampleStorage.UserDirectory.$files
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] newFiles in
+				print("NEW FILES RECIEVED \(newFiles)")
 				self?.listOfAllSamples = newFiles
 				self?.finishedProcessing = true
 			}
@@ -229,6 +165,32 @@ class SampleLibraryViewModel: ObservableObject {
 				self?.indexedTags = Array(newTags).sorted()
 			}
 			.store(in: &cancellables)
+	}
+}
+
+struct SampleListItemModel: Identifiable, Hashable {
+	var id: UUID
+	var text: String
+	var file: FileRepresentable
+	
+	init(file: FileRepresentable) {
+		if let sample = file as? Sample {
+			self.id = sample.id 
+			self.text = sample.title
+		} else {
+			self.id = UUID()
+			self.text = file.fileURL.lastPathComponent
+		}
+		self.file = file
+	}
+	
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
+	
+	static func == (lhs: SampleListItemModel, rhs: SampleListItemModel) -> Bool {
+		return lhs.id == rhs.id
 	}
 }
 

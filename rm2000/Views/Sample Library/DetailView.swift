@@ -42,6 +42,8 @@ struct AllRecordingsView: View {
 				List(viewModel.listOfAllSamples, selection: $viewModel.detailSelection) { sample in
 					
 					let itemModel = SampleListItemModel(file: sample)
+					let _ = print("Now selected from all recordings: :\(viewModel.detailSelection)")
+
 					SampleIndividualListItem(sample: itemModel)
 				}
 				.listStyle(.plain)
@@ -61,17 +63,16 @@ struct SampleIndividualListItem: View {
 			VStack(alignment: .leading, spacing: 4) {
 				Text(sample.text)
 					.font(.title3)
-				HStack(spacing: 8) {
-					
-					// todo - make tag its each view component
-					// so that we can check if we need it by seeing if SampleListModel is Sample or not
-//					ForEach(Array(sample.tags), id:\.self) { tagName in
-//						Text(tagName)
-//							.font(.caption)
-//							.padding(2)
-//							.background(Color.gray.opacity(0.2))
-//							.cornerRadius(3)
-//					}
+				if let sampleObj = sample.file as? Sample, !sampleObj.tags.isEmpty {
+					HStack(spacing: 8) {
+						ForEach(Array(sampleObj.tags), id: \.self) { tagName in
+							Text(tagName)
+								.font(.caption)
+								.padding(2)
+								.background(Color.gray.opacity(0.2))
+								.cornerRadius(3)
+						}
+					}
 				}
 			}
 			

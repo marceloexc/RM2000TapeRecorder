@@ -27,6 +27,8 @@
 		EB8313F42D4DF59700B343FF /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8313F32D4DF59700B343FF /* DetailView.swift */; };
 		EB8642642DA4A41C00D4883B /* SampleMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8642632DA4A41900D4883B /* SampleMetadata.swift */; };
 		EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */; };
+		EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA1224E2DC722D200E603D3 /* InspectorView.swift */; };
+		EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */; };
 		EBAF02632C8A132800520D44 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF02622C8A132800520D44 /* Logging.swift */; };
 		EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */; };
 		EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */; };
@@ -72,6 +74,8 @@
 		EB8313F32D4DF59700B343FF /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		EB8642632DA4A41900D4883B /* SampleMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleMetadata.swift; sourceTree = "<group>"; };
 		EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditConfiguration.swift; sourceTree = "<group>"; };
+		EBA1224E2DC722D200E603D3 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
+		EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButtons.swift; sourceTree = "<group>"; };
 		EBAF02622C8A132800520D44 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		EBB69AFF2DA24DB100ADA2DD /* TemporaryActiveRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryActiveRecording.swift; sourceTree = "<group>"; };
 		EBB69B012DA252C800ADA2DD /* SampleEditOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditOperation.swift; sourceTree = "<group>"; };
@@ -183,19 +187,13 @@
 		EB8313EF2D4DCCD200B343FF /* Sample Library */ = {
 			isa = PBXGroup;
 			children = (
-				EB8313F02D4DCDBF00B343FF /* Sidebar */,
+				EBA122502DC722FD00E603D3 /* Toolbar Buttons */,
 				EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */,
 				EB8313F32D4DF59700B343FF /* DetailView.swift */,
+				EB8313F12D4DCDD600B343FF /* SidebarView.swift */,
+				EBA1224E2DC722D200E603D3 /* InspectorView.swift */,
 			);
 			path = "Sample Library";
-			sourceTree = "<group>";
-		};
-		EB8313F02D4DCDBF00B343FF /* Sidebar */ = {
-			isa = PBXGroup;
-			children = (
-				EB8313F12D4DCDD600B343FF /* SidebarView.swift */,
-			);
-			path = Sidebar;
 			sourceTree = "<group>";
 		};
 		EB91DD322CE3135A00F1C37E /* Fonts */ = {
@@ -205,6 +203,14 @@
 				EBDF782D2D80146E00941981 /* Tachyo.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		EBA122502DC722FD00E603D3 /* Toolbar Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */,
+			);
+			path = "Toolbar Buttons";
 			sourceTree = "<group>";
 		};
 		EBA5E5792D77976D00D415DB /* Frameworks */ = {
@@ -423,6 +429,8 @@
 				EB64CD122D14FC5200F2B65E /* SettingsView.swift in Sources */,
 				EBBBFE8B2CA2569600E987B1 /* TapeMechanism.swift in Sources */,
 				EBE4E9482C43244D00397EF2 /* RM2000 Tape Recorder.swift in Sources */,
+				EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */,
+				EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */,
 				EB467BD82D920D34007E19E8 /* LCDScreenView.swift in Sources */,
 				EBBBFE8F2CA2588A00E987B1 /* AudioManager.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,

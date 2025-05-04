@@ -107,7 +107,7 @@ struct SampleLibraryView: View {
 					}
 				}
 			}
-			.inspectorColumnWidth(min: 200, ideal: 300, max: 400)
+			.inspectorColumnWidth(min: 300, ideal: 400, max: 500)
 		}
 		.toolbarRole(.editor)
 		.navigationTitle("Sample Library")

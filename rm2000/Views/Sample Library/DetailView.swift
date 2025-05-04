@@ -72,7 +72,7 @@ struct SampleIndividualListItem: View {
 	var body: some View {
 		HStack {
 			VStack(alignment: .leading, spacing: 4) {
-				Text("\(sample.text) - \(sample.id)")
+				Text("\(sample.text)")
 					.font(.title3)
 				if let sampleObj = sample.file as? Sample, !sampleObj.tags.isEmpty {
 					HStack(spacing: 8) {

@@ -1,11 +1,12 @@
 import SwiftUI
+import Foundation
 
-enum spinnerGlyphDirection {
+enum SpinnerGlyphDirection {
 	case clockwise, counterclockwise
 }
 
 struct DonutSpinner: View {
-	let direction: spinnerGlyphDirection
+	let direction: SpinnerGlyphDirection
 	var wedgeCount: Int = 11
 	var gapAngle: Double = 2
 	var strokeWidth: CGFloat = 1.0
@@ -119,13 +120,13 @@ struct DonutWedgeShape: Shape {
 		
 		// Line from inner start to outer start
 		path.move(to: CGPoint(
-			x: center.x + innerRadius * cos(startAngle.radians),
-			y: center.y + innerRadius * sin(startAngle.radians)
+			x: center.x + innerRadius * CGFloat(cos(startAngle.radians)),
+			y: center.y + innerRadius * CGFloat(sin(startAngle.radians))
 		))
 		
 		path.addLine(to: CGPoint(
-			x: center.x + outerRadius * cos(startAngle.radians),
-			y: center.y + outerRadius * sin(startAngle.radians)
+			x: center.x + outerRadius * CGFloat(cos(startAngle.radians)),
+			y: center.y + outerRadius * CGFloat(sin(startAngle.radians))
 		))
 		
 		// Outer arc
@@ -139,8 +140,8 @@ struct DonutWedgeShape: Shape {
 		
 		// Line from outer end to inner end
 		path.addLine(to: CGPoint(
-			x: center.x + innerRadius * cos(endAngle.radians),
-			y: center.y + innerRadius * sin(endAngle.radians)
+			x: center.x + innerRadius * CGFloat(cos(endAngle.radians)),
+			y: center.y + innerRadius * CGFloat(sin(endAngle.radians))
 		))
 		
 		// Inner arc

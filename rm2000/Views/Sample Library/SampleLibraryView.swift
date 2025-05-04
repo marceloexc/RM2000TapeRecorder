@@ -12,12 +12,7 @@ struct SampleLibraryView: View {
 	
 	@State private var currentSamplesInView: Int = 0
 	@State private var selection = "Apple"
-	
-	@State private var sliderValue = 50.0
-	
-	let options = ["Apple", "Banana"]
-	
-	
+		
 	init() {
 			_viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
 	}
@@ -58,16 +53,26 @@ struct SampleLibraryView: View {
 				}.pickerStyle(.inline)
 			}
 			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
-				Picker("View settings", selection: $selection) {
-					Label("Grid", systemImage: "play.fill")
-					Label("List", systemImage: "forward.fill")
-				}.pickerStyle(.inline)
+				Button {
+					viewModel.slAudioPlayer.playPause()
+				} label: {
+					Image(systemName: viewModel.slAudioPlayer.isPlaying ? "pause.fill" : "play.fill")
+				}
+				.disabled(viewModel.selectedSample == nil)
+
 			}
 			ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
 				SidebarButton()
 			}
 			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
-				Slider(value: $sliderValue, in: 0...100)
+				Slider(
+					value: Binding(
+						get: { viewModel.slAudioPlayer.currentTime },
+						set: { viewModel.slAudioPlayer.seekTo(time: $0) }
+					),
+					in: 0...viewModel.slAudioPlayer.duration
+				)
+				.disabled(viewModel.selectedSample == nil)
 			}
 			
 			/*
@@ -130,6 +135,7 @@ class SampleLibraryViewModel: ObservableObject {
 	@Published var sidebarSelection: String?
 	@Published var detailSelection: SampleListItemModel.ID?
 	@Published var showInspector: Bool = true
+	@Published var slAudioPlayer = SLAudioPlayer()
 	
 	private var sampleStorage: SampleStorage
 	private var cancellables = Set<AnyCancellable>()
@@ -154,6 +160,17 @@ class SampleLibraryViewModel: ObservableObject {
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] newTags in
 				self?.indexedTags = Array(newTags).sorted()
+			}
+			.store(in: &cancellables)
+		
+		// Watch for changes in selection and update audio player
+		$detailSelection
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] newSelection in
+				guard let self = self else { return }
+				if let sample = self.matchToSample(id: newSelection) {
+					self.slAudioPlayer.loadAudio(from: sample.fileURL)
+				}
 			}
 			.store(in: &cancellables)
 	}

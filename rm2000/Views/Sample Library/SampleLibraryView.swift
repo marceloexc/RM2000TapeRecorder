@@ -25,6 +25,10 @@ struct SampleLibraryView: View {
 			DetailView(viewModel: viewModel)
 		}
 		.toolbar(id: "rm2000.main-toolbar"){
+			
+			ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
+				SidebarButton()
+			}
 			ToolbarItem(id: "rm2000.share.button") {
 				ShareSampleButton()
 			}
@@ -52,19 +56,19 @@ struct SampleLibraryView: View {
 					Label("List", systemImage: "list.bullet")
 				}.pickerStyle(.inline)
 			}
-			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
+
+		}
+		.toolbar(id: "rm2000.favorites-toolbar") {
+			ToolbarItem(id: "rm2000.playpause", placement: .favoritesBar) {
 				Button {
 					viewModel.slAudioPlayer.playPause()
 				} label: {
 					Image(systemName: viewModel.slAudioPlayer.isPlaying ? "pause.fill" : "play.fill")
 				}
 				.disabled(viewModel.selectedSample == nil)
-
 			}
-			ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
-				SidebarButton()
-			}
-			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
+			
+			ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
 				Slider(
 					value: Binding(
 						get: { viewModel.slAudioPlayer.currentTime },
@@ -75,24 +79,11 @@ struct SampleLibraryView: View {
 				.disabled(viewModel.selectedSample == nil)
 			}
 			
-			/*
-			 theres this gnarly bug where if i select "Icon and Text" in the
-			 context menu of the toolbar, the sidebar button (now with the
-			 text) will cause the app to freeze. I dont know what causes this.
-			 Even apples official tutorial apps, downloaded from their dev site
-			 and built with xcode, which are meant to show the engineering
-			 prowess of swifui, have this same bug. So i guess no customiziable
-			 toolbars!
-			 
-			 This is why all of the buttons have a hacky workaround where I just
-			 put a Text with a caption font for it to act like "Icon and Text" is
-			 on. Which is the correct way all toolbars should be...
-			 
-			 */
-			
-			// UUID() as the id's to workaround a nasty swiftui bug
-			
-			// or else they just wont show up...stupid...
+			ToolbarItem(id: "rm2000.autoplay-toggle", placement: .favoritesBar) {
+				Toggle( "Autoplay",
+								isOn: $viewModel.showInspector
+				).toggleStyle(.checkbox)
+			}
 			
 		}
 		.inspector(isPresented: $viewModel.showInspector) {

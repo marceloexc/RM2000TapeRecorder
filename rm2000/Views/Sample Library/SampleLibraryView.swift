@@ -134,7 +134,7 @@ class SampleLibraryViewModel: ObservableObject {
 	@Published var indexedTags: [String] = []
 	@Published var finishedProcessing: Bool = false
 	@Published var sidebarSelection: String?
-	@Published var detailSelection = Set<UUID>()
+	@Published var detailSelection: SampleListItemModel.ID?
 	
 	private var sampleStorage: SampleStorage
 	private var cancellables = Set<AnyCancellable>()

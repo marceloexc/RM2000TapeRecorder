@@ -21,10 +21,11 @@ private struct TaggedRecordingsView: View {
 	var body: some View {
 		
 		if viewModel.finishedProcessing {
-			List(viewModel.listOfAllSamples, selection: $viewModel.detailSelection) { sample in
+			List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
 				if sample.tags.contains(selectedTag) {
 					let itemModel = SampleListItemModel(file: sample)
 					SampleIndividualListItem(sample: itemModel)
+						.tag(sample.id)
 				}
 			}
 		}
@@ -39,14 +40,24 @@ struct AllRecordingsView: View {
 	var body: some View {
 		Group {
 			if viewModel.finishedProcessing {
-				List(viewModel.listOfAllSamples, selection: $viewModel.detailSelection) { sample in
+				List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
 					
 					let itemModel = SampleListItemModel(file: sample)
 					let _ = print("Now selected from all recordings: :\(viewModel.detailSelection)")
 
 					SampleIndividualListItem(sample: itemModel)
+						.tag(sample)
+					/*
+					 todo - fix this bug where, when uncommented below,
+					 selecting the list item will only work when selecting
+					 the background, not the text
+					 
+					 
+					 .onTapGesture(count: 2) {
+					 NSWorkspace.shared.open(sample.fileURL)
+					 }
+					 */
 				}
-				.listStyle(.plain)
 			} else {
 				ProgressView("Loading recordings...")
 			}
@@ -61,7 +72,7 @@ struct SampleIndividualListItem: View {
 	var body: some View {
 		HStack {
 			VStack(alignment: .leading, spacing: 4) {
-				Text(sample.text)
+				Text("\(sample.text) - \(sample.id)")
 					.font(.title3)
 				if let sampleObj = sample.file as? Sample, !sampleObj.tags.isEmpty {
 					HStack(spacing: 8) {
@@ -87,10 +98,6 @@ struct SampleIndividualListItem: View {
 				.buttonStyle(.automatic)
 				.controlSize(.small)
 			}
-		}
-		.contentShape(Rectangle())
-		.onTapGesture(count: 2) {
-			NSWorkspace.shared.open(sample.file.fileURL)
 		}
 		.contextMenu {
 			Button("Open File") {

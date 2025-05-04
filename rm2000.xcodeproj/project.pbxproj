@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		EB12BC962DC7FE6A0011B7FF /* TagComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */; };
+		EB12BC9B2DC808210011B7FF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC9A2DC808210011B7FF /* WaveformView.swift */; };
+		EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9D2DC808680011B7FF /* DSWaveformImage */; };
+		EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */; };
 		EB1565122D558F2100A3D339 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1565112D558F1F00A3D339 /* Sample.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
 		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
@@ -66,6 +69,7 @@
 
 /* Begin PBXFileReference section */
 		EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagComponent.swift; sourceTree = "<group>"; };
+		EB12BC9A2DC808210011B7FF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		EB1565112D558F1F00A3D339 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
 		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -134,7 +138,9 @@
 				EBFCB1102D77987800A9A226 /* FZMetadata in Frameworks */,
 				EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
+				EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */,
 				EB5C8FC92D99DA7600C4C3C2 /* SwiftLAME in Frameworks */,
+				EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +228,7 @@
 				EB8313F12D4DCDD600B343FF /* SidebarView.swift */,
 				EBA1224E2DC722D200E603D3 /* InspectorView.swift */,
 				EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */,
+				EB12BC9A2DC808210011B7FF /* WaveformView.swift */,
 			);
 			path = "Sample Library";
 			sourceTree = "<group>";
@@ -388,6 +395,8 @@
 				EBFCB1122D77988600A9A226 /* SettingsAccess */,
 				EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */,
 				EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */,
+				EB12BC9D2DC808680011B7FF /* DSWaveformImage */,
+				EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -422,6 +431,7 @@
 				EBFCB1112D77988600A9A226 /* XCRemoteSwiftPackageReference "SettingsAccess" */,
 				EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */,
 				EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -476,6 +486,7 @@
 				EBB435982DB42514006F9439 /* VUMeterView.swift in Sources */,
 				EBCA46E22CACBEE700040159 /* EditSampleView.swift in Sources */,
 				EB5C8FCC2D99DBDD00C4C3C2 /* Encoder.swift in Sources */,
+				EB12BC9B2DC808210011B7FF /* WaveformView.swift in Sources */,
 				EB64CD122D14FC5200F2B65E /* SettingsView.swift in Sources */,
 				EBBBFE8B2CA2569600E987B1 /* TapeMechanism.swift in Sources */,
 				EBE4E9482C43244D00397EF2 /* RM2000 Tape Recorder.swift in Sources */,
@@ -732,6 +743,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmrschmidt/DSWaveformImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.2.2;
+			};
+		};
 		EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hidden-spectrum/SwiftLAME";
@@ -759,6 +778,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EB12BC9D2DC808680011B7FF /* DSWaveformImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */;
+			productName = DSWaveformImage;
+		};
+		EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */;
+			productName = DSWaveformImageViews;
+		};
 		EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */;

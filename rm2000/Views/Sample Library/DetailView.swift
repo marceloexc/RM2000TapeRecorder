@@ -86,6 +86,10 @@ struct SampleIndividualListItem: View {
 			
 			Spacer()
 			
+			StaticWaveformView(fileURL: sample.file.fileURL)
+				.frame(maxWidth: 200, maxHeight: 20)
+			
+			Spacer()
 			HStack {
 				Button {
 					viewModel.detailSelection = sample.id

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB12BC962DC7FE6A0011B7FF /* TagComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */; };
 		EB1565122D558F2100A3D339 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1565112D558F1F00A3D339 /* Sample.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
 		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
@@ -64,6 +65,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagComponent.swift; sourceTree = "<group>"; };
 		EB1565112D558F1F00A3D339 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
 		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				EB8313F32D4DF59700B343FF /* DetailView.swift */,
 				EB8313F12D4DCDD600B343FF /* SidebarView.swift */,
 				EBA1224E2DC722D200E603D3 /* InspectorView.swift */,
+				EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */,
 			);
 			path = "Sample Library";
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				EB467BD42D920919007E19E8 /* Buttons.swift in Sources */,
 				EB8313F42D4DF59700B343FF /* DetailView.swift in Sources */,
 				EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */,
+				EB12BC962DC7FE6A0011B7FF /* TagComponent.swift in Sources */,
 				EB801B3D2DB4914E009632D0 /* DonutSpinner.swift in Sources */,
 				EBB69B022DA252CC00ADA2DD /* SampleEditOperation.swift in Sources */,
 				EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */,

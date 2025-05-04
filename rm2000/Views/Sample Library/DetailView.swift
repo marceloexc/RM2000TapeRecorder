@@ -77,11 +77,7 @@ struct SampleIndividualListItem: View {
 				if let sampleObj = sample.file as? Sample, !sampleObj.tags.isEmpty {
 					HStack(spacing: 8) {
 						ForEach(Array(sampleObj.tags), id: \.self) { tagName in
-							Text(tagName)
-								.font(.caption)
-								.padding(2)
-								.background(Color.gray.opacity(0.2))
-								.cornerRadius(3)
+							TagComponent(tagName: tagName)
 						}
 					}
 				}

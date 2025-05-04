@@ -24,7 +24,7 @@ private struct TaggedRecordingsView: View {
 			List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
 				if sample.tags.contains(selectedTag) {
 					let itemModel = SampleListItemModel(file: sample)
-					SampleIndividualListItem(sample: itemModel)
+					SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
 						.tag(sample.id)
 				}
 			}
@@ -45,7 +45,7 @@ struct AllRecordingsView: View {
 					let itemModel = SampleListItemModel(file: sample)
 					let _ = print("Now selected from all recordings: :\(viewModel.detailSelection)")
 
-					SampleIndividualListItem(sample: itemModel)
+					SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
 						.tag(sample.id)
 					/*
 					 todo - fix this bug where, when uncommented below,
@@ -66,6 +66,7 @@ struct AllRecordingsView: View {
 }
 
 struct SampleIndividualListItem: View {
+	@ObservedObject var viewModel: SampleLibraryViewModel
 	@Environment(\.openWindow) var openWindow
 	var sample: SampleListItemModel
 	
@@ -87,12 +88,12 @@ struct SampleIndividualListItem: View {
 			
 			HStack {
 				Button {
-					openWindow(id: "inspector")
+					viewModel.detailSelection = sample.id
+					viewModel.showInspector = true
 				} label: {
-					Image(systemName: "info.circle.fill")
+					Image(systemName: "info.circle")
 				}
-				.buttonStyle(.automatic)
-				.controlSize(.small)
+				.buttonStyle(.borderless)
 			}
 		}
 		.contextMenu {

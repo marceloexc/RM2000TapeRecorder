@@ -12,7 +12,6 @@ struct SampleLibraryView: View {
 	
 	@State private var currentSamplesInView: Int = 0
 	@State private var selection = "Apple"
-	@State private var showInspector: Bool = false
 	
 	@State private var sliderValue = 50.0
 	
@@ -91,17 +90,17 @@ struct SampleLibraryView: View {
 			// or else they just wont show up...stupid...
 			
 		}
-		.inspector(isPresented: $showInspector) {
-			VStack{
+		.inspector(isPresented: $viewModel.showInspector) {
+
 				InspectorView(viewModel: viewModel)
-			}
+			
 			.toolbar(id: "rm2000.inspector.toolbar") {
 				ToolbarItem(id: "rm2000.spacer") {
 					Spacer()
 				}
 				ToolbarItem(id: "rm2000.inspector.button") {
 					Button {
-						showInspector.toggle()
+						viewModel.showInspector.toggle()
 					} label: {
 						Label("Toggle Inspector", systemImage: "sidebar.right")
 					}
@@ -130,6 +129,7 @@ class SampleLibraryViewModel: ObservableObject {
 	@Published var finishedProcessing: Bool = false
 	@Published var sidebarSelection: String?
 	@Published var detailSelection: SampleListItemModel.ID?
+	@Published var showInspector: Bool = true
 	
 	private var sampleStorage: SampleStorage
 	private var cancellables = Set<AnyCancellable>()

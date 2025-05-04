@@ -92,26 +92,13 @@ struct SampleLibraryView: View {
 			
 		}
 		.inspector(isPresented: $showInspector) {
-			if let sampleListID = viewModel.detailSelection {
-				Text(sampleListID.uuidString)
-			} else {
-				Text("nil")
+			VStack{
+				InspectorView(viewModel: viewModel)
 			}
-			
-			Text("This is still broken...")
-			
-//			let testFile = URL(fileURLWithPath: "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")
-//			let recording = TemporaryActiveRecording(fileURL: testFile)
-//			EditSampleView(recording: recording) { _, _, _ in
-//				// Empty completion handler
-//			}
-			.inspectorColumnWidth(min: 200, ideal: 300, max: 400)
 			.toolbar(id: "rm2000.inspector.toolbar") {
-				
 				ToolbarItem(id: "rm2000.spacer") {
 					Spacer()
 				}
-				
 				ToolbarItem(id: "rm2000.inspector.button") {
 					Button {
 						showInspector.toggle()
@@ -119,8 +106,8 @@ struct SampleLibraryView: View {
 						Label("Toggle Inspector", systemImage: "sidebar.right")
 					}
 				}
-
 			}
+			.inspectorColumnWidth(min: 200, ideal: 300, max: 400)
 		}
 		.toolbarRole(.editor)
 		.navigationTitle("Sample Library")
@@ -147,6 +134,10 @@ class SampleLibraryViewModel: ObservableObject {
 	private var sampleStorage: SampleStorage
 	private var cancellables = Set<AnyCancellable>()
 	
+	var selectedSample: Sample? {
+		return matchToSample(id: detailSelection)
+	}
+	
 	init(sampleStorage: SampleStorage = SampleStorage.shared) {
 		self.sampleStorage = sampleStorage
 		
@@ -165,6 +156,12 @@ class SampleLibraryViewModel: ObservableObject {
 				self?.indexedTags = Array(newTags).sorted()
 			}
 			.store(in: &cancellables)
+	}
+
+	private func matchToSample(id: UUID?) -> Sample? {
+		// match uuid from detailSelection to its according sample object
+		guard let id = id else { return nil }
+		return listOfAllSamples.first { $0.id == id }
 	}
 }
 

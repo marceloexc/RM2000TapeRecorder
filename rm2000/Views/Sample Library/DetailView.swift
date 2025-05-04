@@ -46,7 +46,7 @@ struct AllRecordingsView: View {
 					let _ = print("Now selected from all recordings: :\(viewModel.detailSelection)")
 
 					SampleIndividualListItem(sample: itemModel)
-						.tag(sample)
+						.tag(sample.id)
 					/*
 					 todo - fix this bug where, when uncommented below,
 					 selecting the list item will only work when selecting

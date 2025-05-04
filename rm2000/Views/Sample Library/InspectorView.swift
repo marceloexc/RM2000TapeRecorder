@@ -1,11 +1,19 @@
 import SwiftUI
 
 struct InspectorView: View {
+	@ObservedObject var viewModel: SampleLibraryViewModel
+	
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+			
+			if let sample = viewModel.selectedSample {
+				Text(sample.fileURL.absoluteString)
+			} else {
+				Text("No Sample selected")
+			}
+        
     }
 }
 
 #Preview {
-    InspectorView()
+	InspectorView(viewModel: SampleLibraryViewModel())
 }

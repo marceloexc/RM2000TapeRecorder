@@ -134,16 +134,7 @@ class SampleDirectory: ObservableObject {
 	private func setupDirectoryWatching() {
 		query.searchLocations = [self.directory]
 		
-		/*
-		 UTType doesnt have a specific type for aac audio so this is whats needed
-		 
-		 Stupid...
-		 
-		 or...maybe im stupid...maybe these shouldnt be .aac files at all, and should be .m4a
-		 
-		 https://en.wikipedia.org/wiki/Advanced_Audio_Coding
-		 */
-		query.predicate = { $0.contentType == [.mp3, .wav, UTType("public.aac-audio")] }
+		query.predicate = { $0.contentType == [.mp3, .wav] }
 		
 		query.monitorResults = true
 		

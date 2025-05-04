@@ -92,12 +92,20 @@ struct SampleLibraryView: View {
 			
 		}
 		.inspector(isPresented: $showInspector) {
-			let testFile = URL(fileURLWithPath: "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")
-			let recording = TemporaryActiveRecording(fileURL: testFile)
-			EditSampleView(recording: recording) { _, _, _ in
-				// Empty completion handler
+			if let sampleListID = viewModel.detailSelection {
+				Text(sampleListID.uuidString)
+			} else {
+				Text("nil")
 			}
-			.inspectorColumnWidth(min: 90, ideal: 300, max: 400)
+			
+			Text("This is still broken...")
+			
+//			let testFile = URL(fileURLWithPath: "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")
+//			let recording = TemporaryActiveRecording(fileURL: testFile)
+//			EditSampleView(recording: recording) { _, _, _ in
+//				// Empty completion handler
+//			}
+			.inspectorColumnWidth(min: 200, ideal: 300, max: 400)
 			.toolbar(id: "rm2000.inspector.toolbar") {
 				
 				ToolbarItem(id: "rm2000.spacer") {

@@ -19,15 +19,23 @@ struct StaticWaveformView: View {
 	)
 	
 	var body: some View {
-		WaveformView(audioURL: fileURL, configuration: .init(style: .striped(.init(color: .gray, width: 2, spacing: 3, lineCap: .butt)), verticalScalingFactor: 1)) {
+		WaveformView(audioURL: fileURL, configuration: .init(style: .striped(.init(color: .gray, width: 2, spacing: 1, lineCap: .butt)), verticalScalingFactor: 1)) {
 			ProgressView()
+				.controlSize(.extraLarge)
+				.progressViewStyle(.linear)
 		}
 		
 		
 	}
 }
 
-#Preview {
+#Preview("Waveform") {
 	let fileURL = URL(fileURLWithPath: "/Users/marceloexc/Music/MusicProd/rm_testing/jazz--ambient_sample.mp3")
 	StaticWaveformView(fileURL: fileURL)
+}
+
+#Preview("Library") {
+	SampleLibraryView()
+		.environmentObject(SampleStorage.shared)
+		.frame(width: 900)
 }

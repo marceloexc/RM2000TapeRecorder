@@ -164,6 +164,14 @@ class SampleLibraryViewModel: ObservableObject {
 				}
 			}
 			.store(in: &cancellables)
+		
+		// update music player slider as song plays
+		slAudioPlayer.objectWillChange
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] _ in
+				self?.objectWillChange.send()
+			}
+			.store(in: &cancellables)
 	}
 
 	private func matchToSample(id: UUID?) -> Sample? {

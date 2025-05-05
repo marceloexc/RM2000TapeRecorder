@@ -6,17 +6,20 @@
 //
 import SwiftUI
 import AVFoundation
+import Combine
+
 
 class SLAudioPlayer: ObservableObject {
 	private var player: AVPlayer?
 	@Published var isPlaying = false
 	@Published var currentTime: Double = 0
-	@Published var duration: Double = 1  // Default to 1 to avoid divide by zero
+	@Published var duration: Double = 1
 	
 	private var timeObserver: Any?
+	private var timer: AnyCancellable?
 	
 	init() {
-		// Initialize without a file initially
+		// nothing
 	}
 	
 	func loadAudio(from url: URL?) {
@@ -38,9 +41,14 @@ class SLAudioPlayer: ObservableObject {
 		}
 		
 		// Add time observer
-		timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: .main) { [weak self] time in
+		timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.05, preferredTimescale: 600), queue: .main) { [weak self] time in
 			guard let self = self else { return }
-			self.currentTime = time.seconds
+			let currentSeconds = CMTimeGetSeconds(time)
+			if currentSeconds.isFinite {
+				self.currentTime = currentSeconds
+				// Force object to update, which will refresh dependent views
+				self.objectWillChange.send()
+			}
 		}
 		
 		// Listen for when the item finishes playing
@@ -50,6 +58,8 @@ class SLAudioPlayer: ObservableObject {
 			queue: .main) { [weak self] _ in
 				self?.isPlaying = false
 				self?.player?.seek(to: CMTime.zero)
+				self?.currentTime = 0
+				self?.objectWillChange.send()
 			}
 	}
 	

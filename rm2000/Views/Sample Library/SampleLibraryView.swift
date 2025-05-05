@@ -68,6 +68,19 @@ struct SampleLibraryView: View {
 				.disabled(viewModel.selectedSample == nil)
 			}
 			
+			ToolbarItem(id: "rm2000.duration", placement: .favoritesBar) {
+				if (viewModel.slAudioPlayer.isPlaying) {
+					// https://stackoverflow.com/questions/33401388/get-minutes-and-seconds-from-double-in-swift
+					let mins: Int = Int(viewModel.slAudioPlayer.currentTime) / 60
+					let secs: Int = Int(viewModel.slAudioPlayer.currentTime - Double(mins * 60))
+					Text(String(format: "%d:%02d", mins, secs))
+				}
+				else {
+					Text("0:00")
+						.disabled(viewModel.selectedSample == nil)
+				}
+			}
+			
 			ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
 				Slider(
 					value: Binding(
@@ -125,7 +138,7 @@ class SampleLibraryViewModel: ObservableObject {
 	@Published var finishedProcessing: Bool = false
 	@Published var sidebarSelection: String?
 	@Published var detailSelection: SampleListItemModel.ID?
-	@Published var showInspector: Bool = true
+	@Published var showInspector: Bool = false
 	@Published var slAudioPlayer = SLAudioPlayer()
 	
 	private var sampleStorage: SampleStorage

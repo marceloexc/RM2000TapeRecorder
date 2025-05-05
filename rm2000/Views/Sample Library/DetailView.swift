@@ -43,7 +43,6 @@ struct AllRecordingsView: View {
 				List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
 					
 					let itemModel = SampleListItemModel(file: sample)
-					let _ = print("Now selected from all recordings: :\(viewModel.detailSelection)")
 
 					SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
 						.tag(sample.id)

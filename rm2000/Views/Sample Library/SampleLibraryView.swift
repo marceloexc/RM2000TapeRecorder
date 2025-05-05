@@ -12,12 +12,7 @@ struct SampleLibraryView: View {
 	
 	@State private var currentSamplesInView: Int = 0
 	@State private var selection = "Apple"
-	
-	@State private var sliderValue = 50.0
-	
-	let options = ["Apple", "Banana"]
-	
-	
+		
 	init() {
 			_viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
 	}
@@ -30,6 +25,10 @@ struct SampleLibraryView: View {
 			DetailView(viewModel: viewModel)
 		}
 		.toolbar(id: "rm2000.main-toolbar"){
+			
+			ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
+				SidebarButton()
+			}
 			ToolbarItem(id: "rm2000.share.button") {
 				ShareSampleButton()
 			}
@@ -57,37 +56,47 @@ struct SampleLibraryView: View {
 					Label("List", systemImage: "list.bullet")
 				}.pickerStyle(.inline)
 			}
-			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
-				Picker("View settings", selection: $selection) {
-					Label("Grid", systemImage: "play.fill")
-					Label("List", systemImage: "forward.fill")
-				}.pickerStyle(.inline)
-			}
-			ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
-				SidebarButton()
-			}
-			ToolbarItem(id: UUID().uuidString, placement: .favoritesBar) {
-				Slider(value: $sliderValue, in: 0...100)
+
+		}
+		.toolbar(id: "rm2000.favorites-toolbar") {
+			ToolbarItem(id: "rm2000.playpause", placement: .favoritesBar) {
+				Button {
+					viewModel.slAudioPlayer.playPause()
+				} label: {
+					Image(systemName: viewModel.slAudioPlayer.isPlaying ? "pause.fill" : "play.fill")
+				}
+				.disabled(viewModel.selectedSample == nil)
 			}
 			
-			/*
-			 theres this gnarly bug where if i select "Icon and Text" in the
-			 context menu of the toolbar, the sidebar button (now with the
-			 text) will cause the app to freeze. I dont know what causes this.
-			 Even apples official tutorial apps, downloaded from their dev site
-			 and built with xcode, which are meant to show the engineering
-			 prowess of swifui, have this same bug. So i guess no customiziable
-			 toolbars!
-			 
-			 This is why all of the buttons have a hacky workaround where I just
-			 put a Text with a caption font for it to act like "Icon and Text" is
-			 on. Which is the correct way all toolbars should be...
-			 
-			 */
+			ToolbarItem(id: "rm2000.duration", placement: .favoritesBar) {
+				if (viewModel.slAudioPlayer.isPlaying) {
+					// https://stackoverflow.com/questions/33401388/get-minutes-and-seconds-from-double-in-swift
+					let mins: Int = Int(viewModel.slAudioPlayer.currentTime) / 60
+					let secs: Int = Int(viewModel.slAudioPlayer.currentTime - Double(mins * 60))
+					Text(String(format: "%d:%02d", mins, secs))
+				}
+				else {
+					Text("0:00")
+						.disabled(viewModel.selectedSample == nil)
+				}
+			}
 			
-			// UUID() as the id's to workaround a nasty swiftui bug
+			ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
+				Slider(
+					value: Binding(
+						get: { viewModel.slAudioPlayer.currentTime },
+						set: { viewModel.slAudioPlayer.seekTo(time: $0) }
+					),
+					in: 0...viewModel.slAudioPlayer.duration
+				)
+				.disabled(viewModel.selectedSample == nil)
+			}
 			
-			// or else they just wont show up...stupid...
+			ToolbarItem(id: "rm2000.autoplay-toggle", placement: .favoritesBar) {
+				Toggle( "Autoplay",
+								isOn: $viewModel.slAudioPlayer.isAutoplay
+				).toggleStyle(.checkbox)
+			}
 			
 		}
 		.inspector(isPresented: $viewModel.showInspector) {
@@ -129,7 +138,8 @@ class SampleLibraryViewModel: ObservableObject {
 	@Published var finishedProcessing: Bool = false
 	@Published var sidebarSelection: String?
 	@Published var detailSelection: SampleListItemModel.ID?
-	@Published var showInspector: Bool = true
+	@Published var showInspector: Bool = false
+	@Published var slAudioPlayer = SLAudioPlayer()
 	
 	private var sampleStorage: SampleStorage
 	private var cancellables = Set<AnyCancellable>()
@@ -156,6 +166,29 @@ class SampleLibraryViewModel: ObservableObject {
 				self?.indexedTags = Array(newTags).sorted()
 			}
 			.store(in: &cancellables)
+		
+		// Watch for changes in selection and update audio player
+		$detailSelection
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] newSelection in
+				guard let self = self else { return }
+				if let sample = self.matchToSample(id: newSelection) {
+					self.slAudioPlayer.loadAudio(from: sample.fileURL)
+					if (self.slAudioPlayer.isAutoplay) {
+						self.slAudioPlayer.play()
+					}
+				}
+			}
+			.store(in: &cancellables)
+		
+		// update music player slider as song plays
+		slAudioPlayer.objectWillChange
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] _ in
+				self?.objectWillChange.send()
+			}
+			.store(in: &cancellables)
+		
 	}
 
 	private func matchToSample(id: UUID?) -> Sample? {

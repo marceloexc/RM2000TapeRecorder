@@ -1,11 +1,76 @@
 import SwiftUI
 
 struct InspectorView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+	@ObservedObject var viewModel: SampleLibraryViewModel
+	
+	var body: some View {
+		VStack(alignment: .leading, spacing: 0) {
+			if let sample = viewModel.selectedSample {
+				Form {
+					Section(header: Text("Metadata")) {
+						HStack {
+							Text("Title")
+							Spacer()
+							Text(sample.title)
+								.foregroundColor(.secondary)
+						}
+						
+						HStack {
+							Text("Tags")
+							Spacer()
+							ForEach(Array(sample.tags), id: \.self) { tagName in
+								TagComponent(tagName: tagName)
+							}
+						}
+						
+						//						if let desc = sample.description {
+						//							VStack(alignment: .leading) {
+						//								Text("Description")
+						//								Text(desc)
+						//									.foregroundColor(.secondary)
+						//									.font(.body)
+						//									.fixedSize(horizontal: false, vertical: true)
+						//							}
+						//						}
+					}
+					Section(header: Text("File Info")) {
+						HStack {
+							Text("Filename")
+							Spacer()
+							Text(sample.filename ?? "Unknown")
+								.foregroundColor(.secondary)
+						}
+						
+						HStack {
+							Text("File Path")
+							Spacer()
+							Text(sample.fileURL.path)
+								.foregroundColor(.secondary)
+//								.lineLimit(1)
+								.truncationMode(.middle)
+						}
+						Button {
+							NSWorkspace.shared.activateFileViewerSelecting([sample.fileURL])
+						} label: {
+							Image(nsImage: NSWorkspace.shared.icon(forFile: "/System/Library/CoreServices/Finder.app"))
+								.resizable()
+								.scaledToFit()
+								.frame(width: 16, height: 16)
+							Text("Reveal in Finder")
+						}
+
+					}
+				}
+				.formStyle(.grouped)
+			} else {
+				Text("No Sample selected")
+					.padding()
+			}
+		}
+		.padding(-10)
+	}
 }
 
 #Preview {
-    InspectorView()
+	InspectorView(viewModel: SampleLibraryViewModel())
 }

@@ -24,7 +24,7 @@ private struct TaggedRecordingsView: View {
 			List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
 				if sample.tags.contains(selectedTag) {
 					let itemModel = SampleListItemModel(file: sample)
-					SampleIndividualListItem(sample: itemModel)
+					SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
 						.tag(sample.id)
 				}
 			}
@@ -43,10 +43,9 @@ struct AllRecordingsView: View {
 				List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
 					
 					let itemModel = SampleListItemModel(file: sample)
-					let _ = print("Now selected from all recordings: :\(viewModel.detailSelection)")
 
-					SampleIndividualListItem(sample: itemModel)
-						.tag(sample)
+					SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
+						.tag(sample.id)
 					/*
 					 todo - fix this bug where, when uncommented below,
 					 selecting the list item will only work when selecting
@@ -66,6 +65,7 @@ struct AllRecordingsView: View {
 }
 
 struct SampleIndividualListItem: View {
+	@ObservedObject var viewModel: SampleLibraryViewModel
 	@Environment(\.openWindow) var openWindow
 	var sample: SampleListItemModel
 	
@@ -77,11 +77,7 @@ struct SampleIndividualListItem: View {
 				if let sampleObj = sample.file as? Sample, !sampleObj.tags.isEmpty {
 					HStack(spacing: 8) {
 						ForEach(Array(sampleObj.tags), id: \.self) { tagName in
-							Text(tagName)
-								.font(.caption)
-								.padding(2)
-								.background(Color.gray.opacity(0.2))
-								.cornerRadius(3)
+							TagComponent(tagName: tagName)
 						}
 					}
 				}
@@ -91,12 +87,12 @@ struct SampleIndividualListItem: View {
 			
 			HStack {
 				Button {
-					openWindow(id: "inspector")
+					viewModel.detailSelection = sample.id
+					viewModel.showInspector = true
 				} label: {
-					Image(systemName: "info.circle.fill")
+					Image(systemName: "info.circle")
 				}
-				.buttonStyle(.automatic)
-				.controlSize(.small)
+				.buttonStyle(.borderless)
 			}
 		}
 		.contextMenu {

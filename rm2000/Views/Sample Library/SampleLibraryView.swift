@@ -81,7 +81,7 @@ struct SampleLibraryView: View {
 			
 			ToolbarItem(id: "rm2000.autoplay-toggle", placement: .favoritesBar) {
 				Toggle( "Autoplay",
-								isOn: $viewModel.showInspector
+								isOn: $viewModel.slAudioPlayer.isAutoplay
 				).toggleStyle(.checkbox)
 			}
 			
@@ -161,6 +161,9 @@ class SampleLibraryViewModel: ObservableObject {
 				guard let self = self else { return }
 				if let sample = self.matchToSample(id: newSelection) {
 					self.slAudioPlayer.loadAudio(from: sample.fileURL)
+					if (self.slAudioPlayer.isAutoplay) {
+						self.slAudioPlayer.play()
+					}
 				}
 			}
 			.store(in: &cancellables)
@@ -172,6 +175,7 @@ class SampleLibraryViewModel: ObservableObject {
 				self?.objectWillChange.send()
 			}
 			.store(in: &cancellables)
+		
 	}
 
 	private func matchToSample(id: UUID?) -> Sample? {

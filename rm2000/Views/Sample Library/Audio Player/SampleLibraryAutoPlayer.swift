@@ -14,6 +14,7 @@ class SLAudioPlayer: ObservableObject {
 	@Published var isPlaying = false
 	@Published var currentTime: Double = 0
 	@Published var duration: Double = 1
+	@Published var isAutoplay: Bool = false
 	
 	private var timeObserver: Any?
 	private var timer: AnyCancellable?
@@ -70,6 +71,13 @@ class SLAudioPlayer: ObservableObject {
 			player?.play()
 		}
 		isPlaying.toggle()
+	}
+	
+	func play() {
+		if !isPlaying {
+			player?.play()
+			isPlaying = true
+		}
 	}
 	
 	func seekTo(time: Double) {

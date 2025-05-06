@@ -84,10 +84,6 @@ class SampleDirectory: ObservableObject {
 				
 				let finalFilename = metadata.finalFilename()
 				
-				print(tempFilePath)
-				print(finalFilename)
-				print(self.directory.appendingPathExtension(finalFilename))
-				
 				try fileManager.moveItem(
 					at: tempFilePath,
 					to: self.directory.appendingPathComponent(finalFilename)
@@ -140,7 +136,7 @@ class SampleDirectory: ObservableObject {
 	private func setupDirectoryWatching() {
 		query.searchLocations = [self.directory]
 		
-		query.predicate = { $0.contentType == [.mp3, .wav] }
+		query.predicate = { $0.contentType == [.mp3, .wav, UTType("public.aac-audio")] }
 		
 		query.monitorResults = true
 		
@@ -149,6 +145,7 @@ class SampleDirectory: ObservableObject {
 				
 				for new in difference.added {
 					if let fileUrl = new.url {
+						Logger().debug("New file detected in sample directory: \(fileUrl)")
 						let filePath = fileUrl.path
 						
 						// Check if we've already processed this file path
@@ -159,7 +156,7 @@ class SampleDirectory: ObservableObject {
 								self?.indexedTags.formUnion(createdSample.tags)
 								self?.processedFilePaths.insert(filePath)
 							} else {
-								Logger.appState.info("Newly added content rejected: \(String(describing: fileUrl))")
+								Logger.appState.info("Newly added content rejected: \(String(describing: fileUrl)) (does not fit criteria)")
 							}
 						} else {
 							Logger.appState.info("Skipping duplicate file: \(String(describing: fileUrl))")

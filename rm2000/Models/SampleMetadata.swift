@@ -43,7 +43,6 @@ struct SampleMetadata {
 	
 	private static func getDuration(fileURL: URL) -> Double {
 		if let metadata = fileURL.metadata {
-			print(metadata.duration!)
 			return metadata.duration?.rawValue ?? 0
 		}
 		return 0

@@ -43,7 +43,7 @@ struct Sample: Identifiable, Hashable {
 	
 	init?(fileURL: URL) {
 		// only urls that pass the regex text will be allowed
-		guard Sample.passesRegex(fileURL.lastPathComponent) else {
+		guard Sample.passesRegex(fileURL.lastPathComponent), AudioFormat.isSupported(extension: fileURL.pathExtension) else {
 			return nil
 		}
 		

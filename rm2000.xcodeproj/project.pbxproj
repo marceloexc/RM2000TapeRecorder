@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		EB12BC962DC7FE6A0011B7FF /* TagComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */; };
-		EB12BCA32DC813D30011B7FF /* SampleLibraryAutoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */; };
 		EB12BC9B2DC808210011B7FF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC9A2DC808210011B7FF /* WaveformView.swift */; };
 		EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9D2DC808680011B7FF /* DSWaveformImage */; };
 		EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */; };
+		EB12BCA32DC813D30011B7FF /* SampleLibraryAutoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */; };
 		EB1565122D558F2100A3D339 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1565112D558F1F00A3D339 /* Sample.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
 		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
@@ -662,7 +662,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"rm2000/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L5B87F6FJ;
@@ -699,7 +699,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"rm2000/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L5B87F6FJ;

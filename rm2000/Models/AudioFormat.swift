@@ -6,7 +6,7 @@
 //
 
 
-enum AudioFormat: String {
+enum AudioFormat: String, CaseIterable {
 	case aac, mp3, flac, wav
 	
 	var asString: String {
@@ -16,5 +16,9 @@ enum AudioFormat: String {
 		case .flac: return "flac"
 		case .wav: return "wav"
 		}
+	}
+	
+	static func isSupported(extension ext: String) -> Bool {
+		allCases.contains { $0.rawValue.lowercased() == ext.lowercased() }
 	}
 }

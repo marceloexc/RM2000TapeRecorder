@@ -20,12 +20,6 @@ struct SampleMetadata {
 		}
 	}
 	
-	mutating func loadDescription(from fileURL: URL) {
-		if description == nil {
-			description = SampleMetadata.getDescription(fileURL: fileURL)
-		}
-	}
-	
 	var tagsAsString: String {
 		get { tags.sorted().joined(separator: ",") }
 		set {
@@ -34,18 +28,6 @@ struct SampleMetadata {
 				.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
 				.filter { !$0.isEmpty })
 		}
-	}
-
-	
-	private static func getDescription(fileURL: URL) -> String? {
-		fileURL.metadata?.description
-	}
-	
-	private static func getDuration(fileURL: URL) -> Double {
-		if let metadata = fileURL.metadata {
-			return metadata.duration?.rawValue ?? 0
-		}
-		return 0
 	}
 	
 	func finalFilename(fileExtension: String = "mp3") -> String {

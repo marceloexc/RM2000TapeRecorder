@@ -1,6 +1,5 @@
 import Combine
 import UniformTypeIdentifiers
-import FZMetadata
 import Foundation
 import OSLog
 import SwiftUICore
@@ -31,7 +30,6 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 	// when [files] changes in size
 	@Published var indexedTags: Set<String> = []
 	var directory: URL
-	private var query = MetadataQuery()
 	private var processedFilePaths: Set<String> = []
 	
 	private var watcher: DirectoryWatcher?
@@ -61,7 +59,7 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 					}
 				}
 			}
-			Logger.appState.info("Added \(directoryContents.count) files as FZMetadata to \(self.directory.description)")
+			Logger.appState.info("Added \(directoryContents.count) files to \(self.directory.description)")
 
 		} catch {
 			Logger().error("Error initial listing of directory contents: \(error.localizedDescription)")
@@ -132,8 +130,8 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 						data: descriptionData, forName: attr)
 				}
 			} catch {
-				Logger.appState.error(
-					"Couldn't apply xattr's to \(createdSample)")
+//				Logger.appState.error(
+//					"Couldn't apply xattr's to \(createdSample)")
 			}
 		}
 	}
@@ -143,7 +141,7 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 		watcher.delegate = self
 		watcher.start()
 		self.watcher = watcher
-		Logger().info("DirectoryWatcher initialized at \(directory.path)")
+		Logger().info("DirectoryWatcher initialized at \(self.directory.path)")
 	}
 	
 	func directoryWatcher(_ watcher: DirectoryWatcher, changed: DirectoryChangeSet) {

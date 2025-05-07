@@ -75,8 +75,11 @@ struct RecordingTabView: View {
 						.pickerStyle(.segmented)
 						.clipped()
 						.onChange(of: selectedFileType) { newValue in
-							Logger.appState.info("New audio format of \(newValue) selected")
-							
+							// Logger().debug("New audio format of \(newValue) selected")
+							//
+							// ^^^ uncomment that and you get this build error:
+							// Failed to produce diagnostic for expression; please submit a bug report (https://swift.org/contributing/#reporting-bugs)
+							// what the fuck?
 							recordingState.sampleRecordAudioFormat = newValue
 						}
 					}

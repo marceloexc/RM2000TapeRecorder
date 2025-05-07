@@ -1,5 +1,4 @@
 import Foundation
-import FZMetadata
 
 struct Sample: Identifiable, Hashable {
 	var id: UUID
@@ -20,17 +19,6 @@ struct Sample: Identifiable, Hashable {
 	var tags: Set<String> {
 		get { return metadata.tags }
 		set { metadata.tags = newValue }
-	}
-	
-	var description: String? {
-		mutating get {
-			metadata.loadDescription(from: fileURL)
-			return metadata.description
-		}
-	}
-	
-	var fzMetadata: MetadataItem? {
-		fileURL.metadata
 	}
 	
 	// Initialize from an existing recording

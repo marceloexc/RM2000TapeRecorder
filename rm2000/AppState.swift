@@ -51,7 +51,7 @@ import KeyboardShortcuts
 		if let bookmarkData = sampleDirectoryBookmark {
 			restoreBookmarkAccess(with: bookmarkData)
 		}
-		Logger.appState.info("\(String(describing: sampleDirectory)) as the user directory")
+		Logger.appState.info("\(String(describing: self.sampleDirectory)) as the user directory")
 	}
 	
 	func setOpenWindowAction(_ action: OpenWindowAction) {
@@ -71,7 +71,7 @@ import KeyboardShortcuts
 			let bookmarkData = try userDir.bookmarkData(options: .withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil)
 			sampleDirectoryBookmark = bookmarkData
 		} catch {
-			Logger().error("Failed to save bookmark data for \(userDir)", error)
+			Logger().error("Failed to save bookmark data for \(userDir): \(error)")
 		}
 	}
 	
@@ -87,7 +87,7 @@ import KeyboardShortcuts
 				Logger.appState.error("AppState - failed to start access security scoped for directory \(resolvedURL)")
 				return
 			}
-			Logger.appState.info("Set bookmarked access as \(String(describing: sampleDirectory)) : \(resolvedURL)")
+			Logger.appState.info("Set bookmarked access as \(String(describing: self.sampleDirectory)) : \(resolvedURL)")
 			sampleDirectory = resolvedURL
 		} catch {
 			Logger.appState.error("Failed to restore bookmark access: \(error.localizedDescription)")

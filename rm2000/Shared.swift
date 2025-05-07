@@ -22,6 +22,12 @@ extension KeyboardShortcuts.Name {
 	static let recordGlobalShortcut = Self("recordGlobalShortcut", default: .init(.g, modifiers: [.command, .option]))
 }
 
+extension URL {
+	var isDirectory: Bool {
+		(try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+	}
+}
+
 // https://stackoverflow.com/a/56894458
 extension Color {
 	init(hex: UInt, alpha: Double = 1) {

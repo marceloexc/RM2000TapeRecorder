@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,9 @@
 		EB467BD42D920919007E19E8 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BD32D920917007E19E8 /* Buttons.swift */; };
 		EB467BD62D9209CA007E19E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BD52D9209C7007E19E8 /* AppDelegate.swift */; };
 		EB467BD82D920D34007E19E8 /* LCDScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BD72D920D2C007E19E8 /* LCDScreenView.swift */; };
+		EB47764E2DCAA06200B6D553 /* FZMetadata in Frameworks */ = {isa = PBXBuildFile; productRef = EB47764D2DCAA06200B6D553 /* FZMetadata */; };
+		EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */ = {isa = PBXBuildFile; productRef = EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */; };
+		EB4776572DCAA6DD00B6D553 /* SwiftDirectoryWatcher in Embed Frameworks */ = {isa = PBXBuildFile; productRef = EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		EB516E3F2CB75BD100A1C1E6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = EB516E3E2CB75BD100A1C1E6 /* README.md */; };
 		EB5C8FC92D99DA7600C4C3C2 /* SwiftLAME in Frameworks */ = {isa = PBXBuildFile; productRef = EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */; };
 		EB5C8FCC2D99DBDD00C4C3C2 /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */; };
@@ -64,9 +67,22 @@
 		EBF3A1D92DB981FA00BF0944 /* AudioFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */; };
 		EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */; };
 		EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */; };
-		EBFCB1102D77987800A9A226 /* FZMetadata in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB10F2D77987800A9A226 /* FZMetadata */; };
 		EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB1122D77988600A9A226 /* SettingsAccess */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EB4776532DCAA6B600B6D553 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EB4776572DCAA6DD00B6D553 /* SwiftDirectoryWatcher in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagComponent.swift; sourceTree = "<group>"; };
@@ -137,12 +153,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBFCB1102D77987800A9A226 /* FZMetadata in Frameworks */,
 				EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
 				EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */,
 				EB5C8FC92D99DA7600C4C3C2 /* SwiftLAME in Frameworks */,
 				EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */,
+				EB47764E2DCAA06200B6D553 /* FZMetadata in Frameworks */,
+				EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +412,7 @@
 				EBE4E9402C43244D00397EF2 /* Sources */,
 				EBE4E9412C43244D00397EF2 /* Frameworks */,
 				EBE4E9422C43244D00397EF2 /* Resources */,
+				EB4776532DCAA6B600B6D553 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -402,12 +420,13 @@
 			);
 			name = rm2000;
 			packageProductDependencies = (
-				EBFCB10F2D77987800A9A226 /* FZMetadata */,
 				EBFCB1122D77988600A9A226 /* SettingsAccess */,
 				EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */,
 				EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */,
 				EB12BC9D2DC808680011B7FF /* DSWaveformImage */,
 				EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */,
+				EB47764D2DCAA06200B6D553 /* FZMetadata */,
+				EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -438,11 +457,12 @@
 			);
 			mainGroup = EBE4E93B2C43244D00397EF2;
 			packageReferences = (
-				EBA5E5782D7796F800D415DB /* XCLocalSwiftPackageReference "../../Downloads/FZMetadata-main" */,
 				EBFCB1112D77988600A9A226 /* XCRemoteSwiftPackageReference "SettingsAccess" */,
 				EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */,
 				EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */,
+				EB47764C2DCAA06200B6D553 /* XCRemoteSwiftPackageReference "FZMetadata" */,
+				EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -747,13 +767,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		EBA5E5782D7796F800D415DB /* XCLocalSwiftPackageReference "../../Downloads/FZMetadata-main" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../Downloads/FZMetadata-main";
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -761,6 +774,22 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 14.2.2;
+			};
+		};
+		EB47764C2DCAA06200B6D553 /* XCRemoteSwiftPackageReference "FZMetadata" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/flocked/FZMetadata";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/blackbeltlabs/SwiftDirectoryWatcher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
 			};
 		};
 		EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */ = {
@@ -800,6 +829,16 @@
 			package = EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */;
 			productName = DSWaveformImageViews;
 		};
+		EB47764D2DCAA06200B6D553 /* FZMetadata */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB47764C2DCAA06200B6D553 /* XCRemoteSwiftPackageReference "FZMetadata" */;
+			productName = FZMetadata;
+		};
+		EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */;
+			productName = SwiftDirectoryWatcher;
+		};
 		EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */;
@@ -809,11 +848,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
-		};
-		EBFCB10F2D77987800A9A226 /* FZMetadata */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EBA5E5782D7796F800D415DB /* XCLocalSwiftPackageReference "../../Downloads/FZMetadata-main" */;
-			productName = FZMetadata;
 		};
 		EBFCB1122D77988600A9A226 /* SettingsAccess */ = {
 			isa = XCSwiftPackageProductDependency;

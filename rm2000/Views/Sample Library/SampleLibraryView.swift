@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import OSLog
 
 extension ToolbarItemPlacement {
 	static let favoritesBar = accessoryBar(id: "com.example.favorites")
@@ -154,7 +155,6 @@ class SampleLibraryViewModel: ObservableObject {
 		sampleStorage.UserDirectory.$files
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] newFiles in
-				print("NEW FILES RECIEVED \(newFiles)")
 				self?.listOfAllSamples = newFiles
 				self?.finishedProcessing = true
 			}

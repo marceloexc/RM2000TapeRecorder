@@ -4,6 +4,7 @@ import FZMetadata
 import Foundation
 import OSLog
 import SwiftUICore
+import SwiftDirectoryWatcher
 
 @MainActor
 final class SampleStorage: ObservableObject {
@@ -22,7 +23,8 @@ final class SampleStorage: ObservableObject {
 	}
 }
 
-class SampleDirectory: ObservableObject {
+class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
+	
 
 	@Published var files: [Sample] = []
 	// todo - refactor indexedTags to automatically be called
@@ -32,7 +34,10 @@ class SampleDirectory: ObservableObject {
 	private var query = MetadataQuery()
 	private var processedFilePaths: Set<String> = []
 	
+	private var watcher: DirectoryWatcher?
+	
 	let fileManager = FileManager.default
+	
 
 	init(directory: URL) {
 		self.directory = directory
@@ -59,7 +64,7 @@ class SampleDirectory: ObservableObject {
 			Logger.appState.info("Added \(directoryContents.count) files as FZMetadata to \(self.directory.description)")
 
 		} catch {
-			//			Logging.appState.error("Error initial listing of directory contents: \(error.localizedDescription)")
+			Logger().error("Error initial listing of directory contents: \(error.localizedDescription)")
 		}
 	}
 
@@ -83,10 +88,6 @@ class SampleDirectory: ObservableObject {
 				try await encoder.encode(with: configuration)
 				
 				let finalFilename = metadata.finalFilename()
-				
-				print(tempFilePath)
-				print(finalFilename)
-				print(self.directory.appendingPathExtension(finalFilename))
 				
 				try fileManager.moveItem(
 					at: tempFilePath,
@@ -138,61 +139,35 @@ class SampleDirectory: ObservableObject {
 	}
 	
 	private func setupDirectoryWatching() {
-		query.searchLocations = [self.directory]
-		
-		query.predicate = { $0.contentType == [.mp3, .wav] }
-		
-		query.monitorResults = true
-		
-		query.resultsHandler = { [weak self] items, difference in
-			DispatchQueue.main.async {
-				
-				for new in difference.added {
-					if let fileUrl = new.url {
-						let filePath = fileUrl.path
-						
-						// Check if we've already processed this file path
-						if !(self?.processedFilePaths.contains(filePath) ?? false) {
-							if let createdSample = Sample(fileURL: fileUrl) {
-								Logger.appState.info("New content detected: \(String(describing: fileUrl)) for \(self?.directory)")
-								self?.files.append(createdSample)
-								self?.indexedTags.formUnion(createdSample.tags)
-								self?.processedFilePaths.insert(filePath)
-							} else {
-								Logger.appState.info("Newly added content rejected: \(String(describing: fileUrl))")
-							}
-						} else {
-							Logger.appState.info("Skipping duplicate file: \(String(describing: fileUrl))")
-						}
-					}
+		let watcher = DirectoryWatcher(url: directory)
+		watcher.delegate = self
+		watcher.start()
+		self.watcher = watcher
+		Logger().info("DirectoryWatcher initialized at \(directory.path)")
+	}
+	
+	func directoryWatcher(_ watcher: DirectoryWatcher, changed: DirectoryChangeSet) {
+		DispatchQueue.main.async {
+			for url in changed.newFiles {
+				Logger().debug("New file added in sample directory....: \(url)")
+				let path = url.path
+				if !self.processedFilePaths.contains(path),
+					 let sample = Sample(fileURL: url) {
+					self.files.append(sample)
+					self.indexedTags.formUnion(sample.tags)
+					self.processedFilePaths.insert(path)
+					Logger().debug("\(url.lastPathComponent) fits sample criteria!")
 				}
-				
-				for changed in difference.changed {
-					if let movedSample = Sample(fileURL: changed.url!) {
-						print("\(movedSample) has moved!")
-					}
-				}
-				
-				for removed in difference.removed {
-					if let deletedSample = Sample(fileURL: removed.url!) {
-						// Check if the file actually doesn't exist before removing it
-						let fileManager = FileManager.default
-						if !fileManager.fileExists(atPath: removed.url!.path) {
-							Logger.appState.info("Deleting sample from library: \(String(describing: removed.url))")
-							
-							// Remove from files array and processed paths
-							if let index = self?.files.firstIndex(where: { $0.fileURL == deletedSample.fileURL }) {
-								self?.files.remove(at: index)
-								self?.processedFilePaths.remove(removed.url!.path)
-							}
-							Logger.appState.info("Content removed: \(String(describing: removed.url))")
-						} else {
-							Logger.appState.info("File reported as removed but still exists: \(String(describing: removed.url))")
-						}
-					}
+			}
+			
+			for url in changed.deletedFiles {
+				let path = url.path
+				if self.processedFilePaths.contains(path) {
+					self.files.removeAll { $0.fileURL.path == path }
+					self.processedFilePaths.remove(path)
+					Logger().debug("File deleted: \(url.lastPathComponent)")
 				}
 			}
 		}
-		query.start()
 	}
 }

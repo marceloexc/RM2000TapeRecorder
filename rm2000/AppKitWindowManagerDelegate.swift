@@ -8,10 +8,11 @@ class WindowController: NSWindowController {
 	}
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 	var mainWindowController: WindowController?
-	private var onboardingWindowController: NSWindowController?
 	let recordingState = TapeRecorderState()
+	private var onboardingWindowController: NSWindowController?
+	private var hostingView: NSHostingView<AnyView>?
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
 		registerCustomFonts()
@@ -38,6 +39,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.contentView = NSHostingView(rootView: contentView)
 		mainWindowController = WindowController(window: window)
 		mainWindowController?.showWindow(nil)
+	}
+	
+	func showHUDWindow() {
+		let window = FloatingWindow(
+			contentRect: NSRect(x: 0, y: 0, width: 400, height: 250),
+			backing: .buffered,
+			defer: false
+		)
+		
+		let contentView = FloatingGradientView()
+			.environmentObject(self.recordingState)
+		
+		hostingView = NSHostingView(rootView: AnyView(contentView))
+		// Add the hosting view to the window
+		if let contentView = window.contentView {
+			hostingView?.autoresizingMask = [.width, .height]
+			hostingView?.frame = contentView.bounds
+			contentView.addSubview(hostingView!)
+		}
+		
+		window.center()
+		window.makeKeyAndOrderFront(nil)
 	}
 	
 	@MainActor private func showOnboardingWindow() {

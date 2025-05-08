@@ -5,7 +5,7 @@ import SwiftUI
 struct RM2000TapeRecorderApp: App {
 	@StateObject var appState = AppState.shared
 	@StateObject var sampleStorage = SampleStorage.shared
-	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+	@NSApplicationDelegateAdaptor(AppKitWindowManagerDelegate.self) var appDelegate
 
 	@StateObject private var recordingState = TapeRecorderState()
 
@@ -28,15 +28,6 @@ struct RM2000TapeRecorderApp: App {
 		}
 		.windowResizability(.contentSize)
 		.windowStyle(.hiddenTitleBar)
-
-		WindowGroup("HUD Window", id: "hud") {
-			HUDWindowView()
-				.frame(width: 400, height: 250)
-				.background(.clear)
-				.environmentObject(recordingState)
-		}
-		.windowStyle(.hiddenTitleBar)
-		.windowResizability(.contentSize)
 		
 		Settings {
 			SettingsView()

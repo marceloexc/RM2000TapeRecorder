@@ -2,6 +2,8 @@ import SwiftUI
 import OSLog
 
 class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
+	
+	static let shared = TapeRecorderState()
 	@Published var status: RecordingState = .idle
 	@Published var currentSampleFilename: String?
 	@Published var showRenameDialogInMainWindow: Bool = false

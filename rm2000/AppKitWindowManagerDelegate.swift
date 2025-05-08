@@ -10,7 +10,7 @@ class WindowController: NSWindowController {
 
 class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 	var mainWindowController: WindowController?
-	let recordingState = TapeRecorderState()
+	let recordingState = TapeRecorderState.shared
 	private var onboardingWindowController: NSWindowController?
 	private var hostingView: NSHostingView<AnyView>?
 	

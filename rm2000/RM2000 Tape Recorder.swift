@@ -5,9 +5,8 @@ import SwiftUI
 struct RM2000TapeRecorderApp: App {
 	@StateObject var appState = AppState.shared
 	@StateObject var sampleStorage = SampleStorage.shared
+	@StateObject private var recordingState = TapeRecorderState.shared
 	@NSApplicationDelegateAdaptor(AppKitWindowManagerDelegate.self) var appDelegate
-
-	@StateObject private var recordingState = TapeRecorderState()
 
 	var body: some Scene {
 		MenuBarExtra("RP2000 Portable", systemImage: "recordingtape") {

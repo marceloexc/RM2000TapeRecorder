@@ -91,7 +91,29 @@ struct FloatingGradientView: View {
 										speed: 1.0,
 										blur: 0.70)
 			
-			LCDSymbolGlyphs()
+			HStack(spacing: 90) {
+				
+				if recordingState.status == .recording {
+					LCDTextBigWithGradientHUD(timeString(recordingState.elapsedTimeRecording))
+						.frame(maxWidth: 150, alignment: .leading)
+				} else {
+					LCDTextBigWithGradientHUD("STBY")
+						.frame(maxWidth: 150, alignment: .leading)
+				}
+				
+				VUMeter()
+					.mask(LinearGradient(
+						colors: [Color(hex: 0x220300, alpha: 0.02),
+										 Color(hex: 0x220300)],
+						startPoint: .bottom,
+						endPoint: .top
+					))
+					.colorEffect(Shader(function: .init(library: .default, name: "dotMatrix"), arguments: []))
+					.shadow(color: .black.opacity(0.35), radius: 1, x: 2, y: 4)
+				
+					.frame(width: 60, height: 135)
+					.padding(.leading, -20)
+			}
 		}
 		.frame(width: 400, height: 250)
 		.opacity(opacity)

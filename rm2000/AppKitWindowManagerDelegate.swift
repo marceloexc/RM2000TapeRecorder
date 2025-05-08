@@ -59,7 +59,11 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 			contentView.addSubview(hostingView!)
 		}
 		
-		window.center()
+		// get current screen res in order to position it on screen
+		var screenres = NSSize.zero
+		screenres = (NSScreen.main?.visibleFrame.size)!
+		
+		window.setFrameOrigin(NSPoint(x: screenres.width - 415, y: screenres.height / 15))
 		window.makeKeyAndOrderFront(nil)
 	}
 	

@@ -12,7 +12,7 @@ func displayTestingGlobalNotication() async {
 	let content = UNMutableNotificationContent()
 	
 	content.title = "RM2000 Tape Recorder"
-	content.body = "Global recording shortcut presssed!"
+	content.body = "Sample Recorded!"
 	let uuid = UUID().uuidString
 	
 	let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)

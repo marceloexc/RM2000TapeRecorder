@@ -114,6 +114,7 @@ struct FloatingGradientView: View {
 					.frame(width: 60, height: 135)
 					.padding(.leading, -20)
 			}
+			.blendMode(.luminosity)
 		}
 		.frame(width: 400, height: 250)
 		.opacity(opacity)

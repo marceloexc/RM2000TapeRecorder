@@ -42,11 +42,7 @@ import KeyboardShortcuts
 	init() {
 		KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
 			Task {
-				await displayTestingGlobalNotication()
-				appDelegate.showHUDWindow()
-				// TapeRecorderState().startRecording()
-				
-				// todo - add a taperecorderstate singleton
+				await startQuickSampleRecordAndShowHUD()
 			}
 		}
 		
@@ -65,6 +61,17 @@ import KeyboardShortcuts
 	
 	func openOnboardingWindow() {
 		openWindowAction?(id: "onboarding")
+	}
+	
+	private func startQuickSampleRecordAndShowHUD() async {
+		if (TapeRecorderState.shared.status == .idle) {
+			TapeRecorderState.shared.startRecording()
+			appDelegate.showHUDWindow()
+		} else {
+			TapeRecorderState.shared.stopRecording()
+			appDelegate.closeHUDWindow()
+			await displayTestingGlobalNotication()
+		}
 	}
 	
 	// security scoped bookmarks for app sandbox

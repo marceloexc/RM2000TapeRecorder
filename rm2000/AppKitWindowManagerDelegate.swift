@@ -12,7 +12,9 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 	var mainWindowController: WindowController?
 	let recordingState = TapeRecorderState.shared
 	private var onboardingWindowController: NSWindowController?
-	private var hostingView: NSHostingView<AnyView>?
+	private var hudHostingView: NSHostingView<AnyView>?
+	
+	private var hudWindow: NSWindow?
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
 		registerCustomFonts()
@@ -42,29 +44,57 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	func showHUDWindow() {
-		let window = FloatingWindow(
-			contentRect: NSRect(x: 0, y: 0, width: 400, height: 250),
-			backing: .buffered,
-			defer: false
-		)
+		closeHUDWindow()
 		
-		let contentView = FloatingGradientView()
-			.environmentObject(self.recordingState)
-		
-		hostingView = NSHostingView(rootView: AnyView(contentView))
-		// Add the hosting view to the window
-		if let contentView = window.contentView {
-			hostingView?.autoresizingMask = [.width, .height]
-			hostingView?.frame = contentView.bounds
-			contentView.addSubview(hostingView!)
+		// wait a bit for window destruction
+		DispatchQueue.main.async { [weak self] in
+			guard let self = self else { return }
+			
+			let window = FloatingWindow(
+				contentRect: NSRect(x: 0, y: 0, width: 400, height: 250),
+				backing: .buffered,
+				defer: false
+			)
+			
+			window.isReleasedWhenClosed = false // Keep window alive
+			
+			let contentView = FloatingGradientView()
+				.environmentObject(self.recordingState)
+			
+			let hostingView = NSHostingView(rootView: AnyView(contentView))
+			self.hudHostingView = hostingView
+			
+			if let windowContentView = window.contentView {
+				hostingView.autoresizingMask = [.width, .height]
+				hostingView.frame = windowContentView.bounds
+				windowContentView.addSubview(hostingView)
+			}
+			
+			if let screenSize = NSScreen.main?.visibleFrame.size {
+				window.setFrameOrigin(NSPoint(x: screenSize.width - 415, y: screenSize.height / 15))
+			}
+			
+			window.makeKeyAndOrderFront(nil)
+			self.hudWindow = window
 		}
+	}
+	
+	func closeHUDWindow() {
+		guard let windowToClose = hudWindow else { return }
+		hudHostingView?.removeFromSuperview()
+		windowToClose.orderOut(nil)
+		// clear references
+		hudHostingView = nil
+		hudWindow = nil
 		
-		// get current screen res in order to position it on screen
-		var screenres = NSSize.zero
-		screenres = (NSScreen.main?.visibleFrame.size)!
-		
-		window.setFrameOrigin(NSPoint(x: screenres.width - 415, y: screenres.height / 15))
-		window.makeKeyAndOrderFront(nil)
+		// idk how to clean this up properly :V
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+			NSApp.windows.forEach { window in
+				if window === windowToClose {
+					window.close()
+				}
+			}
+		}
 	}
 	
 	@MainActor private func showOnboardingWindow() {

@@ -11,7 +11,6 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 	@Published var elapsedTimeRecording: TimeInterval = 0
 	@AppStorage("sample_record_audio_format") var sampleRecordAudioFormat: AudioFormat = .mp3
 
-	
 	private var timer: Timer?
 	
 	let recorder = TapeRecorder()

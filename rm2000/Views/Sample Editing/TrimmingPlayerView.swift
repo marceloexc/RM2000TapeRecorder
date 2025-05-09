@@ -110,10 +110,10 @@ struct TrimmingPlayerView<Model: FileRepresentable>: View {
 				Text("Player not available")
 					.foregroundColor(.secondary)
 			}
-			if let playerItem = viewModel.playerItem {
-				Text("forward time: \(playerItem.forwardPlaybackEndTime.seconds)")
-				Text("reverse time: \(playerItem.reversePlaybackEndTime.seconds)")
-			}
+//			if let playerItem = viewModel.playerItem {
+//				Text("forward time: \(playerItem.forwardPlaybackEndTime.seconds)")
+//				Text("reverse time: \(playerItem.reversePlaybackEndTime.seconds)")
+//			}
 		}
 	}
 }

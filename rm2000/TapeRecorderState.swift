@@ -28,7 +28,8 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 			startTimer()
 			let newRecording = TemporaryActiveRecording()
 			currentSampleFilename = newRecording.fileURL.lastPathComponent
-			self.currentActiveRecording = newRecording 
+			self.currentActiveRecording = newRecording
+			NSApp.dockTile.badgeLabel = "REC"
 			
 			await recorder.startRecording(to: newRecording.fileURL)
 		}
@@ -39,6 +40,7 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 		timer?.invalidate()
 		timer = nil
 		showRenameDialogInMainWindow = true
+		NSApp.dockTile.badgeLabel = nil
 		Logger.sharedStreamState.info("showing edit sample sheet")
 	}
 	

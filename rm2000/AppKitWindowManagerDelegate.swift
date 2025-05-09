@@ -18,7 +18,6 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
 		registerCustomFonts()
-		NSApp.dockTile.badgeLabel = "Beta 😱😱"
 		if AppState.shared.hasCompletedOnboarding {
 			showMainWindow()
 		} else {

@@ -5,9 +5,8 @@ import SwiftUI
 struct RM2000TapeRecorderApp: App {
 	@StateObject var appState = AppState.shared
 	@StateObject var sampleStorage = SampleStorage.shared
-	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
-	@StateObject private var recordingState = TapeRecorderState()
+	@StateObject private var recordingState = TapeRecorderState.shared
+	@NSApplicationDelegateAdaptor(AppKitWindowManagerDelegate.self) var appDelegate
 
 	var body: some Scene {
 		MenuBarExtra("RP2000 Portable", systemImage: "recordingtape") {
@@ -28,7 +27,7 @@ struct RM2000TapeRecorderApp: App {
 		}
 		.windowResizability(.contentSize)
 		.windowStyle(.hiddenTitleBar)
-
+		
 		Settings {
 			SettingsView()
 				.environmentObject(appState)

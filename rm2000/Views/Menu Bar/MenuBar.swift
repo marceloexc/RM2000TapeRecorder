@@ -7,7 +7,7 @@ struct MenuBarView: View {
 	@EnvironmentObject private var sampleStorage: SampleStorage
 	@Environment(\.openWindow) private var openWindow
 	
-	private var appDelegate = AppDelegate()
+	private var appDelegate = AppKitWindowManagerDelegate()
 	
 	var body: some View {
 		Text("RM2000 Public Beta")

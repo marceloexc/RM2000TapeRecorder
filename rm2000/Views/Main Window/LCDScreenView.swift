@@ -85,13 +85,6 @@ struct LCDSymbolGlyphs: View {
 			// todo - too close. claustrophobic
 		}	.frame(width: 200, height: 168)
 	}
-	
-	
-	private func timeString(_ time: TimeInterval) -> String {
-		let minutes = Int(time) / 60
-		let seconds = Int(time) % 60
-		return String(format: "%02d:%02d", minutes, seconds)
-	}
 }
 
 struct LCDTextStyle: ViewModifier {
@@ -103,6 +96,7 @@ struct LCDTextStyle: ViewModifier {
 
 extension Font {
 	static let tachyoFont = Font.custom("Tachyo", size: 41)
+	static let tachyoFontBig = Font.custom("Tachyo", size: 61)
 	static let tasaFont = Font.custom("TASAExplorer-SemiBold", size: 14)
 }
 
@@ -183,6 +177,30 @@ struct LCDTextBigWithGradient: View {
 			))
 			.shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
 			.font(Font.tachyoFont)
+			.fontWeight(.medium)
+			.fixedSize()
+			.offset(x: -15)
+			.kerning(-1.5)
+	}
+}
+
+struct LCDTextBigWithGradientHUD: View {
+	var title: String
+	
+	init(_ title: String) {
+		self.title = title
+	}
+	
+	var body: some View {
+		Text(" \(title) ")
+			.foregroundStyle(LinearGradient(
+				colors: [Color(hex: 0x220300, alpha: 0.32),
+								 Color(hex: 0x220300)],
+				startPoint: .bottom,
+				endPoint: .top
+			))
+			.shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
+			.font(Font.tachyoFontBig)
 			.fontWeight(.medium)
 			.fixedSize()
 			.offset(x: -15)

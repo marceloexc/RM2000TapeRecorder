@@ -2,6 +2,8 @@ import SwiftUI
 import OSLog
 
 class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
+	
+	static let shared = TapeRecorderState()
 	@Published var status: RecordingState = .idle
 	@Published var currentSampleFilename: String?
 	@Published var showRenameDialogInMainWindow: Bool = false
@@ -9,7 +11,6 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 	@Published var elapsedTimeRecording: TimeInterval = 0
 	@AppStorage("sample_record_audio_format") var sampleRecordAudioFormat: AudioFormat = .mp3
 
-	
 	private var timer: Timer?
 	
 	let recorder = TapeRecorder()

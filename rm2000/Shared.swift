@@ -28,6 +28,12 @@ extension URL {
 	}
 }
 
+func timeString(_ time: TimeInterval) -> String {
+	let minutes = Int(time) / 60
+	let seconds = Int(time) % 60
+	return String(format: "%02d:%02d", minutes, seconds)
+}
+
 // https://stackoverflow.com/a/56894458
 extension Color {
 	init(hex: UInt, alpha: Double = 1) {

@@ -22,7 +22,13 @@ struct SettingsView: View {
 			
 			RecordingTabView(workingDirectory: $workingDirectory)
 				.tabItem {
-					Label("Recording", systemImage: "recordingtape.circle.fill")
+					Label {
+						Text("Recording")
+					} icon: {
+						Image(systemName: "recordingtape")
+							.rotationEffect(.degrees(180))
+							.fontWeight(.black)
+					}
 				}
 				.padding()
 				.frame(width: 450)

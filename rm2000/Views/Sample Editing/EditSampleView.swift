@@ -81,7 +81,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 				.padding(.top, 8)
 			}
 			.padding()
-			.frame(minWidth: 350, maxWidth: 400, minHeight: 300)
+			.frame(minWidth: 350, maxWidth: 400, minHeight: 320)
 		}
 	}
 }

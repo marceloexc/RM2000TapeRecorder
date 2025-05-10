@@ -9,10 +9,14 @@ struct RM2000TapeRecorderApp: App {
 	@NSApplicationDelegateAdaptor(AppKitWindowManagerDelegate.self) var appDelegate
 
 	var body: some Scene {
-		MenuBarExtra("RP2000 Portable", systemImage: "recordingtape") {
+		MenuBarExtra {
 			MenuBarView()
 				.environmentObject(appDelegate.recordingState)
 				.environmentObject(sampleStorage)
+		} label: {
+			Image(systemName: "recordingtape")
+				.rotationEffect(.degrees(180))
+				.fontWeight(.black)
 		}
 		.menuBarExtraStyle(.window)
 

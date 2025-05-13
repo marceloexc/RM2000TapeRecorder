@@ -90,6 +90,11 @@ struct SampleIndividualListItem: View {
 			
 			Spacer()
 			HStack {
+				Text("MP3")
+					.font(.system(.caption, design: .monospaced))
+					.fontWeight(.semibold)
+					.foregroundColor(.secondary)
+				
 				Button {
 					viewModel.detailSelection = sample.id
 					viewModel.showInspector = true

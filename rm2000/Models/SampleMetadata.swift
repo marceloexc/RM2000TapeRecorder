@@ -30,7 +30,7 @@ struct SampleMetadata {
 		}
 	}
 	
-	func finalFilename(fileExtension: String = "mp3") -> String {
+	func finalFilename(fileExtension: String) -> String {
 		// Construct the filename in the format "title--tag1_tag2_tag3.aac"
 		let formattedTags = tags.joined(separator: "_")
 		return "\(title)--\(formattedTags).\(fileExtension)"

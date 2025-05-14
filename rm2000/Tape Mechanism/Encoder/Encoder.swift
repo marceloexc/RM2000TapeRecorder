@@ -104,10 +104,17 @@ class Encoder {
 				await AudioConverter.convert(input: tempURL, output: config.outputURL!, format: config.outputFormat)
 
 			} else {
+				await MainActor.run {
+					TapeRecorderState.shared.status = .busy
+				}
 				
 				Logger().debug("Sending encode configuration as \(String(describing: config))")
 
 				await AudioConverter.convert(input: self.sourceURL!, output: config.outputURL!, format: config.outputFormat)
+				
+				await MainActor.run {
+					TapeRecorderState.shared.status = .idle
+				}
 			}
 			
 		case .existingSample:

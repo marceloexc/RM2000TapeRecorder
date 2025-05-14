@@ -109,6 +109,13 @@ struct SampleIndividualListItem: View {
 				NSWorkspace.shared.open(sample.file.fileURL)
 			}
 		}
+		.onDrag {
+			let provider = NSItemProvider(contentsOf: sample.file.fileURL) ?? NSItemProvider()
+			
+			provider.suggestedName = sample.text
+			
+			return provider
+		}
 	}
 }
 

@@ -78,14 +78,15 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 		Task {
 			do {
 				let encoder = Encoder(fileURL: sample.fileURL)
-				
-				let filename = sample.id.uuidString + ".mp3" // TODO - fix this
+				let audioFormat = TapeRecorderState.shared.sampleRecordAudioFormat
+				let filename = sample.id.uuidString + "." + audioFormat.asString
 				let tempFilePath = WorkingDirectory.applicationSupportPath().appendingPathComponent(filename)
-				let configuration = EncodingConfig(outputFormat: .mp3, outputURL: tempFilePath)
+				
+				let configuration = EncodingConfig(outputFormat: TapeRecorderState.shared.sampleRecordAudioFormat, outputURL: tempFilePath)
 				
 				try await encoder.encode(with: configuration)
 				
-				let finalFilename = metadata.finalFilename()
+				let finalFilename = metadata.finalFilename(fileExtension: audioFormat.asString)
 				
 				try fileManager.moveItem(
 					at: tempFilePath,

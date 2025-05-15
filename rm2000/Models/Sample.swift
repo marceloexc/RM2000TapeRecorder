@@ -51,9 +51,9 @@ struct Sample: Identifiable, Hashable {
 		(try? regString.wholeMatch(in: pathName)) != nil
 	}
 	
-	func finalFilename() -> String {
-		return metadata.finalFilename()
-	}
+//	func finalFilename() -> String {
+//		return metadata.finalFilename(fileExtension: String)
+//	}
 	
 	// MARK: - Hashable Conformance, to be fair don't uderstand yet what it does
 	

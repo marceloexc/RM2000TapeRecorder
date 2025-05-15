@@ -6,10 +6,6 @@ import OSLog
 
 struct AudioConverter {
 	static func convert(input: URL, output: URL, format: AudioFormat) async {
-		guard format == .mp3 else {
-			Logger().error("Unsupported format: \(String(describing: format))")
-			return
-		}
 		
 		do {
 			let progress = Progress()
@@ -17,7 +13,7 @@ struct AudioConverter {
 				sourceUrl: input,
 				configuration: .init(
 					sampleRate: .default,
-					bitrateMode: .constant(320),
+					bitrateMode: .variable(.modernRH),
 					quality: .best
 				),
 				destinationUrl: output,
@@ -94,8 +90,7 @@ class Encoder {
 		case .fileURL:
 		
 			if needsTrimming {
-				// i cant use formatconverter automatically - i have to convert to pcmbuffer, then render as a .caf, then formatconvert
-				// function here
+				Logger().debug("Sample needs trimming")
 				
 				let buffer = getPCMBuffer(fileURL: self.sourceURL!)
 				let extractedBuffer = getExtractedBufferPortion(pcmBuffer: buffer!)
@@ -109,10 +104,17 @@ class Encoder {
 				await AudioConverter.convert(input: tempURL, output: config.outputURL!, format: config.outputFormat)
 
 			} else {
-				print("converting")
+				await MainActor.run {
+					TapeRecorderState.shared.status = .busy
+				}
 				
-				// FIXME FIXME FIXME - the outputurl cannot be nil! Dont force unwrap!
-				await AudioConverter.convert(input: self.sourceURL!, output: config.outputURL!, format: .mp3)
+				Logger().debug("Sending encode configuration as \(String(describing: config))")
+
+				await AudioConverter.convert(input: self.sourceURL!, output: config.outputURL!, format: config.outputFormat)
+				
+				await MainActor.run {
+					TapeRecorderState.shared.status = .idle
+				}
 			}
 			
 		case .existingSample:

@@ -90,7 +90,8 @@ struct SampleIndividualListItem: View {
 			
 			Spacer()
 			HStack {
-				Text("MP3")
+				// show extension of the sample
+				Text(sample.file.fileURL.pathExtension.uppercased())
 					.font(.system(.caption, design: .monospaced))
 					.fontWeight(.semibold)
 					.foregroundColor(.secondary)
@@ -104,11 +105,6 @@ struct SampleIndividualListItem: View {
 				.buttonStyle(.borderless)
 			}
 		}
-		.contextMenu {
-			Button("Open File") {
-				NSWorkspace.shared.open(sample.file.fileURL)
-			}
-		}
 		.draggable(sample) {
 			// example view for now
 			Label(sample.file.fileURL.lastPathComponent, systemImage: "waveform")
@@ -116,6 +112,11 @@ struct SampleIndividualListItem: View {
 				.background(Color(NSColor.windowBackgroundColor))
 				.cornerRadius(8)
 				.shadow(radius: 2)
+		}
+		.contextMenu {
+			Button("Open File") {
+				NSWorkspace.shared.open(sample.file.fileURL)
+			}
 		}
 	}
 }

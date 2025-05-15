@@ -1,26 +1,14 @@
-import SwiftLAME
+import SFBAudioEngine
 import Foundation
 import AVFoundation
 import CoreMedia
 import OSLog
 
-struct AudioConverter {
+struct RMAudioConverter {
 	static func convert(input: URL, output: URL, format: AudioFormat) async {
-		
 		do {
 			let progress = Progress()
-			let encoder = try SwiftLameEncoder(
-				sourceUrl: input,
-				configuration: .init(
-					sampleRate: .default,
-					bitrateMode: .variable(.modernRH),
-					quality: .best
-				),
-				destinationUrl: output,
-				progress: progress
-			)
-			
-			try await encoder.encode(priority: .userInitiated)
+			try AudioConverter.convert(input, to: output)
 			Logger().info("Conversion complete")
 		} catch {
 			Logger().error("Conversion failed: \(error.localizedDescription)")
@@ -30,7 +18,6 @@ struct AudioConverter {
 
 
 struct EncodingConfig {
-	
 	let outputFormat: AudioFormat
 	let outputURL: URL?
 	let forwardStartTime: CMTime?
@@ -101,7 +88,7 @@ class Encoder {
 					return
 				}
 			
-				await AudioConverter.convert(input: tempURL, output: config.outputURL!, format: config.outputFormat)
+				await RMAudioConverter.convert(input: tempURL, output: config.outputURL!, format: config.outputFormat)
 
 			} else {
 				await MainActor.run {
@@ -110,7 +97,7 @@ class Encoder {
 				
 				Logger().debug("Sending encode configuration as \(String(describing: config))")
 
-				await AudioConverter.convert(input: self.sourceURL!, output: config.outputURL!, format: config.outputFormat)
+				await RMAudioConverter.convert(input: self.sourceURL!, output: config.outputURL!, format: config.outputFormat)
 				
 				await MainActor.run {
 					TapeRecorderState.shared.status = .idle

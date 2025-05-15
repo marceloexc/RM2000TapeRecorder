@@ -26,6 +26,12 @@ extension URL {
 	var isDirectory: Bool {
 		(try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
 	}
+	
+	// https://stackoverflow.com/a/56044623
+	var fileSize: Int? {
+		let value = try? resourceValues(forKeys: [.fileSizeKey])
+		return value?.fileSize
+	}
 }
 
 func timeString(_ time: TimeInterval) -> String {

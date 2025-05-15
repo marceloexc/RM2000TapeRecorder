@@ -42,11 +42,19 @@ struct InspectorView: View {
 						}
 						
 						HStack {
-							Text("File Path")
+							Text("File path")
 							Spacer()
 							Text(sample.fileURL.path)
 								.foregroundColor(.secondary)
-//								.lineLimit(1)
+								.truncationMode(.middle)
+						}
+						HStack {
+							Text("File size")
+							Spacer()
+							let rawByteSize: Int64 = Int64(truncatingIfNeeded: sample.fileURL.fileSize ?? 0)
+							let fileSizeWithUnit = ByteCountFormatter.string(fromByteCount: rawByteSize, countStyle: .file)
+							Text(fileSizeWithUnit)
+								.foregroundColor(.secondary)
 								.truncationMode(.middle)
 						}
 						Button {

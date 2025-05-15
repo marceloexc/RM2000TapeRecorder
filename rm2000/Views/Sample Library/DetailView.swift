@@ -90,6 +90,12 @@ struct SampleIndividualListItem: View {
 			
 			Spacer()
 			HStack {
+				// show extension of the sample
+				Text(sample.file.fileURL.pathExtension.uppercased())
+					.font(.system(.caption, design: .monospaced))
+					.fontWeight(.semibold)
+					.foregroundColor(.secondary)
+				
 				Button {
 					viewModel.detailSelection = sample.id
 					viewModel.showInspector = true
@@ -98,6 +104,14 @@ struct SampleIndividualListItem: View {
 				}
 				.buttonStyle(.borderless)
 			}
+		}
+		.draggable(sample) {
+			// example view for now
+			Label(sample.file.fileURL.lastPathComponent, systemImage: "waveform")
+				.padding()
+				.background(Color(NSColor.windowBackgroundColor))
+				.cornerRadius(8)
+				.shadow(radius: 2)
 		}
 		.contextMenu {
 			Button("Open File") {

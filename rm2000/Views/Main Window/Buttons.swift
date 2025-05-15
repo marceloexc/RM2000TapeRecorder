@@ -47,16 +47,13 @@ struct StandbyRecordButton: View {
 			Image("RecordButtonIndent")
 			Image("RecordButtonTemp")
 			Image("RecordButtonGlow")
+				.resizable()
+				.frame(width: 200, height: 200)
+				.allowsHitTesting(false)
 			
 			Button(action: onPress) {
 				Rectangle()
-				// stupid fucking hack below
 				// i cant have opactiy(0) on a button, because then that disables it completely
-				// it needs to be transparent becuase the images _are_ the buttons.
-				
-				// i still think having assets in lieu of skeuemorphic elements are really cheap
-				// (hinders actual reactivity and im at the mercy of exporting everything from sketch),
-				// but i still havent learned core animation / CALayers yet, so this will do...
 					.fill(Color.white.opacity(0.001))
 					.frame(width: 70, height: 70)
 			}
@@ -72,10 +69,15 @@ struct ActiveRecordButton: View {
 	var body: some View {
 		ZStack {
 			Image("RecordButtonIndent")
-			Image("RecordButtonTemp")
 			Image("RecordButtonActiveTemp")
+			Image("RecordButtonTemp")
 				.pulseEffect()
 			Image("RecordButtonGlow")
+				.resizable()
+				.frame(width: 200, height: 200)
+				.pulseEffect()
+				.allowsHitTesting(false)
+
 			
 			Button(action: onPress) {
 				Rectangle()
@@ -101,10 +103,10 @@ struct PulseEffect: ViewModifier {
 	
 	func body(content: Content) -> some View {
 		content
-			.opacity(pulseIsInMaxState ? range.lowerBound : range.upperBound)
-			.onAppear { pulseIsInMaxState = false }
+			.opacity(pulseIsInMaxState ? range.upperBound : range.lowerBound)
+			.onAppear { pulseIsInMaxState.toggle() }
 			.animation(
-				.easeInOut(duration: duration).repeatForever(),
+				.easeInOut(duration: duration).repeatForever(autoreverses: true),
 				value: pulseIsInMaxState)
 	}
 }

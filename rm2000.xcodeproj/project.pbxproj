@@ -23,6 +23,7 @@
 		EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */ = {isa = PBXBuildFile; productRef = EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */; };
 		EB4776572DCAA6DD00B6D553 /* SwiftDirectoryWatcher in Embed Frameworks */ = {isa = PBXBuildFile; productRef = EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		EB516E3F2CB75BD100A1C1E6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = EB516E3E2CB75BD100A1C1E6 /* README.md */; };
+		EB5BB4382DD6590800DFAA33 /* SampleLibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */; };
 		EB5C8FC92D99DA7600C4C3C2 /* SwiftLAME in Frameworks */ = {isa = PBXBuildFile; productRef = EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */; };
 		EB5C8FCC2D99DBDD00C4C3C2 /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */; };
 		EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6065182C850A300017CB33 /* TapeRecorderState.swift */; };
@@ -99,6 +100,7 @@
 		EB467BD72D920D2C007E19E8 /* LCDScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCDScreenView.swift; sourceTree = "<group>"; };
 		EB516E3D2CB75BC300A1C1E6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		EB516E3E2CB75BD100A1C1E6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryViewModel.swift; sourceTree = "<group>"; usesTabs = 0; };
 		EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encoder.swift; sourceTree = "<group>"; };
 		EB6065182C850A300017CB33 /* TapeRecorderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeRecorderState.swift; sourceTree = "<group>"; };
 		EB63A3012D6A88A700E35AE6 /* SampleStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleStorage.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 		EB1565102D558F0700A3D339 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */,
 				EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */,
 				EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */,
 				EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */,
@@ -540,6 +543,7 @@
 				EBBBFE8F2CA2588A00E987B1 /* AudioManager.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,
 				EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */,
+				EB5BB4382DD6590800DFAA33 /* SampleLibraryViewModel.swift in Sources */,
 				EB467BD42D920919007E19E8 /* Buttons.swift in Sources */,
 				EB8313F42D4DF59700B343FF /* DetailView.swift in Sources */,
 				EBB69B002DA24DB100ADA2DD /* TemporaryActiveRecording.swift in Sources */,

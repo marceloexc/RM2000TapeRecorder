@@ -109,12 +109,13 @@ struct SampleIndividualListItem: View {
 				NSWorkspace.shared.open(sample.file.fileURL)
 			}
 		}
-		.onDrag {
-			let provider = NSItemProvider(contentsOf: sample.file.fileURL) ?? NSItemProvider()
-			
-			provider.suggestedName = sample.text
-			
-			return provider
+		.draggable(sample) {
+			// example view for now
+			Label(sample.file.fileURL.lastPathComponent, systemImage: "waveform")
+				.padding()
+				.background(Color(NSColor.windowBackgroundColor))
+				.cornerRadius(8)
+				.shadow(radius: 2)
 		}
 	}
 }

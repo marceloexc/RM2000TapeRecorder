@@ -29,7 +29,7 @@ class SkeuromorphicWindow: NSWindow {
 		
 		//omg skeuromorphism.
 		
-		let imageView = NSImageView(frame: NSRect(x: -66, y: -14, width: 140, height: 28))
+		let imageView = NSImageView(frame: NSRect(x: -70, y: -14, width: 140, height: 28))
 		
 		if let image = NSImage(named: "MicGrilleTemp") {
 			image.size = NSSize(width: 130, height: 19)

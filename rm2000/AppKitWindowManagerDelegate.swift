@@ -4,7 +4,6 @@ import SwiftUI
 class WindowController: NSWindowController {
 	override func windowDidLoad() {
 		super.windowDidLoad()
-		window?.center()
 	}
 }
 
@@ -36,7 +35,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 		let contentView = ContentView()
 			.environmentObject(self.recordingState)
 			.openSettingsAccess()
-		
+		window.center()
 		window.contentView = NSHostingView(rootView: contentView)
 		mainWindowController = WindowController(window: window)
 		mainWindowController?.showWindow(nil)

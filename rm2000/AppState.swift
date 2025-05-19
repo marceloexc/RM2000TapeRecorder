@@ -63,6 +63,10 @@ import KeyboardShortcuts
 		openWindowAction?(id: "onboarding")
 	}
 	
+	func closeHUDWindow() {
+		appDelegate.closeHUDWindow()
+	}
+	
 	private func startQuickSampleRecordAndShowHUD() async {
 		if (TapeRecorderState.shared.status == .idle) {
 			TapeRecorderState.shared.startRecording()

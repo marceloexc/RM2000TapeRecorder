@@ -11,24 +11,37 @@ import OSLog
 
 class AudioManager {
 	
+	private let writeQueue = DispatchQueue(label: "audio.writer.queue")
+	private var audioFile: AVAudioFile?
+	private let encodingParams: [String: Any] = [
+		AVFormatIDKey: kAudioFormatMPEG4AAC,
+		AVSampleRateKey: 48000,
+		AVNumberOfChannelsKey: 2,
+		AVEncoderBitRateKey: 128000
+	]
+	
 	func setupAudioWriter(fileURL: URL) throws {
 		audioFile = try AVAudioFile(forWriting: fileURL, settings: encodingParams, commonFormat: .pcmFormatFloat32, interleaved: false)
 	}
   
 	func writeSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
-		guard sampleBuffer.isValid, let samples = sampleBuffer.asPCMBuffer else {
-			Logger.audioManager.warning("Invalid sample buffer or conversion failed")
-			return
-		}
-		
-		// post the audiolevel into the wild for observing
-		let currentAudioLevel = getAudioLevel(from: sampleBuffer)
-		NotificationCenter.default.post(name: .audioLevelUpdated, object: nil, userInfo: ["level": currentAudioLevel])
-		
-		do {
-			try audioFile?.write(from: samples)
-		} catch {
-			Logger.audioManager.error("Couldn't write samples: \(error.localizedDescription)")
+		writeQueue.async {
+			guard sampleBuffer.isValid, let samples = sampleBuffer.asPCMBuffer else {
+				Logger.audioManager.warning("Invalid sample buffer or conversion failed")
+				return
+			}
+			
+			// post the audiolevel into the wild for observing
+			let currentAudioLevel = self.getAudioLevel(from: sampleBuffer)
+			DispatchQueue.main.async {
+				NotificationCenter.default.post(name: .audioLevelUpdated, object: nil, userInfo: ["level": currentAudioLevel])
+			}
+			
+			do {
+				try self.audioFile?.write(from: samples)
+			} catch {
+				Logger.audioManager.error("Couldn't write samples: \(error.localizedDescription)")
+			}
 		}
 	}
   
@@ -67,18 +80,21 @@ class AudioManager {
 		
 		return pow(rms, 0.3)
 	}
+	
 	func stopAudioWriter() {
-		audioFile = nil
+		writeQueue.sync { [weak self] in
+			if #available(macOS 15.0, *) {
+				// close func barely added to macos15? wtf?
+				try? self?.audioFile?.close()
+			}
+			self?.audioFile = nil
+		}
 	}
 	
-	private var audioFile: AVAudioFile?
-  
-	private let encodingParams: [String: Any] = [
-		AVFormatIDKey: kAudioFormatMPEG4AAC,
-		AVSampleRateKey: 48000,
-		AVNumberOfChannelsKey: 2,
-		AVEncoderBitRateKey: 128000
-	]
+	deinit {
+		// just to be sure
+		try? self.audioFile = nil
+	}
 }
 
 extension Notification.Name {

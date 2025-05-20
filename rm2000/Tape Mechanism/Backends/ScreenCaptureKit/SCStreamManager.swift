@@ -15,10 +15,6 @@ class SCStreamManager: NSObject, SCStreamDelegate {
     
 	func setupAudioStream() async throws {
 		let streamConfiguration = SCStreamConfiguration()
-		streamConfiguration.width = 2
-		streamConfiguration.height = 2
-		streamConfiguration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale.max)
-		streamConfiguration.showsCursor = true
 		streamConfiguration.sampleRate = 48000
 		streamConfiguration.channelCount = 2
 		streamConfiguration.capturesAudio = true
@@ -44,6 +40,7 @@ class SCStreamManager: NSObject, SCStreamDelegate {
   
 	func stopCapture() {
 		stream?.stopCapture()
+		try? stream?.removeStreamOutput(self, type: .audio)
 		stream = nil
 	}
   

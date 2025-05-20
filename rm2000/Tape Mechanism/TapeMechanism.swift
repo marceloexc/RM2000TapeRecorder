@@ -82,6 +82,7 @@ extension TapeRecorder: StreamManagerDelegate {
 	}
   
 	func streamManager(_ manager: SCStreamManager, didStopWithError error: Error) {
+		audioManager.stopAudioWriter()
 		stopRecording()
 		delegate?.tapeRecorder(self, didEncounterError: error)
 	}

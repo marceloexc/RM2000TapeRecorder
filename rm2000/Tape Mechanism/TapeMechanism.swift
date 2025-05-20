@@ -19,7 +19,7 @@ class TapeRecorder: NSObject {
     
 	weak var delegate: TapeRecorderDelegate?
   
-	private let streamManager: StreamManager
+	private let streamManager: SCStreamManager
 	private let audioManager: AudioManager
   
 	private(set) var isRecording: Bool = false
@@ -29,7 +29,7 @@ class TapeRecorder: NSObject {
 	private var temporaryDirectory: String?
     
 	override init() {
-		self.streamManager = StreamManager()
+		self.streamManager = SCStreamManager()
 		self.audioManager = AudioManager()
 		super.init()
 	  
@@ -43,8 +43,6 @@ class TapeRecorder: NSObject {
 			Logger.tapeRecorder.warning("Recording is already in progress")
 			return
 		}
-	  
-		
 		Logger.tapeRecorder.info("Destination set as \(fileURL)")
 		
 		do {
@@ -77,13 +75,13 @@ class TapeRecorder: NSObject {
 }
 
 extension TapeRecorder: StreamManagerDelegate {
-	func streamManager(_ manager: StreamManager, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
+	func streamManager(_ manager: SCStreamManager, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
 		guard type == .audio else { return }
 	  
 		audioManager.writeSampleBuffer(sampleBuffer)
 	}
   
-	func streamManager(_ manager: StreamManager, didStopWithError error: Error) {
+	func streamManager(_ manager: SCStreamManager, didStopWithError error: Error) {
 		stopRecording()
 		delegate?.tapeRecorder(self, didEncounterError: error)
 	}

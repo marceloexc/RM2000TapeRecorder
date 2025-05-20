@@ -8,7 +8,7 @@
 import Foundation
 import ScreenCaptureKit
 
-class StreamManager: NSObject, SCStreamDelegate {
+class SCStreamManager: NSObject, SCStreamDelegate {
     
 	weak var delegate: StreamManagerDelegate?
 	private var stream: SCStream?
@@ -55,7 +55,7 @@ class StreamManager: NSObject, SCStreamDelegate {
 }
 
 
-extension StreamManager: SCStreamOutput {
+extension SCStreamManager: SCStreamOutput {
 	func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
 		delegate?.streamManager(self, didOutputSampleBuffer: sampleBuffer, of: type)
 	}

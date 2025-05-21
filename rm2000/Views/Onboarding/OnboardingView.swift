@@ -44,7 +44,7 @@ struct FinalOnboardingCompleteView: View {
 
 struct SettingsStepView: View {
 	
-	private let streamManager = StreamManager()
+	private let streamManager = SCStreamManager()
 
 	@ObservedObject var viewModel: OnboardingViewModel
 	@EnvironmentObject var appState: AppState

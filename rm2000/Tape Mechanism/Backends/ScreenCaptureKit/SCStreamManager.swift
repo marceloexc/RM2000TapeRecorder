@@ -8,17 +8,13 @@
 import Foundation
 import ScreenCaptureKit
 
-class StreamManager: NSObject, SCStreamDelegate {
+class SCStreamManager: NSObject, SCStreamDelegate, @unchecked Sendable {
     
 	weak var delegate: StreamManagerDelegate?
 	private var stream: SCStream?
     
 	func setupAudioStream() async throws {
 		let streamConfiguration = SCStreamConfiguration()
-		streamConfiguration.width = 2
-		streamConfiguration.height = 2
-		streamConfiguration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale.max)
-		streamConfiguration.showsCursor = true
 		streamConfiguration.sampleRate = 48000
 		streamConfiguration.channelCount = 2
 		streamConfiguration.capturesAudio = true
@@ -37,25 +33,28 @@ class StreamManager: NSObject, SCStreamDelegate {
 		guard let stream = stream else {
 			throw NSError(domain: "RecordingError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Stream not prepared"])
 		}
-	  
-		try stream.addStreamOutput(self, type: .audio, sampleHandlerQueue: .global())
+		let audioProcessingQueue = DispatchQueue(label: "AudioProcessingQueue")
+		try stream.addStreamOutput(self, type: .audio, sampleHandlerQueue: audioProcessingQueue)
 		stream.startCapture()
 	}
   
 	func stopCapture() {
 		stream?.stopCapture()
+		try? stream?.removeStreamOutput(self, type: .audio)
 		stream = nil
 	}
   
 	// make scstreamdelegate ghappy
   
 	func stream(_ stream: SCStream, didStopWithError error: Error) {
-		delegate?.streamManager(self, didStopWithError: error)
+		Task { @MainActor in
+			delegate?.streamManager(self, didStopWithError: error)
+		}
 	}
 }
 
 
-extension StreamManager: SCStreamOutput {
+extension SCStreamManager: SCStreamOutput {
 	func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
 		delegate?.streamManager(self, didOutputSampleBuffer: sampleBuffer, of: type)
 	}

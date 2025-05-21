@@ -2,7 +2,6 @@ import SwiftUI
 import OSLog
 
 class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
-	
 	static let shared = TapeRecorderState()
 	@Published var status: RecordingState = .idle
 	@Published var currentSampleFilename: String?
@@ -10,9 +9,7 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 	@Published var currentActiveRecording: TemporaryActiveRecording?
 	@Published var elapsedTimeRecording: TimeInterval = 0
 	@AppStorage("sample_record_audio_format") var sampleRecordAudioFormat: AudioFormat = .mp3
-
 	private var timer: Timer?
-	
 	let recorder = TapeRecorder()
 	
 	init() {
@@ -41,6 +38,12 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 		timer = nil
 		showRenameDialogInMainWindow = true
 		NSApp.dockTile.badgeLabel = nil
+		Task {
+			do {
+				await AppState.shared.closeHUDWindow() // ensure hud window is closed
+				// TODO - this is very hacky
+			}
+		}
 		Logger.sharedStreamState.info("showing edit sample sheet")
 	}
 	

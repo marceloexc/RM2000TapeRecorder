@@ -11,32 +11,52 @@ import OSLog
 
 class AudioManager {
 	
+	var pcmBufferHandler: ((AVAudioPCMBuffer) -> Void)?
+	private let writeQueue = DispatchQueue(label: "audio.writer.queue")
+	private var audioFile: AVAudioFile?
+	private let encodingParams: [String: Any] = [
+		AVFormatIDKey: kAudioFormatLinearPCM,
+		AVSampleRateKey: 48000.0,
+		AVNumberOfChannelsKey: 2,
+		AVLinearPCMBitDepthKey: 16,
+		AVLinearPCMIsFloatKey: false,
+		AVLinearPCMIsBigEndianKey: false,
+		AVLinearPCMIsNonInterleaved: false
+	]
+	
 	func setupAudioWriter(fileURL: URL) throws {
 		audioFile = try AVAudioFile(forWriting: fileURL, settings: encodingParams, commonFormat: .pcmFormatFloat32, interleaved: false)
 	}
   
 	func writeSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
-		guard sampleBuffer.isValid, let samples = sampleBuffer.asPCMBuffer else {
-			Logger.audioManager.warning("Invalid sample buffer or conversion failed")
-			return
-		}
-		
-		// post the audiolevel into the wild for observing
-		let currentAudioLevel = getAudioLevel(from: sampleBuffer)
-		NotificationCenter.default.post(name: .audioLevelUpdated, object: nil, userInfo: ["level": currentAudioLevel])
-		
-		do {
-			try audioFile?.write(from: samples)
-		} catch {
-			Logger.audioManager.error("Couldn't write samples: \(error.localizedDescription)")
+		writeQueue.async {
+			guard sampleBuffer.isValid else {
+				Logger.audioManager.warning("Invalid sample buffer or conversion failed")
+				return
+			}
+			
+			try? sampleBuffer.withAudioBufferList { audioBufferList, blockBuffer in
+				guard let description = sampleBuffer.formatDescription?.audioStreamBasicDescription,
+							let format = AVAudioFormat(standardFormatWithSampleRate: description.mSampleRate, channels: description.mChannelsPerFrame),
+							let samples = AVAudioPCMBuffer(pcmFormat: format, bufferListNoCopy: audioBufferList.unsafePointer)
+							else { return }
+				self.pcmBufferHandler?(samples)
+				do {
+					try self.audioFile?.write(from: samples)
+					// post the audiolevel into the wild for observing
+					let currentAudioLevel = self.getAudioLevel(from: samples)
+
+					DispatchQueue.main.async {
+						NotificationCenter.default.post(name: .audioLevelUpdated, object: nil, userInfo: ["level": currentAudioLevel])
+					}
+				} catch {
+					Logger.audioManager.error("Couldn't write samples: \(error.localizedDescription)")
+				}
+			}
 		}
 	}
   
-	func getAudioLevel(from sampleBuffer: CMSampleBuffer) -> Float {
-		guard sampleBuffer.isValid, let samples = sampleBuffer.asPCMBuffer else {
-			Logger.audioManager.warning("Invalid sample buffer or conversion failed")
-			return 0.0
-		}
+	func getAudioLevel(from samples: AVAudioPCMBuffer) -> Float {
 		
 		// calculate root mean square
 		// https://stackoverflow.com/a/43789556
@@ -67,18 +87,21 @@ class AudioManager {
 		
 		return pow(rms, 0.3)
 	}
+	
 	func stopAudioWriter() {
-		audioFile = nil
+		writeQueue.sync { [weak self] in
+			if #available(macOS 15.0, *) {
+				// close func barely added to macos15? wtf?
+				try? self?.audioFile?.close()
+			}
+			self?.audioFile = nil
+		}
 	}
 	
-	private var audioFile: AVAudioFile?
-  
-	private let encodingParams: [String: Any] = [
-		AVFormatIDKey: kAudioFormatMPEG4AAC,
-		AVSampleRateKey: 48000,
-		AVNumberOfChannelsKey: 2,
-		AVEncoderBitRateKey: 128000
-	]
+	deinit {
+		// just to be sure
+		try? self.audioFile = nil
+	}
 }
 
 extension Notification.Name {

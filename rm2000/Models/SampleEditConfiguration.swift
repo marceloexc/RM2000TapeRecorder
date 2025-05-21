@@ -1,13 +1,14 @@
 import Foundation
+import CoreMedia
 
 struct SampleEditConfiguration {
 	var deleteAfterComplete: Bool = false // this is true for TemporaryActiveRecording recordings
 	
 	var desiredAudioFormat: AudioFormat = .wav
 	
-	var startingTrimPoint: TimeInterval? = nil
+	var forwardEndTime: CMTime? = nil
 	
-	var endingTrimPoint: TimeInterval? = nil
+	var reverseEndTime: CMTime? = nil
 	
 	var directoryDestination: SampleDirectory? = nil
 	

@@ -82,9 +82,9 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 				let filename = sample.id.uuidString + "." + audioFormat.asString
 				let tempFilePath = WorkingDirectory.applicationSupportPath().appendingPathComponent(filename)
 				
-				let configuration = EncodingConfig(outputFormat: TapeRecorderState.shared.sampleRecordAudioFormat, outputURL: tempFilePath)
+				let encodingConfig = EncodingConfig(outputFormat: TapeRecorderState.shared.sampleRecordAudioFormat, outputURL: tempFilePath, forwardStartTime: configuration.forwardEndTime, backwardsEndTime: configuration.reverseEndTime)
 				
-				try await encoder.encode(with: configuration)
+				try await encoder.encode(with: encodingConfig)
 				
 				let finalFilename = metadata.finalFilename(fileExtension: audioFormat.asString)
 				
@@ -94,45 +94,6 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 				)
 				
 				indexedTags.formUnion(metadata.tags)
-			}
-		}
-		
-//		do {
-//			
-//			// first encode with a temp name + .mp3
-//			
-//			// then get a ref to the file, move it
-//			
-//			// and then finally commit everything into a new Sample()
-//			
-	}
-
-	// todo - this does not belong here!
-	private func setDescriptionFieldInFile(
-		_ createdSample: Sample, _ description: String
-	) {
-		/*
-			 why two file attributes that almost do the exact same thing?
-			 because turns out that kMDItemFinderComment is unreliable,
-			 (https://apple.stackexchange.com/questions/471023/to-copy-a-file-and-preserve-its-comment)
-			 and this is a way of having redundancy.
-			 */
-
-		let attrs = [
-			"com.apple.metadata:kMDItemComment",
-			"com.apple.metadata:kMDItemFinderComment",
-		]
-		let fileURL = createdSample.fileURL
-
-		if let descriptionData = description.data(using: .utf8) {
-			do {
-				try attrs.forEach { attr in
-					try fileURL.setExtendedAttribute(
-						data: descriptionData, forName: attr)
-				}
-			} catch {
-//				Logger.appState.error(
-//					"Couldn't apply xattr's to \(createdSample)")
 			}
 		}
 	}

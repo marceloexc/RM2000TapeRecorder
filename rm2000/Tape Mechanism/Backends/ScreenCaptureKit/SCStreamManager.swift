@@ -8,7 +8,7 @@
 import Foundation
 import ScreenCaptureKit
 
-class SCStreamManager: NSObject, SCStreamDelegate {
+class SCStreamManager: NSObject, SCStreamDelegate, @unchecked Sendable {
     
 	weak var delegate: StreamManagerDelegate?
 	private var stream: SCStream?
@@ -33,8 +33,8 @@ class SCStreamManager: NSObject, SCStreamDelegate {
 		guard let stream = stream else {
 			throw NSError(domain: "RecordingError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Stream not prepared"])
 		}
-	  
-		try stream.addStreamOutput(self, type: .audio, sampleHandlerQueue: .global())
+		let audioProcessingQueue = DispatchQueue(label: "AudioProcessingQueue")
+		try stream.addStreamOutput(self, type: .audio, sampleHandlerQueue: audioProcessingQueue)
 		stream.startCapture()
 	}
   
@@ -47,7 +47,9 @@ class SCStreamManager: NSObject, SCStreamDelegate {
 	// make scstreamdelegate ghappy
   
 	func stream(_ stream: SCStream, didStopWithError error: Error) {
-		delegate?.streamManager(self, didStopWithError: error)
+		Task { @MainActor in
+			delegate?.streamManager(self, didStopWithError: error)
+		}
 	}
 }
 

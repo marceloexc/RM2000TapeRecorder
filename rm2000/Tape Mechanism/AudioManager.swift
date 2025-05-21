@@ -11,6 +11,7 @@ import OSLog
 
 class AudioManager {
 	
+	var pcmBufferHandler: ((AVAudioPCMBuffer) -> Void)?
 	private let writeQueue = DispatchQueue(label: "audio.writer.queue")
 	private var audioFile: AVAudioFile?
 	private let encodingParams: [String: Any] = [
@@ -26,30 +27,32 @@ class AudioManager {
   
 	func writeSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
 		writeQueue.async {
-			guard sampleBuffer.isValid, let samples = sampleBuffer.asPCMBuffer else {
+			guard sampleBuffer.isValid else {
 				Logger.audioManager.warning("Invalid sample buffer or conversion failed")
 				return
 			}
 			
-			// post the audiolevel into the wild for observing
-			let currentAudioLevel = self.getAudioLevel(from: sampleBuffer)
-			DispatchQueue.main.async {
-				NotificationCenter.default.post(name: .audioLevelUpdated, object: nil, userInfo: ["level": currentAudioLevel])
-			}
-			
-			do {
-				try self.audioFile?.write(from: samples)
-			} catch {
-				Logger.audioManager.error("Couldn't write samples: \(error.localizedDescription)")
+			try? sampleBuffer.withAudioBufferList { audioBufferList, blockBuffer in
+				guard let description = sampleBuffer.formatDescription?.audioStreamBasicDescription,
+							let format = AVAudioFormat(standardFormatWithSampleRate: description.mSampleRate, channels: description.mChannelsPerFrame),
+							let samples = AVAudioPCMBuffer(pcmFormat: format, bufferListNoCopy: audioBufferList.unsafePointer)
+							else { return }
+				self.pcmBufferHandler?(samples)
+				do {
+					try self.audioFile?.write(from: samples)
+					// post the audiolevel into the wild for observing
+					DispatchQueue.main.async {
+						let currentAudioLevel = self.getAudioLevel(from: samples)
+						NotificationCenter.default.post(name: .audioLevelUpdated, object: nil, userInfo: ["level": currentAudioLevel])
+					}
+				} catch {
+					Logger.audioManager.error("Couldn't write samples: \(error.localizedDescription)")
+				}
 			}
 		}
 	}
   
-	func getAudioLevel(from sampleBuffer: CMSampleBuffer) -> Float {
-		guard sampleBuffer.isValid, let samples = sampleBuffer.asPCMBuffer else {
-			Logger.audioManager.warning("Invalid sample buffer or conversion failed")
-			return 0.0
-		}
+	func getAudioLevel(from samples: AVAudioPCMBuffer) -> Float {
 		
 		// calculate root mean square
 		// https://stackoverflow.com/a/43789556

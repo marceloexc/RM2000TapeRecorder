@@ -8,17 +8,13 @@
 import Foundation
 import ScreenCaptureKit
 
-class StreamManager: NSObject, SCStreamDelegate {
+class SCStreamManager: NSObject, SCStreamDelegate {
     
 	weak var delegate: StreamManagerDelegate?
 	private var stream: SCStream?
     
 	func setupAudioStream() async throws {
 		let streamConfiguration = SCStreamConfiguration()
-		streamConfiguration.width = 2
-		streamConfiguration.height = 2
-		streamConfiguration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale.max)
-		streamConfiguration.showsCursor = true
 		streamConfiguration.sampleRate = 48000
 		streamConfiguration.channelCount = 2
 		streamConfiguration.capturesAudio = true
@@ -44,6 +40,7 @@ class StreamManager: NSObject, SCStreamDelegate {
   
 	func stopCapture() {
 		stream?.stopCapture()
+		try? stream?.removeStreamOutput(self, type: .audio)
 		stream = nil
 	}
   
@@ -55,7 +52,7 @@ class StreamManager: NSObject, SCStreamDelegate {
 }
 
 
-extension StreamManager: SCStreamOutput {
+extension SCStreamManager: SCStreamOutput {
 	func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
 		delegate?.streamManager(self, didOutputSampleBuffer: sampleBuffer, of: type)
 	}

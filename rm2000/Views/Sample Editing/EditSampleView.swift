@@ -68,13 +68,13 @@ struct EditSampleView<Model: FileRepresentable>: View {
 					var configuration = SampleEditConfiguration()
 					
 					configuration.directoryDestination = SampleStorage.shared.UserDirectory
+					configuration.forwardEndTime = forwardEndTime
+					configuration.reverseEndTime = reverseEndTime
 					
 					var metadata = SampleMetadata()
 					metadata.title = title
 					metadata.tags = tags
-//					let staged = Sample(newRecording: model as! TemporaryActiveRecording, title: title, tags: tags, description: description)
 					var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
-					// force unwrap, since we just created it
 					onComplete(createdSample, metadata, configuration)
 				}
 				.buttonStyle(.borderedProminent)

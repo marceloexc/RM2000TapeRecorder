@@ -223,6 +223,18 @@ extension URL {
 	/// Helper function to create an NSError from a Unix errno.
 	private static func posixError(_ err: Int32) -> NSError {
 		return NSError(domain: NSPOSIXErrorDomain, code: Int(err),
-					   userInfo: [NSLocalizedDescriptionKey: String(cString: strerror(err))])
+									 userInfo: [NSLocalizedDescriptionKey: String(cString: strerror(err))])
+	}
+}
+
+extension CMTime {
+	var displayString: String {
+		guard CMTIME_IS_NUMERIC(self) && isValid && !self.seconds.isNaN else {
+			return "--:--"
+		}
+		let totalSeconds = Int(seconds)
+		let minutes = totalSeconds / 60
+		let seconds = totalSeconds % 60
+		return String(format: "%02d:%02d", minutes, seconds)
 	}
 }

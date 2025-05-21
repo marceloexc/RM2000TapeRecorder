@@ -15,10 +15,13 @@ class AudioManager {
 	private let writeQueue = DispatchQueue(label: "audio.writer.queue")
 	private var audioFile: AVAudioFile?
 	private let encodingParams: [String: Any] = [
-		AVFormatIDKey: kAudioFormatMPEG4AAC,
-		AVSampleRateKey: 48000,
+		AVFormatIDKey: kAudioFormatLinearPCM,
+		AVSampleRateKey: 48000.0,
 		AVNumberOfChannelsKey: 2,
-		AVEncoderBitRateKey: 128000
+		AVLinearPCMBitDepthKey: 16,
+		AVLinearPCMIsFloatKey: false,
+		AVLinearPCMIsBigEndianKey: false,
+		AVLinearPCMIsNonInterleaved: false
 	]
 	
 	func setupAudioWriter(fileURL: URL) throws {
@@ -41,8 +44,9 @@ class AudioManager {
 				do {
 					try self.audioFile?.write(from: samples)
 					// post the audiolevel into the wild for observing
+					let currentAudioLevel = self.getAudioLevel(from: samples)
+
 					DispatchQueue.main.async {
-						let currentAudioLevel = self.getAudioLevel(from: samples)
 						NotificationCenter.default.post(name: .audioLevelUpdated, object: nil, userInfo: ["level": currentAudioLevel])
 					}
 				} catch {

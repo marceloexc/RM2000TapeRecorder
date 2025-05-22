@@ -63,25 +63,27 @@ struct EditSampleView<Model: FileRepresentable>: View {
 				}
 				.padding(.top, 8)
 				
-				Button("Save Sample") {
-					
-					var configuration = SampleEditConfiguration()
-					
-					configuration.directoryDestination = SampleStorage.shared.UserDirectory
-					configuration.forwardEndTime = forwardEndTime
-					configuration.reverseEndTime = reverseEndTime
-					
-					var metadata = SampleMetadata()
-					metadata.title = title
-					metadata.tags = tags
-					var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
-					onComplete(createdSample, metadata, configuration)
+				HStack {
+					Spacer()
+					Button("Save Sample") {
+						
+						var configuration = SampleEditConfiguration()
+						
+						configuration.directoryDestination = SampleStorage.shared.UserDirectory
+						configuration.forwardEndTime = forwardEndTime
+						configuration.reverseEndTime = reverseEndTime
+						
+						var metadata = SampleMetadata()
+						metadata.title = title
+						metadata.tags = tags
+						var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
+						onComplete(createdSample, metadata, configuration)
+					}
+					.buttonStyle(.borderedProminent)
+					.padding(.top, 8)
 				}
-				.buttonStyle(.borderedProminent)
-				.padding(.top, 8)
 			}
 			.padding()
-			.frame(minWidth: 350, maxWidth: 400, minHeight: 320)
 		}
 	}
 }
@@ -124,13 +126,14 @@ struct PreviewFilenameView: View {
 	
 	// TODO - hardcoded file extension string
 	private func generatePreviewFilename() -> String {
+		let audioFormat = TapeRecorderState.shared.sampleRecordAudioFormat
 		var taggedString = ""
 		
 		for tag in sortedTagsArray {
 			taggedString.append("\(tag)-")
 		}
 		
-		return "\(title)__\(taggedString).aac"
+		return "\(title)__\(taggedString).\(audioFormat.asString)"
 	}
 }
 

@@ -24,7 +24,6 @@ struct RM2000TapeRecorderApp: App {
 			SampleLibraryView()
 				.environmentObject(sampleStorage)
 		}
-
 		WindowGroup("Welcome", id: "onboarding") {
 			OnboardingView(viewModel: OnboardingViewModel())
 				.environmentObject(appState)

@@ -29,9 +29,12 @@ class SkeuromorphicWindow: NSWindow {
 		
 		//omg skeuromorphism.
 		
+		let isDarkMode = self.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+		
+		let imageName = isDarkMode ? "MicGrilleDark" : "MicGrilleTemp"
 		let imageView = NSImageView(frame: NSRect(x: -70, y: -14, width: 140, height: 28))
 		
-		if let image = NSImage(named: "MicGrilleTemp") {
+		if let image = NSImage(named: imageName) {
 			image.size = NSSize(width: 130, height: 19)
 			imageView.image = image
 			imageView.setAccessibilityElement(false)

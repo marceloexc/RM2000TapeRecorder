@@ -36,6 +36,7 @@ struct ContentView: View {
 						SampleStorage.shared.UserDirectory.applySampleEdits(to: FileRepresentable, for: SampleMetadata, with: SampleEditConfiguration)
 						recordingState.showRenameDialogInMainWindow = false
 					}
+					.frame(minWidth: 420, maxWidth: 500, minHeight: 320)
 					.presentationBackground(.thinMaterial)
 				}
 			}

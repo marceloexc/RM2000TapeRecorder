@@ -3,7 +3,8 @@ import SwiftUI
 struct SidebarButton: View {
 	var body: some View {
 		Button(action: toggleSidebar) {
-			Label("Reveal Sidebar", systemImage: "sidebar.leading")
+			Label("Sidebar", systemImage: "sidebar.leading")
+				.foregroundStyle(.teal)
 		}
 	}
 }
@@ -19,10 +20,9 @@ struct OpenInFinderButton: View {
 				Image(nsImage: NSWorkspace.shared.icon(forFile: "/System/Library/CoreServices/Finder.app"))
 					.resizable()
 					.scaledToFit()
-					.frame(width: 25, height: 25)
+//					.frame(width: 20, height: 20)
 			}
 		}
-		.buttonStyle(.plain)
 		.help("Open in Finder")
 	}
 }
@@ -32,12 +32,11 @@ struct ShareSampleButton: View {
 		Button(action: {
 			print("Shared button pressed")
 		}) {
-			Label("Share Sample", systemImage: "square.and.arrow.up")
-				.fontWeight(.black)
-				.foregroundStyle(.orange)
+			Label("Share", systemImage: "square.and.arrow.up")
+//				.fontWeight(.black)
+				.foregroundStyle(.gray)
 		}
-		.buttonStyle(.borderless)
-		.padding(.bottom, 3) // or else it looks weirdly positioned!
+//		.padding(.bottom, 3) // or else it looks weirdly positioned!
 	}
 }
 
@@ -46,11 +45,10 @@ struct ImportSampleButton: View {
 		Button(action: {
 			NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
 		}) {
-			Label("Import Sample", systemImage: "plus")
-				.fontWeight(.black)
+			Label("Import", systemImage: "plus")
+//				.fontWeight(.black)
 				.foregroundStyle(.green)
 		}
-		.buttonStyle(.borderless)
 		.help("Import a Sample")
 	}
 }

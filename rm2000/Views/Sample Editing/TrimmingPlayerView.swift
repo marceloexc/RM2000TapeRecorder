@@ -63,12 +63,14 @@ class PlayerViewModel: ObservableObject {
 		playerItem.publisher(for: \.forwardPlaybackEndTime)
 			.sink { [weak self] newTime in
 				self?.forwardEndTime.wrappedValue = newTime
+				self?.objectWillChange.send()
 			}
 			.store(in: &cancellables)
 		
 		playerItem.publisher(for: \.reversePlaybackEndTime)
 			.sink { [weak self] newTime in
 				self?.reverseEndTime.wrappedValue = newTime
+				self?.objectWillChange.send()
 			}
 			.store(in: &cancellables)
 	}
@@ -120,10 +122,6 @@ struct TrimmingPlayerView<Model: FileRepresentable>: View {
 			} else {
 				Text("Player not available")
 					.foregroundColor(.secondary)
-			}
-			if let playerItem = viewModel.playerItem {
-				Text("forward time: \(playerItem.forwardPlaybackEndTime.seconds)")
-				Text("reverse time: \(playerItem.reversePlaybackEndTime.seconds)")
 			}
 		}
 	}

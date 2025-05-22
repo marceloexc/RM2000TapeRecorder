@@ -22,25 +22,21 @@ struct SampleLibraryView: View {
 		NavigationSplitView {
 			SidebarView(viewModel: viewModel)
 				.toolbar(removing: .sidebarToggle)
+				.navigationSplitViewColumnWidth(min: 200, ideal: 200, max: 300)
 		} detail: {
 			DetailView(viewModel: viewModel)
+				.navigationSplitViewColumnWidth(min: 500, ideal: 500)
 		}
 		.toolbar(id: "rm2000.main-toolbar"){
 			
 			ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
 				SidebarButton()
 			}
-			ToolbarItem(id: "rm2000.share.button") {
+			ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
 				ShareSampleButton()
-			}
-			ToolbarItem(id: "rm2000.spacer") {
-				Spacer()
 			}
 			ToolbarItem(id: "rm2000.import-sample-button", placement: .primaryAction) {
 				ImportSampleButton()
-			}
-			ToolbarItem(id: "rm2000.spacer") {
-				Spacer()
 			}
 			ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction) {
 				OpenInFinderButton()
@@ -52,10 +48,10 @@ struct SampleLibraryView: View {
 				}
 			}
 			ToolbarItem(id: "rm2000.picker", placement: .primaryAction) {
-				Picker("View settings", selection: $selection) {
+				Picker("View", selection: $selection) {
 					Label("Grid", systemImage: "square.grid.2x2")
 					Label("List", systemImage: "list.bullet")
-				}.pickerStyle(.inline)
+				}.pickerStyle(.menu)
 			}
 
 		}
@@ -112,7 +108,9 @@ struct SampleLibraryView: View {
 					Button {
 						viewModel.showInspector.toggle()
 					} label: {
-						Label("Toggle Inspector", systemImage: "sidebar.right")
+						Label("Inspector", systemImage: "info.circle")
+							.foregroundStyle(.cyan)
+
 					}
 				}
 			}

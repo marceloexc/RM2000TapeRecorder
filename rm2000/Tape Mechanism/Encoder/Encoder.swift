@@ -105,7 +105,7 @@ class Encoder {
 					return
 				}
 				
-				let trimmedSourceURL = sourceURL?.deletingLastPathComponent().appendingPathComponent("copy.aac")
+				let trimmedSourceURL = sourceURL?.deletingLastPathComponent().appendingPathComponent("trimmed_output.caf")
 				
 				try writeToAACWithAVAudioFile(buffer: trimmedBuffer, to: trimmedSourceURL!)
 
@@ -132,28 +132,48 @@ class Encoder {
 	}
 	
 	private func trimPCMBuffer(buffer: AVAudioPCMBuffer, forwardsEndTime: CMTime, reverseEndTime: CMTime) -> AVAudioPCMBuffer? {
+		
 		let sampleRate = buffer.format.sampleRate
-		let startFrame = AVAudioFramePosition(reverseEndTime.seconds * sampleRate)
-		let endFrame = AVAudioFramePosition(forwardsEndTime.seconds * sampleRate)
+		let startTimeSeconds = reverseEndTime.seconds
+		let endTimeSeconds = forwardsEndTime.seconds
 		
 		// Validate range
-		if startFrame < 0 || endFrame > AVAudioFramePosition(buffer.frameLength) || startFrame >= endFrame {
-			Logger().error("Invalid trim range: start=\(startFrame), end=\(endFrame), buffer length=\(buffer.frameLength)")
+		let bufferDuration = Double(buffer.frameLength) / sampleRate
+		guard startTimeSeconds >= 0 && endTimeSeconds <= bufferDuration && startTimeSeconds < endTimeSeconds else {
+			Logger().error("Invalid trim range: \(startTimeSeconds) to \(endTimeSeconds) seconds (buffer duration: \(bufferDuration))")
 			return nil
 		}
 		
+		let startFrame = AVAudioFramePosition(startTimeSeconds * sampleRate)
+		let endFrame = AVAudioFramePosition(endTimeSeconds * sampleRate)
 		let frameCount = AVAudioFrameCount(endFrame - startFrame)
 		
-		print("Trimming from \(startFrame) to \(endFrame) (\(frameCount) frames)")
-		
 		guard let trimmedBuffer = AVAudioPCMBuffer(pcmFormat: buffer.format, frameCapacity: frameCount) else {
+			Logger().error("Failed to create trimmed buffer")
 			return nil
 		}
 		
-		for channel in 0..<Int(buffer.format.channelCount) {
-			let source = buffer.floatChannelData![channel] + Int(startFrame)
-			let destination = trimmedBuffer.floatChannelData![channel]
-			destination.update(from: source, count: Int(frameCount))
+		// copy audio data - handle interleaved vs non-interleaved
+		if buffer.format.isInterleaved {
+			// Interleaved
+			let sourcePtr = buffer.floatChannelData![0]
+			let destPtr = trimmedBuffer.floatChannelData![0]
+			let channelCount = Int(buffer.format.channelCount)
+			
+			for frame in 0..<Int(frameCount) {
+				for channel in 0..<channelCount {
+					let sourceIndex = (Int(startFrame) + frame) * channelCount + channel
+					let destIndex = frame * channelCount + channel
+					destPtr[destIndex] = sourcePtr[sourceIndex]
+				}
+			}
+		} else {
+			// Non-interleaved
+			for channel in 0..<Int(buffer.format.channelCount) {
+				let source = buffer.floatChannelData![channel] + Int(startFrame)
+				let destination = trimmedBuffer.floatChannelData![channel]
+				destination.update(from: source, count: Int(frameCount))
+			}
 		}
 		
 		trimmedBuffer.frameLength = frameCount
@@ -161,19 +181,30 @@ class Encoder {
 	}
 	
 	private func writeToAACWithAVAudioFile(buffer: AVAudioPCMBuffer, to url: URL) throws {
-		let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: buffer.format.sampleRate, channels: buffer.format.channelCount, interleaved: false)!
+		if FileManager.default.fileExists(atPath: url.path) {
+			try FileManager.default.removeItem(at: url)
+		}
 		
-		// Use m4a
-		guard let outputFormat = AVAudioFormat(settings: [
-			AVFormatIDKey: kAudioFormatMPEG4AAC,
-			AVSampleRateKey: format.sampleRate,
-			AVNumberOfChannelsKey: format.channelCount
-		]) else {
-			throw NSError(domain: "InvalidFormat", code: -1, userInfo: nil)
+		let outputFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: buffer.format.sampleRate, channels: buffer.format.channelCount, interleaved: false)!
+		
+		guard let converter = AVAudioConverter(from: buffer.format, to: outputFormat) else {
+			throw NSError(domain: "ConversionError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create converter"])
+		}
+		
+		let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: buffer.frameLength)!
+		
+		var error: NSError?
+		let status = converter.convert(to: convertedBuffer, error: &error) { _, outStatus in
+			outStatus.pointee = .haveData
+			return buffer
+		}
+		
+		if status == .error {
+			throw error ?? NSError(domain: "ConversionError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Conversion failed"])
 		}
 		
 		let outputFile = try AVAudioFile(forWriting: url, settings: outputFormat.settings)
-		try outputFile.write(from: buffer)
+		try outputFile.write(from: convertedBuffer)
 	}
 
 }

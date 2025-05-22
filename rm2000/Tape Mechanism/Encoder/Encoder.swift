@@ -8,7 +8,6 @@ import CSFBAudioEngine
 struct RMAudioConverter {
 	static func convert(input: URL, output: URL, format: AudioFormat) async {
 		do {
-			let progress = Progress()
 			try AudioConverter.convert(input, to: output)
 			Logger().info("Conversion complete")
 		} catch {
@@ -62,72 +61,78 @@ class Encoder {
 	}
 
 	func encode(with config: EncodingConfig) async throws {
-
-		if let forwardStart = config.forwardsEndTime,
-			let backwardsEnd = config.reverseEndTime
-		{
-			needsTrimming = true
+		
+		// let glyphs update
+		await MainActor.run {
+			TapeRecorderState.shared.status = .busy
 		}
 
+		if config.forwardsEndTime != nil || config.reverseEndTime != nil {
+			needsTrimming = true
+		}
+		
 		isProcessing = true
-
+		
+		/*
+		 TODO - this will need refactoring once we allow users to save their
+		 quick recordings and convert them to normal samples
+		 */
 		switch sourceType {
-		case .pcmBuffer:
-			if needsTrimming {
-				// awesome, we have the pcmBuffer already, just extract it, render as .caf, and then formatconvert
+			case .pcmBuffer:
+				if needsTrimming {
+					// awesome, we have the pcmBuffer already, just extract it, render as .caf, and then formatconvert
+				}
+			case .fileURL:
+
+				if needsTrimming {
+					Logger().debug("Sample needs trimming")
+
+					guard let decoder = try? AudioDecoder(url: self.sourceURL!) else {
+						Logger().error("Failed to init decoder for \(self.sourceURL!)")
+						return
+					}
+					try decoder.open()
+					let processingFormat = decoder.processingFormat
+					print("Processing format: \(processingFormat), processing format length: \(decoder.length)")
+					let frameCount = AVAudioFrameCount(decoder.length)
+					guard let buffer = AVAudioPCMBuffer(pcmFormat: processingFormat, frameCapacity: frameCount) else {
+						Logger().error("Failed to get buffers from the decoder for \(self.sourceURL!)")
+						return
+					}
+					
+					try decoder.decode(into: buffer, length: frameCount)
+					
+					guard let trimmedBuffer = trimPCMBuffer(
+						buffer: buffer,
+						forwardsEndTime: config.forwardsEndTime!,
+						reverseEndTime: config.reverseEndTime!
+					) else {
+						Logger().error("Failed to trim buffer")
+						return
+					}
+					
+					let baseName = sourceURL?.deletingPathExtension().lastPathComponent
+					let newFileName = "\(baseName!)_t.caf"
+					let trimmedSourceURL = sourceURL?.deletingLastPathComponent().appendingPathComponent(newFileName)
+					
+					try writeToAACWithAVAudioFile(buffer: trimmedBuffer, to: trimmedSourceURL!)
+					await RMAudioConverter.convert(
+						input: trimmedSourceURL!, output: config.outputURL!,
+						format: config.outputFormat)
+					
+				} else {
+					Logger().debug("Sending encode configuration as \(String(describing: config))")
+					await RMAudioConverter.convert(
+						input: self.sourceURL!, output: config.outputURL!,
+						format: config.outputFormat)
+				}
+
+			case .existingSample:
+				fatalError("Not implemented yet")
 			}
-		case .fileURL:
-
-			if needsTrimming {
-				Logger().debug("Sample needs trimming")
-
-				guard let decoder = try? AudioDecoder(url: self.sourceURL!) else {
-					Logger().error("Failed to init decoder for \(self.sourceURL!)")
-					return
-				}
-				try decoder.open()
-				let processingFormat = decoder.processingFormat
-				print("Processing format: \(processingFormat), processing format length: \(decoder.length)")
-				let frameCount = AVAudioFrameCount(decoder.length)
-				guard let buffer = AVAudioPCMBuffer(pcmFormat: processingFormat, frameCapacity: frameCount) else {
-					Logger().error("Failed to get buffers from the decoder for \(self.sourceURL!)")
-					return
-				}
-				
-				try decoder.decode(into: buffer, length: frameCount)
-				
-				guard let trimmedBuffer = trimPCMBuffer(
-					buffer: buffer,
-					forwardsEndTime: config.forwardsEndTime!,
-					reverseEndTime: config.reverseEndTime!
-				) else {
-					Logger().error("Failed to trim buffer")
-					return
-				}
-				
-				let trimmedSourceURL = sourceURL?.deletingLastPathComponent().appendingPathComponent("trimmed_output.caf")
-				
-				try writeToAACWithAVAudioFile(buffer: trimmedBuffer, to: trimmedSourceURL!)
-
-			} else {
-				await MainActor.run {
-					TapeRecorderState.shared.status = .busy
-				}
-
-				Logger().debug(
-					"Sending encode configuration as \(String(describing: config))")
-
-				await RMAudioConverter.convert(
-					input: self.sourceURL!, output: config.outputURL!,
-					format: config.outputFormat)
-
-				await MainActor.run {
-					TapeRecorderState.shared.status = .idle
-				}
-			}
-
-		case .existingSample:
-			print("nil")
+		
+		await MainActor.run {
+			TapeRecorderState.shared.status = .idle
 		}
 	}
 	

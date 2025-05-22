@@ -19,9 +19,9 @@ class AudioManager {
 		AVSampleRateKey: 48000.0,
 		AVNumberOfChannelsKey: 2,
 		AVLinearPCMBitDepthKey: 16,
-		AVLinearPCMIsFloatKey: false,
+		AVLinearPCMIsFloatKey: true,
 		AVLinearPCMIsBigEndianKey: false,
-		AVLinearPCMIsNonInterleaved: false
+		AVLinearPCMIsNonInterleaved: true
 	]
 	
 	func setupAudioWriter(fileURL: URL) throws {

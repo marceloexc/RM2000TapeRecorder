@@ -25,7 +25,7 @@
 		EB4776572DCAA6DD00B6D553 /* SwiftDirectoryWatcher in Embed Frameworks */ = {isa = PBXBuildFile; productRef = EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		EB516E3F2CB75BD100A1C1E6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = EB516E3E2CB75BD100A1C1E6 /* README.md */; };
 		EB5BB4382DD6590800DFAA33 /* SampleLibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */; };
-		EB5C8FC92D99DA7600C4C3C2 /* SwiftLAME in Frameworks */ = {isa = PBXBuildFile; productRef = EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */; };
+		EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */ = {isa = PBXBuildFile; productRef = EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */; };
 		EB5C8FCC2D99DBDD00C4C3C2 /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */; };
 		EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6065182C850A300017CB33 /* TapeRecorderState.swift */; };
 		EB63A3022D6A88AB00E35AE6 /* SampleStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB63A3012D6A88A700E35AE6 /* SampleStorage.swift */; };
@@ -95,6 +95,7 @@
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
 		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAudio.swift; sourceTree = "<group>"; };
+		EB3DF85F2DDD114A00198AAB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryView.swift; sourceTree = "<group>"; };
 		EB467BCD2D920849007E19E8 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		EB467BD32D920917007E19E8 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -162,7 +163,7 @@
 				EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
 				EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */,
-				EB5C8FC92D99DA7600C4C3C2 /* SwiftLAME in Frameworks */,
+				EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */,
 				EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */,
 				EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */,
 				EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */,
@@ -368,6 +369,7 @@
 		EBE4E93B2C43244D00397EF2 = {
 			isa = PBXGroup;
 			children = (
+				EB3DF85F2DDD114A00198AAB /* LICENSE */,
 				EBE4E9462C43244D00397EF2 /* rm2000 */,
 				EBE4E9582C43245000397EF2 /* rm2000Tests */,
 				EBE4E9622C43245000397EF2 /* rm2000UITests */,
@@ -462,12 +464,12 @@
 			name = rm2000;
 			packageProductDependencies = (
 				EBFCB1122D77988600A9A226 /* SettingsAccess */,
-				EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */,
 				EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */,
 				EB12BC9D2DC808680011B7FF /* DSWaveformImage */,
 				EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */,
 				EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */,
 				EBD114F52DCBFEA5003ABBB9 /* FluidGradient */,
+				EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -499,11 +501,11 @@
 			mainGroup = EBE4E93B2C43244D00397EF2;
 			packageReferences = (
 				EBFCB1112D77988600A9A226 /* XCRemoteSwiftPackageReference "SettingsAccess" */,
-				EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */,
 				EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */,
 				EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */,
 				EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */,
+				EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -828,12 +830,12 @@
 				minimumVersion = 1.1.0;
 			};
 		};
-		EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */ = {
+		EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/hidden-spectrum/SwiftLAME";
+			repositoryURL = "https://github.com/sbooth/SFBAudioEngine";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 0.7.1;
 			};
 		};
 		EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
@@ -878,10 +880,10 @@
 			package = EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */;
 			productName = SwiftDirectoryWatcher;
 		};
-		EB5C8FC82D99DA7600C4C3C2 /* SwiftLAME */ = {
+		EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EB5C8FC72D99DA7600C4C3C2 /* XCRemoteSwiftPackageReference "SwiftLAME" */;
-			productName = SwiftLAME;
+			package = EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */;
+			productName = SFBAudioEngine;
 		};
 		EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;

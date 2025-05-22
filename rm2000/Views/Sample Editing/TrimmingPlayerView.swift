@@ -17,8 +17,13 @@ class PlayerViewModel: ObservableObject {
 	
 	private var cancellables = Set<AnyCancellable>()
 	
-	init(activeRecording: FileRepresentable) {
+	var forwardEndTime: Binding<CMTime?>
+	var reverseEndTime: Binding<CMTime?>
+	
+	init(activeRecording: FileRepresentable, forwardEndTime: Binding<CMTime?>, reverseEndTime: Binding<CMTime?>) {
 		self.activeRecording = activeRecording
+		self.forwardEndTime = forwardEndTime
+		self.reverseEndTime = reverseEndTime
 		setupPlayer()
 	}
 	
@@ -56,14 +61,14 @@ class PlayerViewModel: ObservableObject {
 			.store(in: &cancellables)
 		
 		playerItem.publisher(for: \.forwardPlaybackEndTime)
-			.sink { [weak self] _ in
-				self?.objectWillChange.send()
+			.sink { [weak self] newTime in
+				self?.forwardEndTime.wrappedValue = newTime
 			}
 			.store(in: &cancellables)
 		
 		playerItem.publisher(for: \.reversePlaybackEndTime)
-			.sink { [weak self] _ in
-				self?.objectWillChange.send()
+			.sink { [weak self] newTime in
+				self?.reverseEndTime.wrappedValue = newTime
 			}
 			.store(in: &cancellables)
 	}
@@ -95,10 +100,16 @@ struct TrimmingPlayerView<Model: FileRepresentable>: View {
 	let model: Model
 	
 	init(recording: Model, forwardEndTime: Binding<CMTime?>, reverseEndTime: Binding<CMTime?>) {
-		_viewModel = StateObject(wrappedValue: PlayerViewModel(activeRecording: recording))
+		self.model = recording
 		_forwardEndTime = forwardEndTime
 		_reverseEndTime = reverseEndTime
-		self.model = recording
+		_viewModel = StateObject(wrappedValue:
+															PlayerViewModel(
+																activeRecording: recording,
+																forwardEndTime: forwardEndTime,
+																reverseEndTime: reverseEndTime
+															)
+		)
 	}
 	
 	var body: some View {
@@ -110,10 +121,10 @@ struct TrimmingPlayerView<Model: FileRepresentable>: View {
 				Text("Player not available")
 					.foregroundColor(.secondary)
 			}
-//			if let playerItem = viewModel.playerItem {
-//				Text("forward time: \(playerItem.forwardPlaybackEndTime.seconds)")
-//				Text("reverse time: \(playerItem.reversePlaybackEndTime.seconds)")
-//			}
+			if let playerItem = viewModel.playerItem {
+				Text("forward time: \(playerItem.forwardPlaybackEndTime.seconds)")
+				Text("reverse time: \(playerItem.reversePlaybackEndTime.seconds)")
+			}
 		}
 	}
 }

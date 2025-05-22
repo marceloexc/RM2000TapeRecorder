@@ -26,6 +26,13 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	func showMainWindow() {
+		
+		// if window is already created, just show it, dont make another window
+		if let window = mainWindowController?.window, window.isVisible {
+			window.makeKeyAndOrderFront(nil)
+			return
+		}
+		
 		let window = SkeuromorphicWindow(
 			contentRect: NSRect(x: 100, y: 100, width: 600, height: 400),
 			styleMask: [.titled, .closable, .miniaturizable],

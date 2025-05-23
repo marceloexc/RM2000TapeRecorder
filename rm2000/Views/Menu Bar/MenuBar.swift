@@ -28,21 +28,6 @@ struct MenuBarView: View {
 			.padding(.top, 5)
 			
 			VStack() {
-				if recordingState.status == .recording {
-					HStack {
-						Text("Recording:")
-							.font(.caption)
-							.foregroundColor(.secondary)
-						
-						ElapsedTime(textString: $recordingState.elapsedTimeRecording)
-							.font(.system(.caption, design: .monospaced))
-							.padding(.horizontal, 6)
-							.background(Color.secondary.opacity(0.15))
-							.cornerRadius(4)
-						
-						Spacer()
-					}
-				}
 				
 				Button(action: {
 					if recordingState.status == .recording {
@@ -53,10 +38,19 @@ struct MenuBarView: View {
 				}) {
 					HStack {
 						Image(systemName: recordingState.status == .recording ? "stop.circle" : "record.circle")
-							.foregroundColor(recordingState.status == .recording ? .red : .red)
+							.contentTransition(.symbolEffect)
+							.foregroundColor(recordingState.status == .recording ? .red.opacity(0.70) : .red)
 						Text(recordingState.status == .recording ? "Stop Recording" : "Start Recording")
 							.fontWeight(.medium)
 						Spacer()
+						
+						if recordingState.status == .recording {
+							ElapsedTime(textString: $recordingState.elapsedTimeRecording)
+								.font(.system(.footnote, design: .monospaced))
+								.padding(.horizontal, 6)
+								.background(Color.secondary.opacity(0.15))
+								.cornerRadius(4)
+						}
 					}
 					.contentShape(Rectangle())
 				}

@@ -8,6 +8,8 @@ class WindowController: NSWindowController {
 }
 
 class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
+	
+	@Published var willTerminate = false
 	var mainWindowController: WindowController?
 	let recordingState = TapeRecorderState.shared
 	private var onboardingWindowController: NSWindowController?
@@ -25,6 +27,13 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	func showMainWindow() {
+		
+		// if window is already created, just show it, dont make another window
+		if let window = mainWindowController?.window, window.isVisible {
+			window.makeKeyAndOrderFront(nil)
+			return
+		}
+		
 		let window = SkeuromorphicWindow(
 			contentRect: NSRect(x: 100, y: 100, width: 600, height: 400),
 			styleMask: [.titled, .closable, .miniaturizable],
@@ -113,6 +122,41 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 		window.center()
 	}
 	
+	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+		self.willTerminate = true
+		self.promptQuitConfirmation()
+		return .terminateLater
+	}
+	
+	/// dont close (user canceled)
+	func `continue`() {
+		NSApplication.shared.reply(toApplicationShouldTerminate: false)
+	}
+	/// close
+	func close() {
+		NSApplication.shared.reply(toApplicationShouldTerminate: true)
+	}
+	
+	func promptQuitConfirmation() {
+		let alert = NSAlert()
+		alert.messageText = "Really Quit?"
+		alert.informativeText = "You will not be able to start Quick Recordings (⌘ + ⌥ + G) when the application is not running."
+		alert.alertStyle = .critical
+		alert.addButton(withTitle: "Yes, Quit")
+		alert.addButton(withTitle: "No, Cancel")
+		
+		DispatchQueue.main.async {
+			let response = alert.runModal()
+			if response == .alertFirstButtonReturn {
+				// "Quit" pressed
+				self.close()
+			} else {
+				// "Cancel" pressed
+				self.continue()
+			}
+		}
+	}
+
 	/*
 	 A function like this should never exist.
 	 However, even after I followed all of the tutorials,

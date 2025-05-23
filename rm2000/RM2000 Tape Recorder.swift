@@ -14,9 +14,7 @@ struct RM2000TapeRecorderApp: App {
 				.environmentObject(appDelegate.recordingState)
 				.environmentObject(sampleStorage)
 		} label: {
-			Image(systemName: "recordingtape")
-				.rotationEffect(.degrees(180))
-				.fontWeight(.black)
+			Image("RecordingTapeBlackFlipped")
 		}
 		.menuBarExtraStyle(.window)
 

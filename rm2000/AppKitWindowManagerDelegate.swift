@@ -7,7 +7,7 @@ class WindowController: NSWindowController {
 	}
 }
 
-class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
+class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 	
 	@Published var willTerminate = false
 	var mainWindowController: WindowController?
@@ -29,11 +29,19 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 	func showMainWindow() {
 		
 		// if window is already created, just show it, dont make another window
-		if let window = mainWindowController?.window, window.isVisible {
+		if let windowController = mainWindowController,
+			 let window = windowController.window {
+			// If window is visible, just bring it to front
+			if window.isVisible {
+				window.makeKeyAndOrderFront(nil)
+				return
+			}
+			// If window exists but isn't visible, it might be minimized - show it
 			window.makeKeyAndOrderFront(nil)
 			return
 		}
 		
+		// else, create the window
 		let window = SkeuromorphicWindow(
 			contentRect: NSRect(x: 100, y: 100, width: 600, height: 400),
 			styleMask: [.titled, .closable, .miniaturizable],
@@ -44,8 +52,13 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 		let contentView = ContentView()
 			.environmentObject(self.recordingState)
 			.openSettingsAccess()
+		
 		window.center()
 		window.contentView = NSHostingView(rootView: contentView)
+		window.delegate = self // track window closure
+		
+		window.isReleasedWhenClosed = false
+		
 		mainWindowController = WindowController(window: window)
 		mainWindowController?.showWindow(nil)
 	}
@@ -166,6 +179,15 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate {
 		let fonts = Bundle.main.urls(forResourcesWithExtension: "otf", subdirectory: nil)
 		fonts?.forEach { url in
 			CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+		}
+	}
+}
+
+extension AppKitWindowManagerDelegate {
+	@objc func windowWillClose(_ notification: Notification) {
+		if let window = notification.object as? NSWindow,
+			 window === mainWindowController?.window {
+			mainWindowController = nil
 		}
 	}
 }

@@ -49,6 +49,7 @@ struct AllRecordingsView: View {
 				}
 			} else {
 				ProgressView("Loading recordings...")
+					.progressViewStyle(.linear)
 			}
 		}
 	}

@@ -36,7 +36,12 @@ struct SampleMetadata {
 	
 	func finalFilename(fileExtension: String) -> String {
 		// Construct the filename in the format "title--tag1_tag2_tag3.aac"
-		let formattedTags = tags.joined(separator: "_")
-		return "\(title)--\(formattedTags).\(fileExtension)"
+		if tags.isEmpty {
+			// tags are empty, use omit them
+			return "\(title).\(fileExtension)"
+		} else {
+			let formattedTags = tags.joined(separator: "_")
+			return "\(title)--\(formattedTags).\(fileExtension)"
+		}
 	}
 }

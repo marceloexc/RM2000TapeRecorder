@@ -13,6 +13,7 @@
 		EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */; };
 		EB12BCA32DC813D30011B7FF /* SampleLibraryAutoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */; };
 		EB1565122D558F2100A3D339 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1565112D558F1F00A3D339 /* Sample.swift */; };
+		EB1A606A2DEA521E0067A4E3 /* PreviewFilenameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
 		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
 		EB3DF85A2DDBFFC900198AAB /* CoreAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */; };
@@ -92,6 +93,7 @@
 		EB12BC9A2DC808210011B7FF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryAutoPlayer.swift; sourceTree = "<group>"; };
 		EB1565112D558F1F00A3D339 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
+		EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewFilenameView.swift; sourceTree = "<group>"; };
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
 		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAudio.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 		EB296DE52D653468008427DF /* Sample Editing */ = {
 			isa = PBXGroup;
 			children = (
+				EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */,
 				EBF9507E2DA995E20060CF03 /* TokenField */,
 				EB296DF22D653556008427DF /* TrimmingPlayerView.swift */,
 				EBCA46E12CACBEE700040159 /* EditSampleView.swift */,
@@ -550,6 +553,7 @@
 				EB8313F22D4DCDD600B343FF /* SidebarView.swift in Sources */,
 				EB801B3B2DB4809B009632D0 /* ErrorGlyph.swift in Sources */,
 				EBBBFE932CA2593900E987B1 /* Protocols.swift in Sources */,
+				EB1A606A2DEA521E0067A4E3 /* PreviewFilenameView.swift in Sources */,
 				EB12BCA32DC813D30011B7FF /* SampleLibraryAutoPlayer.swift in Sources */,
 				EBF3A1D92DB981FA00BF0944 /* AudioFormat.swift in Sources */,
 				EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */,

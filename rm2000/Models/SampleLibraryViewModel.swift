@@ -22,7 +22,7 @@ class SampleLibraryViewModel: ObservableObject {
 	init(sampleStorage: SampleStorage = SampleStorage.shared) {
 		self.sampleStorage = sampleStorage
 		
-		sampleStorage.UserDirectory.$files
+		sampleStorage.UserDirectory.$samplesInStorage
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] newFiles in
 				self?.listOfAllSamples = newFiles

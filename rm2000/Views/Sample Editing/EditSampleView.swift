@@ -10,6 +10,8 @@ struct EditSampleView<Model: FileRepresentable>: View {
 	@State private var description: String?
 	@State private var forwardEndTime: CMTime? = nil
 	@State private var reverseEndTime: CMTime? = nil
+	@State private var sampleExists: Bool = false
+	@State private var didError: Bool = false
 	private let onComplete: (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void
 	
 	init(recording: Model, onComplete: @escaping (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void) {
@@ -39,6 +41,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 						.autocorrectionDisabled()
 						.onChange(of: title) { formattedText in
 							title = formattedText.replacingOccurrences(of: "-", with: " ")
+							sampleExists = doesSampleAlreadyExist()
 						}
 				}
 				
@@ -52,6 +55,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 							tags = Set(newValue.map { tag in
 								String(tag.unicodeScalars.filter { !forbiddenChars.contains($0) })
 							})
+							sampleExists = doesSampleAlreadyExist()
 						}
 				}
 				DisclosureGroup("Additional Settings") {
@@ -74,20 +78,24 @@ struct EditSampleView<Model: FileRepresentable>: View {
 				.padding(.top, 8)
 				
 				HStack {
+					if sampleExists {
+						HStack {
+							Label("Sample with same title and tags already exists", systemImage: "exclamationmark.triangle")
+								.id(sampleExists)
+								.foregroundColor(.red)
+								.contentTransition(.opacity)
+								.font(.caption)
+						}
+					}
+					
 					Spacer()
+					
 					Button("Save Sample") {
-						
-						var configuration = SampleEditConfiguration()
-						
-						configuration.directoryDestination = SampleStorage.shared.UserDirectory
-						configuration.forwardEndTime = forwardEndTime
-						configuration.reverseEndTime = reverseEndTime
-						
-						var metadata = SampleMetadata()
-						metadata.title = title
-						metadata.tags = tags
-						var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
-						onComplete(createdSample, metadata, configuration)
+						if (sampleExists) {
+							didError = true
+						} else {
+							gatherAndComplete()
+						}
 					}
 					.buttonStyle(.borderedProminent)
 					.padding(.top, 8)
@@ -95,6 +103,36 @@ struct EditSampleView<Model: FileRepresentable>: View {
 			}
 			.padding()
 		}
+		.alert("Replace existing sample?", isPresented: $didError) {
+			Button("Replace", role: .destructive) {
+				gatherAndComplete()
+			}
+			Button("Cancel", role: .cancel) { }
+		} message: {
+			Text("Another sample with identical title and tags already exists.")
+		}
+	}
+	
+	private func gatherAndComplete() {
+		var configuration = SampleEditConfiguration()
+		configuration.directoryDestination = SampleStorage.shared.UserDirectory
+		configuration.forwardEndTime = forwardEndTime
+		configuration.reverseEndTime = reverseEndTime
+		
+		var metadata = SampleMetadata()
+		metadata.title = title
+		metadata.tags = tags
+		var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
+		onComplete(createdSample, metadata, configuration)
+	}
+	
+	@MainActor private func doesSampleAlreadyExist() -> Bool {
+		for sample in SampleStorage.shared.UserDirectory.samplesInStorage {
+			if sample.metadata.title == title && sample.metadata.tags == tags {
+				return true
+			}
+		}
+		return false
 	}
 }
 
@@ -106,44 +144,6 @@ struct TokenInputField: View {
 	var body: some View {
 		TokenField(.init(get: { Array(tags) }, set: { tags = Set($0) })) // converting set<string> to [string]...stupid...
 			.completions([String](suggestions))
-	}
-}
-
-
-struct PreviewFilenameView: View {
-	@State var previewFilename: String = ""
-	@Binding var title: String
-	@Binding var tags: Set<String>
-	
-	@State private var sortedTagsArray: [String] = []
-	
-	var body: some View {
-		Text(generatePreviewFilename())
-			.font(.system(size: 12, weight: .regular, design: .monospaced))
-			.foregroundColor(Color(red: 1, green: 0.6, blue: 0))
-			.padding(4)
-			.frame(maxWidth: .infinity)
-			.background(Color.black)
-			.contentTransition(.numericText())
-			.animation(.easeInOut, value: title)
-			.onChange(of: tags) { newTags in
-				sortedTagsArray = newTags.sorted()
-			}
-			.onAppear {
-				sortedTagsArray = tags.sorted()
-			}
-	}
-	
-	// TODO - hardcoded file extension string
-	private func generatePreviewFilename() -> String {
-		let audioFormat = TapeRecorderState.shared.sampleRecordAudioFormat
-		var taggedString = ""
-		
-		for tag in sortedTagsArray {
-			taggedString.append("\(tag)-")
-		}
-		
-		return "\(title)__\(taggedString).\(audioFormat.asString)"
 	}
 }
 

@@ -36,6 +36,10 @@ struct EditSampleView<Model: FileRepresentable>: View {
 						.foregroundColor(.secondary)
 					TextField("New Filename", text: $title)
 						.textFieldStyle(RoundedBorderTextFieldStyle())
+						.autocorrectionDisabled()
+						.onChange(of: title) { formattedText in
+							title = formattedText.replacingOccurrences(of: "-", with: " ")
+						}
 				}
 				
 				VStack(alignment: .leading, spacing: 4) {
@@ -43,6 +47,12 @@ struct EditSampleView<Model: FileRepresentable>: View {
 						.font(.caption)
 						.foregroundColor(.secondary)
 					TokenInputField(tags: $tags)
+						.onChange(of: tags) { newValue in
+							let forbiddenChars = CharacterSet(charactersIn: "_-/:*?\"<>|,;[]{}'&\t\n\r")
+							tags = Set(newValue.map { tag in
+								String(tag.unicodeScalars.filter { !forbiddenChars.contains($0) })
+							})
+						}
 				}
 				DisclosureGroup("Additional Settings") {
 					VStack(alignment: .leading, spacing: 4) {

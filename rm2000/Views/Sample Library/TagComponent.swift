@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct TagComponent: View {
-	var tagName: String
-	
+	var string: String?
     var body: some View {
-			Text(tagName)
-				.font(.caption)
-				.padding(2)
-				.background(Color.gray.opacity(0.2))
-				.cornerRadius(3)
+			
+			if let tag = string {
+				Text(tag)
+					.font(.caption)
+					.padding(2)
+					.background(Color.gray.opacity(0.2))
+					.cornerRadius(3)
+			} else {
+				Text("")
+					.font(.caption)
+					.padding(2)
+			}
+			
 		}
-	
 }

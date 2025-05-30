@@ -64,10 +64,12 @@ struct SampleIndividualListItem: View {
 			VStack(alignment: .leading, spacing: 4) {
 				Text("\(sample.text)")
 					.font(.title3)
-				if let sampleObj = sample.file as? Sample, !sampleObj.tags.isEmpty {
+				if let sampleObj = sample.file as? Sample{
 					HStack(spacing: 8) {
-						ForEach(Array(sampleObj.tags), id: \.self) { tagName in
-							TagComponent(tagName: tagName)
+						if (!sampleObj.tags.isEmpty) {
+							ForEach(Array(sampleObj.tags), id: \.self) { tagName in
+								TagComponent(string: tagName)
+							}
 						}
 					}
 				}
@@ -95,6 +97,7 @@ struct SampleIndividualListItem: View {
 				.buttonStyle(.borderless)
 			}
 		}
+		.frame(minHeight: 40, maxHeight: 40)
 		.draggable(sample) {
 			// example view for now
 			Label(sample.file.fileURL.lastPathComponent, systemImage: "waveform")

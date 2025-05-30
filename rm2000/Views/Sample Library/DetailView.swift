@@ -46,16 +46,6 @@ struct AllRecordingsView: View {
 
 					SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
 						.tag(sample.id)
-					/*
-					 todo - fix this bug where, when uncommented below,
-					 selecting the list item will only work when selecting
-					 the background, not the text
-					 
-					 
-					 .onTapGesture(count: 2) {
-					 NSWorkspace.shared.open(sample.fileURL)
-					 }
-					 */
 				}
 			} else {
 				ProgressView("Loading recordings...")

@@ -80,6 +80,13 @@ class SLAudioPlayer: ObservableObject {
 		}
 	}
 	
+	func forcePause() {
+		if isPlaying {
+			player?.pause()
+			isPlaying = false
+		}
+	}
+	
 	func seekTo(time: Double) {
 		player?.seek(to: CMTime(seconds: time, preferredTimescale: 600))
 		currentTime = time

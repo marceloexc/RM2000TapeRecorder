@@ -126,6 +126,12 @@ struct SampleLibraryView: View {
 		.task {
 			currentSamplesInView = viewModel.listOfAllSamples.count
 		}
+		.onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
+			// window is closed, stop audio playback
+			if (viewModel.slAudioPlayer.isPlaying) {
+				viewModel.slAudioPlayer.forcePause()
+			}
+		}
 		.searchable(text: .constant(""), placement: .sidebar)
 	}
 }

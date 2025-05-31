@@ -14,16 +14,11 @@ struct SampleLibraryView: View {
 	@State private var selection = "Apple"
 	@State private var searchText = ""
 	@State private var currentSearchToken = [SampleTagToken]()
-	
-	var allTokens: [SampleTagToken] {
-		viewModel.indexedTags.map { tagString in
-			SampleTagToken(id: UUID(), tag: tagString)
-		}
-	}
+	@State private var allTokens: [SampleTagToken] = [] // Make allTokens a @State variable
 	
 	
 	var suggestedSearchToken: [SampleTagToken] {
-		return allTokens
+		return Array(allTokens.prefix(10))
 	}
 		
 	init() {
@@ -94,7 +89,7 @@ struct SampleLibraryView: View {
 			ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
 				Slider(
 					value: Binding(
-						get: { viewModel.slAudioPlayer.currentTime },
+						get: { viewModel.currentTime },
 						set: { viewModel.slAudioPlayer.seekTo(time: $0) }
 					),
 					in: 0...viewModel.slAudioPlayer.duration
@@ -135,14 +130,21 @@ struct SampleLibraryView: View {
 		.onAppear {
 			// automatically set toolbar to "Icon and Label"
 			setToolbarStyle()
+			if allTokens.isEmpty {
+				Task { @MainActor in
+					allTokens = viewModel.indexedTags.map { tagString in
+						SampleTagToken(id: UUID(), tag: tagString)
+					}
+				}
+			}
 		}
 		.searchable(text: $searchText, tokens: $currentSearchToken, suggestedTokens: .constant(suggestedSearchToken), placement: .sidebar, prompt: Text("Type to search")) { token in
-			Text(token.tag)
+			Text(token.tag).id(token.id)
 		}
 		.task {
 			currentSamplesInView = viewModel.listOfAllSamples.count
 		}
-		.onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
+		.onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
 			// window is closed, stop audio playback
 			if (viewModel.slAudioPlayer.isPlaying) {
 				viewModel.slAudioPlayer.forcePause()

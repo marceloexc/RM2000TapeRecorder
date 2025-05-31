@@ -132,6 +132,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 			Text("Another sample with identical title and tags already exists.")
 		}
 		.alert("Cancel Editing?", isPresented: $didErrorForCancel) {
+			Button("Go Back", role: .cancel) { }
 			Button("Confirm") {
 				dismiss()
 			}

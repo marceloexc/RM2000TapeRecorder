@@ -30,8 +30,8 @@ struct Sample: Identifiable, Hashable {
 	}
 	
 	init?(fileURL: URL) {
-		// only urls that pass the regex text will be allowed
-		guard Sample.passesRegex(fileURL.lastPathComponent), AudioFormat.isSupported(extension: fileURL.pathExtension) else {
+		
+		guard AudioFormat.isSupported(extension: fileURL.pathExtension) else {
 			return nil
 		}
 		
@@ -50,12 +50,6 @@ struct Sample: Identifiable, Hashable {
 	private static func passesRegex(_ pathName: String) -> Bool {
 		(try? regString.wholeMatch(in: pathName)) != nil
 	}
-	
-//	func finalFilename() -> String {
-//		return metadata.finalFilename(fileExtension: String)
-//	}
-	
-	// MARK: - Hashable Conformance, to be fair don't uderstand yet what it does
 	
 	func hash(into hasher: inout Hasher) {
 		hasher.combine(id)

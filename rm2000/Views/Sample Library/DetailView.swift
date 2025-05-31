@@ -1,61 +1,65 @@
 import SwiftUI
 
+enum DetailViewType: Hashable {
+	case all
+	case tagged(String)
+	case untagged
+}
+
 struct DetailView: View {
 	@ObservedObject var viewModel: SampleLibraryViewModel
 	
-	var body: some View {
-		Group {
-			if let selectedTag = viewModel.sidebarSelection {
-				TaggedRecordingsView(viewModel: viewModel, selectedTag: selectedTag)
-			} else {
-				AllRecordingsView(viewModel: viewModel)
-			}
+	private var currentViewType: DetailViewType {
+		guard let selection = viewModel.sidebarSelection else {
+			return .all
+		}
+		
+		switch selection {
+		case .allRecordings:
+			return .all
+		case .untaggedRecordings:
+			return .untagged
+		case .tag(let tagName):
+			return .tagged(tagName)
 		}
 	}
-}
-
-private struct TaggedRecordingsView: View {
-	@ObservedObject var viewModel: SampleLibraryViewModel
-	let selectedTag: String
 	
 	var body: some View {
-		
-		if viewModel.finishedProcessing {
-			List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
-				if sample.tags.contains(selectedTag) {
-					let itemModel = SampleListItemModel(file: sample)
-					SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
-						.tag(sample.id)
-				}
+		Group {
+			switch currentViewType {
+			case .all:
+				RecordingsListView(viewModel: viewModel, viewType: .all)
+			case .tagged(let tagName):
+				RecordingsListView(viewModel: viewModel, viewType: .tagged(tagName))
+			case .untagged:
+				RecordingsListView(viewModel: viewModel, viewType: .untagged)
 			}
 		}
-		
-
 	}
 }
 
-struct AllRecordingsView: View {
+private struct RecordingsListView: View {
 	@ObservedObject var viewModel: SampleLibraryViewModel
+	let viewType: DetailViewType
+	
+	private var filteredSamples: [Sample] {
+		switch viewType {
+		case .all:
+			return viewModel.listOfAllSamples
+		case .tagged(let tagName):
+			return viewModel.listOfAllSamples.filter { $0.tags.contains(tagName) }
+		case .untagged:
+			return viewModel.listOfAllSamples.filter { $0.tags.isEmpty }
+		}
+	}
 	
 	var body: some View {
 		Group {
 			if viewModel.finishedProcessing {
-				List(viewModel.listOfAllSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
-					
+				List(filteredSamples, id: \.id, selection: $viewModel.detailSelection) { sample in
 					let itemModel = SampleListItemModel(file: sample)
-
 					SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
 						.tag(sample.id)
-					/*
-					 todo - fix this bug where, when uncommented below,
-					 selecting the list item will only work when selecting
-					 the background, not the text
-					 
-					 
-					 .onTapGesture(count: 2) {
-					 NSWorkspace.shared.open(sample.fileURL)
-					 }
-					 */
 				}
 			} else {
 				ProgressView("Loading recordings...")
@@ -74,10 +78,12 @@ struct SampleIndividualListItem: View {
 			VStack(alignment: .leading, spacing: 4) {
 				Text("\(sample.text)")
 					.font(.title3)
-				if let sampleObj = sample.file as? Sample, !sampleObj.tags.isEmpty {
+				if let sampleObj = sample.file as? Sample{
 					HStack(spacing: 8) {
-						ForEach(Array(sampleObj.tags), id: \.self) { tagName in
-							TagComponent(tagName: tagName)
+						if (!sampleObj.tags.isEmpty) {
+							ForEach(Array(sampleObj.tags), id: \.self) { tagName in
+								TagComponent(string: tagName)
+							}
 						}
 					}
 				}
@@ -105,6 +111,7 @@ struct SampleIndividualListItem: View {
 				.buttonStyle(.borderless)
 			}
 		}
+		.frame(minHeight: 40, maxHeight: 40)
 		.draggable(sample) {
 			// example view for now
 			Label(sample.file.fileURL.lastPathComponent, systemImage: "waveform")

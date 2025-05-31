@@ -7,7 +7,7 @@ class SampleLibraryViewModel: ObservableObject {
 	@Published var listOfAllSamples: [Sample] = []
 	@Published var indexedTags: [String] = []
 	@Published var finishedProcessing: Bool = false
-	@Published var sidebarSelection: String?
+  @Published var sidebarSelection: SidebarSelection?
 	@Published var detailSelection: SampleListItemModel.ID?
 	@Published var showInspector: Bool = false
 	@Published var slAudioPlayer = SLAudioPlayer()

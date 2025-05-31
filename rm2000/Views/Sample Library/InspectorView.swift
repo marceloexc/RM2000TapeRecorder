@@ -19,7 +19,7 @@ struct InspectorView: View {
 							Text("Tags")
 							Spacer()
 							ForEach(Array(sample.tags), id: \.self) { tagName in
-								TagComponent(tagName: tagName)
+								TagComponent(string: tagName)
 							}
 						}
 						

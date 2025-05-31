@@ -15,13 +15,17 @@ struct SampleMetadata {
 	
 	init(fileURL: URL) {
 		if let match = try? regString.firstMatch(in: fileURL.lastPathComponent) {
+			// if passes regex, assume it is tagged
 			self.title = String(match.1)
 			self.tags = Set(String(match.2).components(separatedBy: "_"))
+		} else {
+			// else, just use the filename as the title
+			self.title = fileURL.deletingPathExtension().lastPathComponent
 		}
 	}
 	
 	var tagsAsString: String {
-		get { tags.sorted().joined(separator: ",") }
+		get { tags.sorted().joined(separator: ",")	 }
 		set {
 			tags = Set(newValue
 				.components(separatedBy: ",")
@@ -32,7 +36,12 @@ struct SampleMetadata {
 	
 	func finalFilename(fileExtension: String) -> String {
 		// Construct the filename in the format "title--tag1_tag2_tag3.aac"
-		let formattedTags = tags.joined(separator: "_")
-		return "\(title)--\(formattedTags).\(fileExtension)"
+		if tags.isEmpty {
+			// tags are empty, use omit them
+			return "\(title).\(fileExtension)"
+		} else {
+			let formattedTags = tags.joined(separator: "_")
+			return "\(title)--\(formattedTags).\(fileExtension)"
+		}
 	}
 }

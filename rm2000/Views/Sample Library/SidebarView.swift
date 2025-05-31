@@ -9,6 +9,10 @@ enum SidebarSelection: Hashable {
 struct SidebarView: View {
 	@ObservedObject var viewModel: SampleLibraryViewModel
 	
+	init(viewModel: SampleLibraryViewModel) {
+		self.viewModel = viewModel
+	}
+	
 	var body: some View {
 		List(selection: $viewModel.sidebarSelection) {
 			Section(header: Text("Collections")) {

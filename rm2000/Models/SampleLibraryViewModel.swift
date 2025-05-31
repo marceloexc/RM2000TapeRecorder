@@ -2,6 +2,13 @@ import Foundation
 import CoreTransferable
 import Combine
 
+
+struct SampleTagToken: Identifiable {
+  var id: UUID
+  var tag: String
+}
+
+
 @MainActor
 class SampleLibraryViewModel: ObservableObject {
 	@Published var listOfAllSamples: [Sample] = []

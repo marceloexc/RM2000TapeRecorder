@@ -10,12 +10,25 @@ extension ToolbarItemPlacement {
 struct SampleLibraryView: View {
 	@StateObject private var viewModel: SampleLibraryViewModel
 	@Environment(\.openURL) private var openURL
-	
 	@State private var currentSamplesInView: Int = 0
 	@State private var selection = "Apple"
+	@State private var searchText = ""
+	@State private var currentSearchToken = [SampleTagToken]()
+	
+	var allTokens: [SampleTagToken] {
+		viewModel.indexedTags.map { tagString in
+			SampleTagToken(id: UUID(), tag: tagString)
+		}
+	}
+	
+	
+	var suggestedSearchToken: [SampleTagToken] {
+		return allTokens
+	}
 		
 	init() {
 			_viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
+
 	}
 	
 	var body: some View {
@@ -123,6 +136,9 @@ struct SampleLibraryView: View {
 			// automatically set toolbar to "Icon and Label"
 			setToolbarStyle()
 		}
+		.searchable(text: $searchText, tokens: $currentSearchToken, suggestedTokens: .constant(suggestedSearchToken), placement: .sidebar, prompt: Text("Type to search")) { token in
+			Text(token.tag)
+		}
 		.task {
 			currentSamplesInView = viewModel.listOfAllSamples.count
 		}
@@ -132,7 +148,6 @@ struct SampleLibraryView: View {
 				viewModel.slAudioPlayer.forcePause()
 			}
 		}
-		.searchable(text: .constant(""), placement: .sidebar)
 	}
 }
 

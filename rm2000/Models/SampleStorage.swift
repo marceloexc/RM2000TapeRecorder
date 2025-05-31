@@ -25,7 +25,7 @@ final class SampleStorage: ObservableObject {
 class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 	
 
-	@Published var files: [Sample] = []
+	@Published var samplesInStorage: [Sample] = []
 	// todo - refactor indexedTags to automatically be called
 	// when [files] changes in size
 	@Published var indexedTags: Set<String> = []
@@ -53,7 +53,7 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 				let filePath = fileURL.path
 				if !processedFilePaths.contains(filePath) {
 					if let SampleFile = Sample(fileURL: fileURL) {
-						files.append(SampleFile)
+						samplesInStorage.append(SampleFile)
 						indexedTags.formUnion(SampleFile.tags)
 						processedFilePaths.insert(filePath)
 					}
@@ -113,7 +113,7 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 				let path = url.path
 				if !self.processedFilePaths.contains(path),
 					 let sample = Sample(fileURL: url) {
-					self.files.append(sample)
+					self.samplesInStorage.append(sample)
 					self.indexedTags.formUnion(sample.tags)
 					self.processedFilePaths.insert(path)
 					Logger().debug("\(url.lastPathComponent) fits sample criteria!")
@@ -123,7 +123,7 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
 			for url in changed.deletedFiles {
 				let path = url.path
 				if self.processedFilePaths.contains(path) {
-					self.files.removeAll { $0.fileURL.path == path }
+					self.samplesInStorage.removeAll { $0.fileURL.path == path }
 					self.processedFilePaths.remove(path)
 					Logger().debug("File deleted: \(url.lastPathComponent)")
 				}

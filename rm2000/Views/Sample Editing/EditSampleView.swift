@@ -91,15 +91,19 @@ struct EditSampleView<Model: FileRepresentable>: View {
 					Spacer()
 					
 					Button("Save Sample") {
-						if (sampleExists) {
-							didError = true
+						if (title.isEmpty && tags.isEmpty) {
+							NSSound.beep()
 						} else {
-							gatherAndComplete()
+							if (sampleExists) {
+								didError = true
+							} else {
+								gatherAndComplete()
+							}
 						}
 					}
 					.buttonStyle(.borderedProminent)
 					.padding(.top, 8)
-				}
+				}.keyboardShortcut(.defaultAction)
 			}
 			.padding()
 		}

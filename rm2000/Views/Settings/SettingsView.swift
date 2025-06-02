@@ -33,6 +33,15 @@ struct SettingsView: View {
 				.padding()
 				.frame(width: 450)
 				.tag("Recording")
+			
+			LicenseTabView()
+				.tabItem {
+					Label {
+						Text("License")
+					} icon: {
+						Image(systemName: <#T##String#>)
+					}
+				}
 		}
 		.onAppear {
 			workingDirectory = appState.sampleDirectory

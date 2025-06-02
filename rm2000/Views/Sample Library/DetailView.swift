@@ -45,11 +45,11 @@ private struct RecordingsListView: View {
 	private var filteredSamples: [Sample] {
 		switch viewType {
 		case .all:
-			return viewModel.listOfAllSamples
+      return viewModel.filteredSamples
 		case .tagged(let tagName):
-			return viewModel.listOfAllSamples.filter { $0.tags.contains(tagName) }
+			return viewModel.samples.filter { $0.tags.contains(tagName) }
 		case .untagged:
-			return viewModel.listOfAllSamples.filter { $0.tags.isEmpty }
+			return viewModel.samples.filter { $0.tags.isEmpty }
 		}
 	}
 	

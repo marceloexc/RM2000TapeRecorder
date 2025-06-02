@@ -10,7 +10,6 @@ extension ToolbarItemPlacement {
 struct SampleLibraryView: View {
 	@StateObject private var viewModel: SampleLibraryViewModel
 	@Environment(\.openURL) private var openURL
-	@State private var currentSamplesInView: Int = 0
 	@State private var selection = "Apple"
 		
 	init() {
@@ -53,7 +52,6 @@ struct SampleLibraryView: View {
 					Label("List", systemImage: "list.bullet")
 				}.pickerStyle(.menu)
 			}
-
 		}
 		.toolbar(id: "rm2000.favorites-toolbar") {
 			ToolbarItem(id: "rm2000.playpause", placement: .favoritesBar) {
@@ -64,10 +62,8 @@ struct SampleLibraryView: View {
 				}
 				.disabled(viewModel.selectedSample == nil)
 			}
-			
 			ToolbarItem(id: "rm2000.duration", placement: .favoritesBar) {
 				if (viewModel.slAudioPlayer.isPlaying) {
-					// https://stackoverflow.com/questions/33401388/get-minutes-and-seconds-from-double-in-swift
 					let mins: Int = Int(viewModel.slAudioPlayer.currentTime) / 60
 					let secs: Int = Int(viewModel.slAudioPlayer.currentTime - Double(mins * 60))
 					Text(String(format: "%d:%02d", mins, secs))
@@ -77,7 +73,6 @@ struct SampleLibraryView: View {
 						.disabled(viewModel.selectedSample == nil)
 				}
 			}
-			
 			ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
 				Slider(
 					value: Binding(
@@ -110,7 +105,6 @@ struct SampleLibraryView: View {
 					} label: {
 						Label("Inspector", systemImage: "info.circle")
 							.foregroundStyle(.cyan)
-
 					}
 				}
 			}
@@ -118,16 +112,15 @@ struct SampleLibraryView: View {
 		}
 		.toolbarRole(.editor)
 		.navigationTitle("Sample Library")
-		.navigationSubtitle("\(currentSamplesInView) Samples")
+		.navigationSubtitle("\(viewModel.filteredSamples.count) Samples")
 		.onAppear {
-			// automatically set toolbar to "Icon and Label"
 			setToolbarStyle()
 		}
-    .searchable(text: $viewModel.searchText, tokens: $viewModel.currentSearchToken, suggestedTokens: .constant(viewModel.suggestedSearchToken), placement: .sidebar, prompt: Text("Type to search")) { token in
+    .searchable(text: $viewModel.searchText,
+                tokens: $viewModel.currentSearchToken,
+                suggestedTokens: .constant(viewModel.suggestedSearchTokens),
+                placement: .sidebar, prompt: Text("Type to search")) { token in
       Label("\(token.tag)", systemImage: "number")
-		}
-		.task {
-			currentSamplesInView = viewModel.listOfAllSamples.count
 		}
 		.onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
 			// window is closed, stop audio playback

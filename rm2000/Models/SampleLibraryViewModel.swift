@@ -8,7 +8,7 @@ struct SampleTagToken: Identifiable {
 }
 
 class SampleLibraryViewModel: ObservableObject {
-  @Published var listOfAllSamples: [Sample] = []
+  @Published var samples: [Sample] = []
   @Published var indexedTags: [String] = []
   @Published var finishedProcessing: Bool = false
   @Published var sidebarSelection: SidebarSelection?
@@ -27,8 +27,24 @@ class SampleLibraryViewModel: ObservableObject {
     return matchToSample(id: detailSelection)
   }
 		
-		var suggestedSearchToken: [SampleTagToken] {
+		var suggestedSearchTokens: [SampleTagToken] {
+				guard searchText.isEmpty else { return [] }
 				return Array(allTokens.prefix(10))
+		}
+		
+		var filteredSamples: [Sample] {
+				guard !searchText.isEmpty || !currentSearchToken.isEmpty else { return samples }
+				print(searchText)
+				print(currentSearchToken)
+				
+				return samples.filter { sample in
+						let matchesText = searchText.isEmpty || sample.title.lowercased().contains(searchText.lowercased())
+						let tokenTags = Set(currentSearchToken.map { $0.tag })
+						let sampleTags = Set(sample.tags)
+						let matchesTokens = currentSearchToken.isEmpty || !sampleTags.isDisjoint(with: tokenTags)
+						
+						return matchesText && matchesTokens
+				}
 		}
 
   init(sampleStorage: SampleStorage = SampleStorage.shared) {
@@ -37,7 +53,7 @@ class SampleLibraryViewModel: ObservableObject {
     Task { @MainActor in
       sampleStorage.UserDirectory.$samplesInStorage
         .sink { [weak self] newFiles in
-          self?.listOfAllSamples = newFiles
+          self?.samples = newFiles
           self?.finishedProcessing = true
         }
         .store(in: &cancellables)
@@ -88,7 +104,7 @@ class SampleLibraryViewModel: ObservableObject {
   private func matchToSample(id: UUID?) -> Sample? {
     // match uuid from detailSelection to its according sample object
     guard let id = id else { return nil }
-    return listOfAllSamples.first { $0.id == id }
+    return samples.first { $0.id == id }
   }
 }
 

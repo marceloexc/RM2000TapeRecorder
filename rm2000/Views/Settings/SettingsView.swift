@@ -39,7 +39,7 @@ struct SettingsView: View {
 					Label {
 						Text("License")
 					} icon: {
-						Image(systemName: <#T##String#>)
+						Image(systemName: "creditcard")
 					}
 				}
 		}

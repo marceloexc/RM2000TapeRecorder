@@ -16,6 +16,9 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var showInspector: Bool = false
   @Published var slAudioPlayer = SLAudioPlayer()
   @Published var currentTime: Double = 0
+		@Published var searchText = ""
+		@Published var currentSearchToken = [SampleTagToken]()
+		@Published var allTokens: [SampleTagToken] = []
 
   private var sampleStorage: SampleStorage
   private var cancellables = Set<AnyCancellable>()
@@ -23,6 +26,10 @@ class SampleLibraryViewModel: ObservableObject {
   var selectedSample: Sample? {
     return matchToSample(id: detailSelection)
   }
+		
+		var suggestedSearchToken: [SampleTagToken] {
+				return Array(allTokens.prefix(10))
+		}
 
   init(sampleStorage: SampleStorage = SampleStorage.shared) {
     self.sampleStorage = sampleStorage
@@ -54,6 +61,18 @@ class SampleLibraryViewModel: ObservableObject {
         }
       }
       .store(in: &cancellables)
+				
+				$indexedTags
+						.receive(on: DispatchQueue.main)
+						.map { tags in
+								tags.map { tagString in
+										SampleTagToken(id: UUID(), tag: tagString)
+								}
+						}
+						.sink { [weak self] newTokens in
+								self?.allTokens = newTokens
+						}
+						.store(in: &cancellables)
 
     // update music player slider as song plays
     slAudioPlayer.$currentTime

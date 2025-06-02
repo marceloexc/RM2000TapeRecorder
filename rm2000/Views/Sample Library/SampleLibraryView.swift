@@ -12,14 +12,6 @@ struct SampleLibraryView: View {
 	@Environment(\.openURL) private var openURL
 	@State private var currentSamplesInView: Int = 0
 	@State private var selection = "Apple"
-	@State private var searchText = ""
-	@State private var currentSearchToken = [SampleTagToken]()
-	@State private var allTokens: [SampleTagToken] = [] // Make allTokens a @State variable
-	
-	
-	var suggestedSearchToken: [SampleTagToken] {
-		return Array(allTokens.prefix(10))
-	}
 		
 	init() {
 			_viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
@@ -130,16 +122,9 @@ struct SampleLibraryView: View {
 		.onAppear {
 			// automatically set toolbar to "Icon and Label"
 			setToolbarStyle()
-			if allTokens.isEmpty {
-				Task { @MainActor in
-					allTokens = viewModel.indexedTags.map { tagString in
-						SampleTagToken(id: UUID(), tag: tagString)
-					}
-				}
-			}
 		}
-		.searchable(text: $searchText, tokens: $currentSearchToken, suggestedTokens: .constant(suggestedSearchToken), placement: .sidebar, prompt: Text("Type to search")) { token in
-			Text(token.tag).id(token.id)
+    .searchable(text: $viewModel.searchText, tokens: $viewModel.currentSearchToken, suggestedTokens: .constant(viewModel.suggestedSearchToken), placement: .sidebar, prompt: Text("Type to search")) { token in
+      Label("\(token.tag)", systemImage: "number")
 		}
 		.task {
 			currentSamplesInView = viewModel.listOfAllSamples.count

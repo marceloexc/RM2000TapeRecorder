@@ -123,7 +123,7 @@ struct SampleLibraryView: View {
     }
     .searchable(
       text: $viewModel.searchText,
-      tokens: $viewModel.currentSearchToken,
+      tokens: $viewModel.currentSearchTokens,
 //      suggestedTokens: .constant(viewModel.suggestedSearchTokens),
       placement: .sidebar,
       prompt: Text("Type to search")) { token in

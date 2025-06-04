@@ -16,39 +16,51 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var showInspector: Bool = false
   @Published var slAudioPlayer = SLAudioPlayer()
   @Published var currentTime: Double = 0
-		@Published var searchText = ""
-		@Published var currentSearchToken = [SampleTagToken]()
-		@Published var allTokens: [SampleTagToken] = []
-
-  private var sampleStorage: SampleStorage
-  private var cancellables = Set<AnyCancellable>()
+  @Published var searchText = ""
+  @Published var currentSearchTokens = [SampleTagToken]()
+  @Published var allTokens: [SampleTagToken] = []
 
   var selectedSample: Sample? {
     return matchToSample(id: detailSelection)
   }
-		
-		var suggestedSearchTokens: [SampleTagToken] {
-				if searchText.isEmpty {
-						return Array(allTokens)
-				} else {
-						return allTokens.filter { $0.tag.hasPrefix(searchText) }
-				}
-		}
-		
-		var filteredSamples: [Sample] {
-				guard !searchText.isEmpty || !currentSearchToken.isEmpty else { return samples }
-				print(searchText)
-				print(currentSearchToken)
-				
-				return samples.filter { sample in
-						let matchesText = searchText.isEmpty || sample.title.lowercased().contains(searchText.lowercased())
-						let tokenTags = Set(currentSearchToken.map { $0.tag })
-						let sampleTags = Set(sample.tags)
-						let matchesTokens = currentSearchToken.isEmpty || !sampleTags.isDisjoint(with: tokenTags)
-						
-						return matchesText && matchesTokens
-				}
-		}
+
+  var suggestedSearchTokens: [SampleTagToken] {
+    if searchText.isEmpty {
+      return Array(allTokens)
+    } else {
+      return allTokens.filter { $0.tag.hasPrefix(searchText) }
+    }
+  }
+
+  var filteredSamples: [Sample] {
+    guard !searchText.isEmpty || !currentSearchTokens.isEmpty else {
+      return samples
+    }
+
+    return samples.filter { sample in
+      let textMatchCondition: Bool
+      if searchText.isEmpty {
+        textMatchCondition = true
+      } else {
+        textMatchCondition = sample.title.lowercased().contains(
+          searchText.lowercased())
+      }
+
+      let tokenMatchCondition: Bool
+      if currentSearchTokens.isEmpty {
+        tokenMatchCondition = true
+      } else {
+        let selectedTokenTags = Set(currentSearchTokens.map { $0.tag })
+        let sampleTags = Set(sample.tags)
+        tokenMatchCondition = selectedTokenTags.isSubset(of: sampleTags)
+      }
+
+      return textMatchCondition && tokenMatchCondition
+    }
+  }
+
+  private var sampleStorage: SampleStorage
+  private var cancellables = Set<AnyCancellable>()
 
   init(sampleStorage: SampleStorage = SampleStorage.shared) {
     self.sampleStorage = sampleStorage
@@ -80,18 +92,18 @@ class SampleLibraryViewModel: ObservableObject {
         }
       }
       .store(in: &cancellables)
-				
-				$indexedTags
-						.receive(on: DispatchQueue.main)
-						.map { tags in
-								tags.map { tagString in
-										SampleTagToken(id: UUID(), tag: tagString)
-								}
-						}
-						.sink { [weak self] newTokens in
-								self?.allTokens = newTokens
-						}
-						.store(in: &cancellables)
+
+    $indexedTags
+      .receive(on: DispatchQueue.main)
+      .map { tags in
+        tags.map { tagString in
+          SampleTagToken(id: UUID(), tag: tagString)
+        }
+      }
+      .sink { [weak self] newTokens in
+        self?.allTokens = newTokens
+      }
+      .store(in: &cancellables)
 
     // update music player slider as song plays
     slAudioPlayer.$currentTime

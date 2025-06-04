@@ -26,34 +26,67 @@ class SkeuromorphicWindow: NSWindow {
 	}
 	
 	private func drawMicrophoneGrille() {
+		let grilleView = MicrophoneGrilleView(frame: NSRect(x: 0, y: 30, width: 30, height: 20))
 		
-		//omg skeuromorphism.
+		if let titlebarContainer = self.standardWindowButton(.closeButton)?.superview?.superview {
+			titlebarContainer.addSubview(grilleView)
+			
+			grilleView.translatesAutoresizingMaskIntoConstraints = false
+			NSLayoutConstraint.activate([
+				grilleView.centerXAnchor.constraint(equalTo: titlebarContainer.centerXAnchor),
+				grilleView.centerYAnchor.constraint(equalTo: titlebarContainer.centerYAnchor)
+			])
+		}
+	}
+}
+
+class MicrophoneGrilleView: NSView {
+	private let imageView = NSImageView()
+	
+	override init(frame frameRect: NSRect) {
+		super.init(frame: frameRect)
+		setupView()
+	}
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		setupView()
+	}
+	
+	private func setupView() {
+		self.setAccessibilityElement(false)
+		self.setAccessibilityHidden(true)
 		
-		let isDarkMode = self.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+		imageView.frame = NSRect(x: -70, y: -14, width: 140, height: 28)
+		imageView.setAccessibilityElement(false)
+		imageView.setAccessibilityHidden(true)
+		imageView.alphaValue = 0.85
+		self.addSubview(imageView)
 		
-		let imageName = isDarkMode ? "MicGrilleDark" : "MicGrilleTemp"
-		let imageView = NSImageView(frame: NSRect(x: -70, y: -14, width: 140, height: 28))
+		updateAppearance()
+	}
+	
+	override func viewDidChangeEffectiveAppearance() {
+		super.viewDidChangeEffectiveAppearance()
+		updateAppearance()
+	}
+	
+	private func updateAppearance() {
+		let isDarkMode = effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
 		
-		if let image = NSImage(named: imageName) {
+		if let image = NSImage(named: "MicGrilleBitmap") {
 			image.size = NSSize(width: 130, height: 19)
 			imageView.image = image
-			imageView.setAccessibilityElement(false)
-			imageView.setAccessibilityHidden(true)
 		}
 		
-		let customView = NSView(frame: NSRect(x: 0, y: 30, width: 30, height: 20))
-		customView.addSubview(imageView)
-		customView.setAccessibilityElement(false)
-		customView.setAccessibilityHidden(true)
-		
-		if let titlebarController = self.standardWindowButton(.closeButton)?.superview?.superview {
-			titlebarController.addSubview(customView)
-			
-			customView.translatesAutoresizingMaskIntoConstraints = false
-			NSLayoutConstraint.activate([
-				customView.centerYAnchor.constraint(equalTo: titlebarController.centerYAnchor),
-				customView.centerXAnchor.constraint(equalTo: titlebarController.centerXAnchor)
-			])
+		if isDarkMode {
+			let shadow = NSShadow()
+			shadow.shadowOffset = NSSize(width: 1, height: -2)
+			shadow.shadowBlurRadius = 3.0
+			shadow.shadowColor = NSColor.black.withAlphaComponent(0.4)
+			imageView.shadow = shadow
+		} else {
+			imageView.shadow = nil
 		}
 	}
 }

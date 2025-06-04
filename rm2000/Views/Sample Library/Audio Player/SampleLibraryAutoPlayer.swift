@@ -48,7 +48,7 @@ class SLAudioPlayer: ObservableObject {
 			if currentSeconds.isFinite {
 				self.currentTime = currentSeconds
 				// Force object to update, which will refresh dependent views
-				self.objectWillChange.send()
+//				self.objectWillChange.send()
 			}
 		}
 		

@@ -124,10 +124,16 @@ struct SampleLibraryView: View {
     .searchable(
       text: $viewModel.searchText,
       tokens: $viewModel.currentSearchToken,
-      suggestedTokens: .constant(viewModel.suggestedSearchTokens),
-      placement: .sidebar, prompt: Text("Type to search")
-    ) { token in
-      Label("\(token.tag)", systemImage: "number")
+//      suggestedTokens: .constant(viewModel.suggestedSearchTokens),
+      placement: .sidebar,
+      prompt: Text("Type to search")) { token in
+        Label("\(token.tag)", systemImage: "number")
+      }
+    .searchSuggestions {
+      ForEach(viewModel.suggestedSearchTokens, id: \.self) { suggestion in
+        Label("\(suggestion.tag)", systemImage: "number")
+          .searchCompletion(suggestion)
+      }
     }
     .onReceive(
       NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
@@ -143,5 +149,5 @@ struct SampleLibraryView: View {
 #Preview {
   SampleLibraryView()
     .environmentObject(SampleStorage.shared)
-    .frame(width: 900)
+    .frame(width: 1000, height: 600)
 }

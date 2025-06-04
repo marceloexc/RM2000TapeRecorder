@@ -2,7 +2,7 @@ import Combine
 import CoreTransferable
 import Foundation
 
-struct SampleTagToken: Identifiable {
+struct SampleTagToken: Identifiable, Hashable {
   var id: UUID
   var tag: String
 }
@@ -28,8 +28,11 @@ class SampleLibraryViewModel: ObservableObject {
   }
 		
 		var suggestedSearchTokens: [SampleTagToken] {
-				guard searchText.isEmpty else { return [] }
-				return Array(allTokens.prefix(10))
+				if searchText.isEmpty {
+						return Array(allTokens)
+				} else {
+						return allTokens.filter { $0.tag.hasPrefix(searchText) }
+				}
 		}
 		
 		var filteredSamples: [Sample] {

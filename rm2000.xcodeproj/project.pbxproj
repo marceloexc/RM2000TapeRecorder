@@ -139,7 +139,7 @@
 		EBCA46E12CACBEE700040159 /* EditSampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSampleView.swift; sourceTree = "<group>"; };
 		EBCA8F8A2D7918BB0041B03B /* TASAExplorer-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TASAExplorer-SemiBold.otf"; sourceTree = "<group>"; };
 		EBCA8F8E2D7A952D0041B03B /* Credits.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; path = Credits.rtfd; sourceTree = "<group>"; };
-		EBCF5FEB2CEAD8950047405A /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; };
+		EBCF5FEB2CEAD8950047405A /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; usesTabs = 0; };
 		EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDWindowView.swift; sourceTree = "<group>"; };
 		EBDF782D2D80146E00941981 /* Tachyo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tachyo.otf; sourceTree = "<group>"; };
 		EBDF782F2D8016A700941981 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };

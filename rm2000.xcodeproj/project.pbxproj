@@ -279,6 +279,7 @@
 			);
 			path = Settings;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		EB5C8FCA2D99DBD200C4C3C2 /* Encoder */ = {
 			isa = PBXGroup;

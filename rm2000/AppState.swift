@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import OSLog
 import KeyboardShortcuts
+import StoreKit
 
 @MainActor final class AppState: ObservableObject {
 	static let shared = AppState()

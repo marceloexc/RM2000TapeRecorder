@@ -62,6 +62,7 @@
 		EBCA46E22CACBEE700040159 /* EditSampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA46E12CACBEE700040159 /* EditSampleView.swift */; };
 		EBCA8F8B2D7918BB0041B03B /* TASAExplorer-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EBCA8F8A2D7918BB0041B03B /* TASAExplorer-SemiBold.otf */; };
 		EBCA8F8F2D7A952D0041B03B /* Credits.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = EBCA8F8E2D7A952D0041B03B /* Credits.rtfd */; };
+		EBCB69112DF25B7600C30088 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = EBCB69102DF25B7600C30088 /* Products.storekit */; };
 		EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF5FEB2CEAD8950047405A /* TitleBar.swift */; };
 		EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */; };
 		EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = EBD114F52DCBFEA5003ABBB9 /* FluidGradient */; };
@@ -142,6 +143,7 @@
 		EBCA46E12CACBEE700040159 /* EditSampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSampleView.swift; sourceTree = "<group>"; };
 		EBCA8F8A2D7918BB0041B03B /* TASAExplorer-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TASAExplorer-SemiBold.otf"; sourceTree = "<group>"; };
 		EBCA8F8E2D7A952D0041B03B /* Credits.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; path = Credits.rtfd; sourceTree = "<group>"; };
+		EBCB69102DF25B7600C30088 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 		EBCF5FEB2CEAD8950047405A /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; usesTabs = 0; };
 		EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDWindowView.swift; sourceTree = "<group>"; };
 		EBDF782D2D80146E00941981 /* Tachyo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tachyo.otf; sourceTree = "<group>"; };
@@ -399,10 +401,6 @@
 		EBE4E9462C43244D00397EF2 /* rm2000 */ = {
 			isa = PBXGroup;
 			children = (
-				EB1565102D558F0700A3D339 /* Models */,
-				EBBBFE892CA2514800E987B1 /* Tape Mechanism */,
-				EBBBFE842CA1F55100E987B1 /* Views */,
-				EBE4E94D2C43244F00397EF2 /* Preview Content */,
 				EB467BD52D9209C7007E19E8 /* AppKitWindowManagerDelegate.swift */,
 				EB63A3032D6A8E2800E35AE6 /* AppState.swift */,
 				EBAF02622C8A132800520D44 /* Logging.swift */,
@@ -412,9 +410,14 @@
 				EB516E3E2CB75BD100A1C1E6 /* README.md */,
 				EBE4E94B2C43244F00397EF2 /* Assets.xcassets */,
 				EBE4E9502C43244F00397EF2 /* rm2000.entitlements */,
-				EB91DD322CE3135A00F1C37E /* Fonts */,
 				EBCA8F8E2D7A952D0041B03B /* Credits.rtfd */,
 				EBDF782F2D8016A700941981 /* Info.plist */,
+				EB1565102D558F0700A3D339 /* Models */,
+				EBBBFE892CA2514800E987B1 /* Tape Mechanism */,
+				EBBBFE842CA1F55100E987B1 /* Views */,
+				EBE4E94D2C43244F00397EF2 /* Preview Content */,
+				EB91DD322CE3135A00F1C37E /* Fonts */,
+				EBCB69102DF25B7600C30088 /* Products.storekit */,
 			);
 			path = rm2000;
 			sourceTree = "<group>";
@@ -539,6 +542,7 @@
 				EBCA8F8B2D7918BB0041B03B /* TASAExplorer-SemiBold.otf in Resources */,
 				EB516E3F2CB75BD100A1C1E6 /* README.md in Resources */,
 				EBE4E94F2C43244F00397EF2 /* Preview Assets.xcassets in Resources */,
+				EBCB69112DF25B7600C30088 /* Products.storekit in Resources */,
 				EBE4E94C2C43244F00397EF2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

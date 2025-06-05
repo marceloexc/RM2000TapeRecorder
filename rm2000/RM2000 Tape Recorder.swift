@@ -22,12 +22,12 @@ struct RM2000TapeRecorderApp: App {
 			SampleLibraryView()
 				.environmentObject(sampleStorage)
 		}
-		WindowGroup("Welcome", id: "onboarding") {
+		Window("Getting Started", id: "onboarding") {
 			OnboardingView(viewModel: OnboardingViewModel())
 				.environmentObject(appState)
 		}
 		.windowResizability(.contentSize)
-		.windowStyle(.hiddenTitleBar)
+//    .windowStyle(.)
 		
 		Settings {
 			SettingsView()

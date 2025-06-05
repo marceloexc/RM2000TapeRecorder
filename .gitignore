@@ -7,8 +7,6 @@
 *.mode2v3
 *.perspectivev3
 *.xcuserstate
-project.xcworkspace/
-xcuserdata/
 
 # Generated files
 *.[oa]
@@ -26,3 +24,4 @@ build/
 
 # Team stuff
 Submariner/DEVELOPMENT_TEAM.xcconfig
+rm2000.xcodeproj/xcuserdata

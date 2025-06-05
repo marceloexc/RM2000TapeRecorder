@@ -43,6 +43,8 @@
 		EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */; };
 		EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */; };
 		EB90E5A32DB192D80067194C /* UserNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB90E5A22DB192D30067194C /* UserNotifications.swift */; };
+		EB9C7A032DEE4AFE009CDCA2 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */; };
+		EB9C7A052DEE54A5009CDCA2 /* LicenseTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C7A042DEE54A5009CDCA2 /* LicenseTabView.swift */; };
 		EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA1224E2DC722D200E603D3 /* InspectorView.swift */; };
 		EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */; };
 		EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7D82DAB20E000160799 /* GeneralTabView.swift */; };
@@ -122,6 +124,7 @@
 		EB8642632DA4A41900D4883B /* SampleMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleMetadata.swift; sourceTree = "<group>"; };
 		EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditConfiguration.swift; sourceTree = "<group>"; };
 		EB90E5A22DB192D30067194C /* UserNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifications.swift; sourceTree = "<group>"; };
+		EB9C7A042DEE54A5009CDCA2 /* LicenseTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseTabView.swift; sourceTree = "<group>"; };
 		EBA1224E2DC722D200E603D3 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButtons.swift; sourceTree = "<group>"; };
 		EBACB7D82DAB20E000160799 /* GeneralTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTabView.swift; sourceTree = "<group>"; };
@@ -168,6 +171,7 @@
 				EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */,
 				EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */,
 				EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */,
+				EB9C7A032DEE4AFE009CDCA2 /* LaunchAtLogin in Frameworks */,
 				EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +275,7 @@
 				EBACB7D82DAB20E000160799 /* GeneralTabView.swift */,
 				EB64CD112D14FC5200F2B65E /* SettingsView.swift */,
 				EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */,
+				EB9C7A042DEE54A5009CDCA2 /* LicenseTabView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -475,6 +480,7 @@
 				EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */,
 				EBD114F52DCBFEA5003ABBB9 /* FluidGradient */,
 				EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */,
+				EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -511,6 +517,7 @@
 				EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */,
 				EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 				EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */,
+				EB9C7A012DEE4AFE009CDCA2 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -574,6 +581,7 @@
 				EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */,
 				EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */,
 				EB467BD82D920D34007E19E8 /* LCDScreenView.swift in Sources */,
+				EB9C7A052DEE54A5009CDCA2 /* LicenseTabView.swift in Sources */,
 				EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */,
 				EBBBFE8F2CA2588A00E987B1 /* AudioManager.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,
@@ -852,6 +860,14 @@
 				minimumVersion = 2.3.0;
 			};
 		};
+		EB9C7A012DEE4AFE009CDCA2 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Cindori/FluidGradient";
@@ -895,6 +911,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
+		};
+		EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB9C7A012DEE4AFE009CDCA2 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
+			productName = LaunchAtLogin;
 		};
 		EBD114F52DCBFEA5003ABBB9 /* FluidGradient */ = {
 			isa = XCSwiftPackageProductDependency;

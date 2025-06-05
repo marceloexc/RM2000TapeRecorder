@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import KeyboardShortcuts
 
 class WindowController: NSWindowController {
 	override func windowDidLoad() {
@@ -153,7 +154,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 	func promptQuitConfirmation() {
 		let alert = NSAlert()
 		alert.messageText = "Really Quit?"
-		alert.informativeText = "You will not be able to start Quick Recordings (⌘ + ⌥ + G) when the application is not running."
+		alert.informativeText = "You will not be able to start Recordings with the Global Shortcut when the application is not running."
 		alert.alertStyle = .critical
 		alert.addButton(withTitle: "Yes, Quit")
 		alert.addButton(withTitle: "No, Cancel")

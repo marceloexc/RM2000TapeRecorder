@@ -122,9 +122,15 @@ struct SampleIndividualListItem: View {
         .shadow(radius: 2)
     }
     .contextMenu {
-      Button("Open File") {
+      Button("Open") {
         NSWorkspace.shared.open(sample.file.fileURL)
       }
+			
+			Divider()
+			
+			Button("Move to Trash") {
+				try! FileManager.default.trashItem(at: sample.file.fileURL, resultingItemURL: nil)
+			}
     }
   }
 }

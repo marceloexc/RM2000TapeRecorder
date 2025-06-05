@@ -1,6 +1,7 @@
 import Combine
 import CoreTransferable
 import Foundation
+import OSLog
 
 struct SampleTagToken: Identifiable, Hashable {
   var id: UUID
@@ -153,7 +154,8 @@ extension SampleListItemModel: Transferable {
   static var transferRepresentation: some TransferRepresentation {
     FileRepresentation(exportedContentType: .audio) { fileRepresentable in
       // when dragging from app to finder
-      SentTransferredFile(fileRepresentable.file.fileURL)
+						Logger().debug("SentTransferredFile from \(fileRepresentable.file.fileURL)")
+						return SentTransferredFile(fileRepresentable.file.fileURL)
     }
     // without this, finder wont recognize our dropped item
     ProxyRepresentation { fileRepresentable in fileRepresentable.file.fileURL }

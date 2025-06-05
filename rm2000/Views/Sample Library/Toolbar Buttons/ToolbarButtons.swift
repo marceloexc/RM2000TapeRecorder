@@ -28,16 +28,29 @@ struct OpenInFinderButton: View {
 }
 
 struct ShareSampleButton: View {
-	var body: some View {
-		Button(action: {
-			print("Shared button pressed")
-		}) {
-			Label("Share", systemImage: "square.and.arrow.up")
-//				.fontWeight(.black)
-				.foregroundStyle(.gray)
-		}
-//		.padding(.bottom, 3) // or else it looks weirdly positioned!
-	}
+  var sampleItem: Sample?
+  
+  private var shareURL: URL {
+    sampleItem?.fileURL ?? Bundle.main.bundleURL
+  }
+  
+  private var shareTitle: String {
+    sampleItem?.filename ?? "No Sample Selected"
+  }
+  
+  var body: some View {
+    ShareLink(
+      item: shareURL,
+      preview: SharePreview(
+        shareTitle,
+        icon: Image(nsImage: NSWorkspace.shared.icon(forFile: shareURL.description))
+      )
+    ) {
+      Label("Share", systemImage: "square.and.arrow.up")
+    }
+    .disabled(sampleItem == nil)
+    .help(sampleItem != nil ? "Share \(sampleItem!.title)" : "No sample selected")
+  }
 }
 
 struct ImportSampleButton: View {

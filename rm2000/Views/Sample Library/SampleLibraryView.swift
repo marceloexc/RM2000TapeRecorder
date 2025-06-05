@@ -14,7 +14,6 @@ struct SampleLibraryView: View {
 
   init() {
     _viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
-
   }
 
   var body: some View {
@@ -32,12 +31,12 @@ struct SampleLibraryView: View {
         SidebarButton()
       }.customizationBehavior(.disabled)
       ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
-        ShareSampleButton()
+        ShareSampleButton(sampleItem: viewModel.selectedSample)
       }
-      ToolbarItem(id: "rm2000.import-sample-button", placement: .primaryAction)
-      {
-        ImportSampleButton()
-      }
+//      ToolbarItem(id: "rm2000.import-sample-button", placement: .primaryAction)
+//      {
+//        ImportSampleButton()
+//      }
       ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction)
       {
         OpenInFinderButton()
@@ -48,12 +47,12 @@ struct SampleLibraryView: View {
           Divider()
         }
       }
-      ToolbarItem(id: "rm2000.picker", placement: .primaryAction) {
-        Picker("View", selection: $selection) {
-          Label("Grid", systemImage: "square.grid.2x2")
-          Label("List", systemImage: "list.bullet")
-        }.pickerStyle(.menu)
-      }
+//      ToolbarItem(id: "rm2000.picker", placement: .primaryAction) {
+//        Picker("View", selection: $selection) {
+//          Label("Grid", systemImage: "square.grid.2x2")
+//          Label("List", systemImage: "list.bullet")
+//        }.pickerStyle(.menu)
+//      }
     }
     .toolbar(id: "rm2000.favorites-toolbar") {
       ToolbarItem(id: "rm2000.playpause", placement: .favoritesBar) {

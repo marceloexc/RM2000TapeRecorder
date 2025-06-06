@@ -32,22 +32,35 @@ struct LicenseTabView: View {
           Image(nsImage: NSApp.applicationIconImage)
             .shadow(radius: 6)
           Text(pText0 + pText1 + pText2)
+            .foregroundStyle(Color(.black))
             .multilineTextAlignment(.center)
             .lineSpacing(3)
         }
         VStack {
+          
+          Text("Thank you for downloading my little indie app! I built RM2000 Tape Recorder because I struggled to find a way to curate sounds. It is a native Mac application, using native frameworks, and has a gorgeous retro user interface.")
+            .font(.custom("LucidaGrande", size: 15))
+            .lineSpacing(1.2)
+            .foregroundStyle(Color(hex: 0xa3a5a6))
+            .kerning(-1)
+          
           Button {
             print("hello")
           } label: {
             Text("Buy now")
           }
+          .buttonStyle(.borderedProminent)
+          .controlSize(.extraLarge)
+          
           
           if storeManager.hasPurchasedApp {
             Text("Thank you for Purchasing!!")
-              .font(.custom("LucidaGrande-Bold", size: 16))
+              .font(.custom("LucidaGrande", size: 16))
               .foregroundStyle(Color(hex: 0x898a8b))
+              .kerning(-1)
           }
         }
+        .frame(width: 400)
       }
     }
     .frame(minWidth: 500, minHeight: 620)
@@ -64,9 +77,9 @@ struct LicenseTabView: View {
           ]),
           center: UnitPoint(x: 0.5, y: 0.33),
           startRadius: 0,
-          endRadius: max(geometry.size.width, geometry.size.height) * 0.65
+          endRadius: max(geometry.size.width, geometry.size.height) * 0.6
         )
-        .scaleEffect(x: 1.66  , y: 1)
+        .scaleEffect(x: 2.5  , y: 1)
       }
     )
   }

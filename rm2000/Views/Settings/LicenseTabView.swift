@@ -1,32 +1,72 @@
 import SwiftUI
 
 struct LicenseTabView: View {
+  
+  @ObservedObject private var storeManager = StoreManager.shared
+  
+  var pText0: AttributedString {
+    var result = AttributedString("Purchase\n")
+    result.font = .custom("LucidaGrande-Bold", size: 24)
+    result.kern = -1.0
+    return result
+  }
+  
+  var pText1: AttributedString {
+    var result = AttributedString("RM2000")
+    result.font = .custom("LucidaGrande-Bold", size: 24)
+    result.kern = -1.0
+    return result
+  }
+  
+  var pText2: AttributedString {
+    var result = AttributedString(" Tape Recorder")
+    result.font = .custom("LucidaGrande-Bold", size: 19)
+    result.kern = -1.0
+    return result
+  }
+  
   var body: some View {
     Form {
-      VStack {
-        Image(nsImage: NSApp.applicationIconImage)
-        Text("Purchase\nRM2000 Tape Recorder")
-          .font(.custom("Lucida Grande", size: 18))
-          .fontWeight(.bold)
-          .kerning(-0.8)
-          .multilineTextAlignment(.center)
+      VStack (spacing: 200) {
+        VStack {
+          Image(nsImage: NSApp.applicationIconImage)
+            .shadow(radius: 6)
+          Text(pText0 + pText1 + pText2)
+            .multilineTextAlignment(.center)
+            .lineSpacing(3)
+        }
+        VStack {
+          Button {
+            print("hello")
+          } label: {
+            Text("Buy now")
+          }
+          
+          if storeManager.hasPurchasedApp {
+            Text("Thank you for Purchasing!!")
+              .font(.custom("LucidaGrande-Bold", size: 16))
+              .foregroundStyle(Color(hex: 0x898a8b))
+          }
+        }
       }
     }
-    .frame(minWidth: 420, maxWidth: 500, minHeight: 320)
+    .frame(minWidth: 500, minHeight: 620)
     .background(
       GeometryReader { geometry in
         RadialGradient(
           gradient: Gradient(stops: [
-            .init(color: Color(red: 0.7568, green: 0.7764, blue: 0.7686), location: 0.04), // #c1c6c4
-            .init(color: Color(red: 0.5843, green: 0.6156, blue: 0.6235), location: 0.28), // #959d9f
-            .init(color: Color(red: 0.4235, green: 0.4588, blue: 0.4784), location: 0.46), // #6c757a
-            .init(color: Color(red: 0.2705, green: 0.3058, blue: 0.3372), location: 0.64), // #454e56
-            .init(color: Color(red: 0.1294, green: 0.1529, blue: 0.1960), location: 0.82), // #212732
+            .init(color: Color(hex: 0xc1c6c4), location: 0.04),
+            .init(color: Color(hex: 0x959d9f), location: 0.16),
+            .init(color: Color(hex: 0x6c757a), location: 0.28),
+            .init(color: Color(hex: 0x454e56), location: 0.40),
+            .init(color: Color(hex: 0x212732), location: 0.52),
+            .init(color: Color(hex: 0x00010f), location: 0.65),
           ]),
-          center: UnitPoint(x: 0.5, y: 0.8),
+          center: UnitPoint(x: 0.5, y: 0.33),
           startRadius: 0,
-          endRadius: max(geometry.size.width, geometry.size.height) * 0.5 // Relative to the Form's size
+          endRadius: max(geometry.size.width, geometry.size.height) * 0.65
         )
+        .scaleEffect(x: 1.66  , y: 1)
       }
     )
   }

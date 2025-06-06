@@ -46,6 +46,7 @@
 		EB9C7A032DEE4AFE009CDCA2 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */; };
 		EB9C7A052DEE54A5009CDCA2 /* LicenseTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C7A042DEE54A5009CDCA2 /* LicenseTabView.swift */; };
 		EB9E1AB52DF36E3E008F6527 /* StoreKitTestCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = EB9E1AB42DF36E3E008F6527 /* StoreKitTestCertificate.cer */; };
+		EB9E1AB72DF3839E008F6527 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9E1AB62DF38396008F6527 /* StoreKitManager.swift */; };
 		EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA1224E2DC722D200E603D3 /* InspectorView.swift */; };
 		EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */; };
 		EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7D82DAB20E000160799 /* GeneralTabView.swift */; };
@@ -128,6 +129,7 @@
 		EB90E5A22DB192D30067194C /* UserNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifications.swift; sourceTree = "<group>"; };
 		EB9C7A042DEE54A5009CDCA2 /* LicenseTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseTabView.swift; sourceTree = "<group>"; };
 		EB9E1AB42DF36E3E008F6527 /* StoreKitTestCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = StoreKitTestCertificate.cer; sourceTree = "<group>"; };
+		EB9E1AB62DF38396008F6527 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
 		EBA1224E2DC722D200E603D3 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButtons.swift; sourceTree = "<group>"; };
 		EBACB7D82DAB20E000160799 /* GeneralTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTabView.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 				EB9E1AB42DF36E3E008F6527 /* StoreKitTestCertificate.cer */,
 				EBE4E9472C43244D00397EF2 /* RM2000 Tape Recorder.swift */,
 				EB64CD132D1A0E1500F2B65E /* Shared.swift */,
+				EB9E1AB62DF38396008F6527 /* StoreKitManager.swift */,
 				EB6065182C850A300017CB33 /* TapeRecorderState.swift */,
 				EB516E3E2CB75BD100A1C1E6 /* README.md */,
 				EBE4E94B2C43244F00397EF2 /* Assets.xcassets */,
@@ -578,6 +581,7 @@
 				EBBBFE862CA1F57300E987B1 /* MenuBar.swift in Sources */,
 				EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */,
 				EB801B372DB47DDE009632D0 /* RecordingGlyph.swift in Sources */,
+				EB9E1AB72DF3839E008F6527 /* StoreKitManager.swift in Sources */,
 				EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */,
 				EB8642642DA4A41C00D4883B /* SampleMetadata.swift in Sources */,
 				EBB435982DB42514006F9439 /* VUMeterView.swift in Sources */,

@@ -38,9 +38,15 @@ import StoreKit
 		}
 	}
 	
+  @Published var storekitManager = StoreManager.shared
+  
   // opening swiftui windows from an AppKit perspective
 	private var openWindowAction: OpenWindowAction?
 	
+  var hasPurchasedApp: Bool {
+    storekitManager.hasPurchasedApp
+  }
+  
 	init() {
     
     // switch between certificates for debug builds and production builds

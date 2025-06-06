@@ -11,7 +11,7 @@ import StoreKit
 	@AppStorage("completedOnboarding") var hasCompletedOnboarding: Bool = false {
 		didSet {
 			if !hasCompletedOnboarding {
-				openOnboardingWindow()
+        openWindowAction?(id: "onboarding")
 			}
 		}
 	}
@@ -38,9 +38,18 @@ import StoreKit
 		}
 	}
 	
+  // opening swiftui windows from an AppKit perspective
 	private var openWindowAction: OpenWindowAction?
 	
 	init() {
+    
+    // switch between certificates for debug builds and production builds
+    #if DEBUG
+      let certificate = "StoreKitTestCertificate"
+    #else
+      let certificte = "AppleIncRootCertificate"
+    #endif
+  
 		KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
 			Task {
 				await startQuickSampleRecordAndShowHUD()
@@ -56,13 +65,10 @@ import StoreKit
 	func setOpenWindowAction(_ action: OpenWindowAction) {
 		self.openWindowAction = action
 		if !hasCompletedOnboarding {
-			openOnboardingWindow()
+      openWindowAction?(id: "onboarding")
 		}
 	}
 	
-	func openOnboardingWindow() {
-		openWindowAction?(id: "onboarding")
-	}
 	
 	func closeHUDWindow() {
 		appDelegate.closeHUDWindow()

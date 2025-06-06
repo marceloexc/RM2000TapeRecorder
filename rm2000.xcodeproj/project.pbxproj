@@ -45,6 +45,7 @@
 		EB90E5A32DB192D80067194C /* UserNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB90E5A22DB192D30067194C /* UserNotifications.swift */; };
 		EB9C7A032DEE4AFE009CDCA2 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */; };
 		EB9C7A052DEE54A5009CDCA2 /* LicenseTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C7A042DEE54A5009CDCA2 /* LicenseTabView.swift */; };
+		EB9E1AB52DF36E3E008F6527 /* StoreKitTestCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = EB9E1AB42DF36E3E008F6527 /* StoreKitTestCertificate.cer */; };
 		EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA1224E2DC722D200E603D3 /* InspectorView.swift */; };
 		EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */; };
 		EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7D82DAB20E000160799 /* GeneralTabView.swift */; };
@@ -126,6 +127,7 @@
 		EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleEditConfiguration.swift; sourceTree = "<group>"; };
 		EB90E5A22DB192D30067194C /* UserNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifications.swift; sourceTree = "<group>"; };
 		EB9C7A042DEE54A5009CDCA2 /* LicenseTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseTabView.swift; sourceTree = "<group>"; };
+		EB9E1AB42DF36E3E008F6527 /* StoreKitTestCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = StoreKitTestCertificate.cer; sourceTree = "<group>"; };
 		EBA1224E2DC722D200E603D3 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButtons.swift; sourceTree = "<group>"; };
 		EBACB7D82DAB20E000160799 /* GeneralTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTabView.swift; sourceTree = "<group>"; };
@@ -404,6 +406,8 @@
 				EB467BD52D9209C7007E19E8 /* AppKitWindowManagerDelegate.swift */,
 				EB63A3032D6A8E2800E35AE6 /* AppState.swift */,
 				EBAF02622C8A132800520D44 /* Logging.swift */,
+				EBCB69102DF25B7600C30088 /* Products.storekit */,
+				EB9E1AB42DF36E3E008F6527 /* StoreKitTestCertificate.cer */,
 				EBE4E9472C43244D00397EF2 /* RM2000 Tape Recorder.swift */,
 				EB64CD132D1A0E1500F2B65E /* Shared.swift */,
 				EB6065182C850A300017CB33 /* TapeRecorderState.swift */,
@@ -417,7 +421,6 @@
 				EBBBFE842CA1F55100E987B1 /* Views */,
 				EBE4E94D2C43244F00397EF2 /* Preview Content */,
 				EB91DD322CE3135A00F1C37E /* Fonts */,
-				EBCB69102DF25B7600C30088 /* Products.storekit */,
 			);
 			path = rm2000;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				EBCA8F8F2D7A952D0041B03B /* Credits.rtfd in Resources */,
 				EBDF782E2D80146E00941981 /* Tachyo.otf in Resources */,
 				EBCA8F8B2D7918BB0041B03B /* TASAExplorer-SemiBold.otf in Resources */,
+				EB9E1AB52DF36E3E008F6527 /* StoreKitTestCertificate.cer in Resources */,
 				EB516E3F2CB75BD100A1C1E6 /* README.md in Resources */,
 				EBE4E94F2C43244F00397EF2 /* Preview Assets.xcassets in Resources */,
 				EBCB69112DF25B7600C30088 /* Products.storekit in Resources */,

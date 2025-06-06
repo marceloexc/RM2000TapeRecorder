@@ -42,8 +42,6 @@ struct SettingsView: View {
             Image(systemName: "creditcard")
           }
         }
-        .frame(width: 450)
-
         .tag("License")
     }
     .onAppear {

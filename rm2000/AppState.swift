@@ -48,13 +48,6 @@ import StoreKit
   }
   
 	init() {
-    
-    // switch between certificates for debug builds and production builds
-    #if DEBUG
-      let certificate = "StoreKitTestCertificate"
-    #else
-      let certificte = "AppleIncRootCertificate"
-    #endif
   
 		KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
 			Task {

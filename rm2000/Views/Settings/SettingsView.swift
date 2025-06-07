@@ -39,7 +39,7 @@ struct SettingsView: View {
           Label {
             Text("License")
           } icon: {
-            Image(systemName: "creditcard")
+            Image(systemName: "cart.badge.plus")
           }
         }
         .tag("License")

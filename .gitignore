@@ -27,3 +27,5 @@ Submariner/DEVELOPMENT_TEAM.xcconfig
 rm2000.xcodeproj/xcuserdata
 rm2000.xcodeproj/project.xcworkspace/xcuserdata/marceloexc.xcuserdatad
 rm2000.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+rm2000.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+rm2000.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings

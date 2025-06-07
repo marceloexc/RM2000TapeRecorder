@@ -32,9 +32,9 @@ struct LCDSymbolGlyphs: View {
 	@EnvironmentObject private var recordingState: TapeRecorderState
 
 	var body: some View {
-		HStack(alignment: .center) {
-			VStack(alignment: .leading) {
-				HStack { // top half
+		HStack(alignment: .center) { // entire view
+      VStack(alignment: .leading) { // left side of the screen
+				HStack { // top glpyhs)
 					VStack(alignment: .leading, spacing: 4) {
 						LCDTextCaptionWithGradient("STEREO 44.1kHz")
 						
@@ -60,20 +60,29 @@ struct LCDSymbolGlyphs: View {
 				VStack(alignment: .leading) {
 					LCDTextBig(recordingState.sampleRecordAudioFormat.asString.uppercased())
 					
-					if recordingState.status == .recording {
-						LCDTextBigWithGradient(timeString(recordingState.elapsedTimeRecording))
-							.frame(maxWidth: 150, alignment: .leading)
-					} else {
-						LCDTextBigWithGradient("STBY")
-							.frame(maxWidth: 150, alignment: .leading)
-					}
-				}.padding(.leading, 3)
+          VStack {
+            if recordingState.status == .recording {
+              LCDTextBig(timeString(recordingState.elapsedTimeRecording))
+            } else {
+              LCDTextBig("STBY")
+            }
+          }
+          .mask(LinearGradient(
+            colors: [Color(hex: 0x220300, alpha: 0.16),
+                     Color(hex: 0x220300)],
+            startPoint: .bottom,
+            endPoint: .top
+          ))
+				}
+        .frame(maxWidth: 150, alignment: .leading)
+        .offset(x: -13)
+
 			}
 			
 			VUMeter()
 				.mask(LinearGradient(
           colors: [Color(hex: 0x220300, alpha: 0),
-                   Color(hex: 0x220300, alpha: 0.3),
+                   Color(hex: 0x220300, alpha: 0.45),
 									 Color(hex: 0x220300)],
 					startPoint: .bottom,
 					endPoint: .top
@@ -83,6 +92,7 @@ struct LCDSymbolGlyphs: View {
 
 				.frame(width: 60, height: 155)
 				.padding(.leading, -20)
+        .offset(x: 3)
 			// todo - too close. claustrophobic
 		}	.frame(width: 200, height: 168)
 	}
@@ -156,7 +166,6 @@ struct LCDTextBig: View {
 			.font(Font.tachyoFont)
 			.fontWeight(.medium)
 			.fixedSize()
-			.offset(x: -15)
 			.kerning(-1.5)
 	}
 }

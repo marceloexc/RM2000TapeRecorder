@@ -14,7 +14,7 @@ struct VUMeter: View {
 					.fill(Color("LCDTextColor"))
 					.frame(height: geometry.size.height * CGFloat(self.volumeAsString))
 					.animation(.easeOut(duration:0.05))
-          .blur(radius: 2.0)
+          .blur(radius: 1.85)
 				
 				// idle blocks for volume
 				Rectangle()

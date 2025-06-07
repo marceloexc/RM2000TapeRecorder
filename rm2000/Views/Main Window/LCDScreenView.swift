@@ -72,7 +72,8 @@ struct LCDSymbolGlyphs: View {
 			
 			VUMeter()
 				.mask(LinearGradient(
-					colors: [Color(hex: 0x220300, alpha: 0.02),
+          colors: [Color(hex: 0x220300, alpha: 0),
+                   Color(hex: 0x220300, alpha: 0.3),
 									 Color(hex: 0x220300)],
 					startPoint: .bottom,
 					endPoint: .top

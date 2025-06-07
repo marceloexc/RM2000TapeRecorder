@@ -14,13 +14,14 @@ struct VUMeter: View {
 					.fill(Color("LCDTextColor"))
 					.frame(height: geometry.size.height * CGFloat(self.volumeAsString))
 					.animation(.easeOut(duration:0.05))
+          .blur(radius: 2.0)
 				
 				// idle blocks for volume
 				Rectangle()
 				.fill(Color.black.opacity(0.2))			}
 			.padding(geometry.size.width * 0.2)
 			.onReceive(NotificationCenter.default.publisher(for: .audioLevelUpdated)) { levels in
-				if var level = levels.userInfo?["level"] as? Float {
+        if let level = levels.userInfo?["level"] as? Float {
 					volumeAsString = level
 				} else {
 					volumeAsString = 0.0

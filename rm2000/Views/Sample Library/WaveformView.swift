@@ -19,7 +19,9 @@ struct StaticWaveformView: View {
 	)
 	
 	var body: some View {
-		WaveformView(audioURL: fileURL, configuration: .init(style: .striped(.init(color: .gray, width: 2, spacing: 1, lineCap: .butt)), verticalScalingFactor: 1)) {
+		WaveformView(audioURL: fileURL, configuration: .init(
+      style: .striped(.init(color: .gray, width: 2, spacing: 1, lineCap: .butt)),
+      verticalScalingFactor: 1)) {
 			ProgressView()
 				.controlSize(.extraLarge)
 				.progressViewStyle(.linear)

@@ -181,6 +181,11 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 		fonts?.forEach { url in
 			CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
 		}
+    
+    let fonts_ttf = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
+    fonts_ttf?.forEach { url in
+      CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+    }
 	}
 }
 

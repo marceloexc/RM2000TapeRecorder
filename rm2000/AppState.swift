@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import OSLog
 import KeyboardShortcuts
+import StoreKit
 
 @MainActor final class AppState: ObservableObject {
 	static let shared = AppState()
@@ -10,7 +11,7 @@ import KeyboardShortcuts
 	@AppStorage("completedOnboarding") var hasCompletedOnboarding: Bool = false {
 		didSet {
 			if !hasCompletedOnboarding {
-				openOnboardingWindow()
+        openWindowAction?(id: "onboarding")
 			}
 		}
 	}
@@ -37,9 +38,17 @@ import KeyboardShortcuts
 		}
 	}
 	
+  @Published var storekitManager = StoreManager.shared
+  
+  // opening swiftui windows from an AppKit perspective
 	private var openWindowAction: OpenWindowAction?
 	
+  var hasPurchasedApp: Bool {
+    storekitManager.hasPurchasedApp
+  }
+  
 	init() {
+  
 		KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
 			Task {
 				await startQuickSampleRecordAndShowHUD()
@@ -55,13 +64,10 @@ import KeyboardShortcuts
 	func setOpenWindowAction(_ action: OpenWindowAction) {
 		self.openWindowAction = action
 		if !hasCompletedOnboarding {
-			openOnboardingWindow()
+      openWindowAction?(id: "onboarding")
 		}
 	}
 	
-	func openOnboardingWindow() {
-		openWindowAction?(id: "onboarding")
-	}
 	
 	func closeHUDWindow() {
 		appDelegate.closeHUDWindow()

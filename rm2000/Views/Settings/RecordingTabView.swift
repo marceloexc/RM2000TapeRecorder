@@ -68,8 +68,6 @@ struct RecordingTabView: View {
             Text("AAC").tag(AudioFormat.aac)
             Text("MP3").tag(AudioFormat.mp3)
             Text("WAV").tag(AudioFormat.wav)
-            Text("FLAC").tag(AudioFormat.flac)
-
           }
           .frame(width: 200)
           .labelsHidden()  //misbehaves otherwise

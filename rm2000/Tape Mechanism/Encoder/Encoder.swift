@@ -140,13 +140,24 @@ class Encoder {
 		
 		let sampleRate = buffer.format.sampleRate
 		let startTimeSeconds = reverseEndTime.seconds
-		let endTimeSeconds = forwardsEndTime.seconds
+    var endTimeSeconds = forwardsEndTime.seconds
+    
+    let bufferDuration = Double(buffer.frameLength) / sampleRate
+
+    // validating range
+    guard startTimeSeconds >= 0 else {
+      Logger().error("Start time is less than zero for buffer")
+      return nil
+    }
+    
+    if endTimeSeconds > bufferDuration {
+      Logger().info("End time larger than buffer duration - adjusting...")
+      endTimeSeconds = bufferDuration
+    }
 		
-		// Validate range
-		let bufferDuration = Double(buffer.frameLength) / sampleRate
-		guard startTimeSeconds >= 0 && endTimeSeconds <= bufferDuration && startTimeSeconds < endTimeSeconds else {
+		guard startTimeSeconds < endTimeSeconds else {
 			Logger().error("Invalid trim range: \(startTimeSeconds) to \(endTimeSeconds) seconds (buffer duration: \(bufferDuration))")
-			return nil
+      return nil
 		}
 		
 		let startFrame = AVAudioFramePosition(startTimeSeconds * sampleRate)
@@ -160,6 +171,8 @@ class Encoder {
 		
 		// copy audio data - handle interleaved vs non-interleaved
 		if buffer.format.isInterleaved {
+      
+      Logger().info("Format is interleaved - converting...")
 			// Interleaved
 			let sourcePtr = buffer.floatChannelData![0]
 			let destPtr = trimmedBuffer.floatChannelData![0]
@@ -174,6 +187,8 @@ class Encoder {
 			}
 		} else {
 			// Non-interleaved
+      Logger().info("Format is not-interleaved - converting...")
+
 			for channel in 0..<Int(buffer.format.channelCount) {
 				let source = buffer.floatChannelData![channel] + Int(startFrame)
 				let destination = trimmedBuffer.floatChannelData![channel]

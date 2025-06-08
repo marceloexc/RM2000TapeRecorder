@@ -23,11 +23,11 @@ struct RM2000TapeRecorderApp: App {
 				.environmentObject(sampleStorage)
 		}
 		Window("Getting Started", id: "onboarding") {
-			OnboardingView(viewModel: OnboardingViewModel())
+      OnboardingView(pages: OnboardingStep.fullOnboarding)
 				.environmentObject(appState)
 		}
-		.windowResizability(.contentSize)
-//    .windowStyle(.)
+    .windowResizability(.contentSize)
+    .windowStyle(.hiddenTitleBar)
 		
 		Settings {
 			SettingsView()

@@ -120,7 +120,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 	
 	@MainActor private func showOnboardingWindow() {
 		let hostingController = NSHostingController(
-			rootView: OnboardingView(viewModel: OnboardingViewModel())
+      rootView: OnboardingView(pages: OnboardingStep.fullOnboarding)
 				.environmentObject(AppState.shared)
 		)
 		

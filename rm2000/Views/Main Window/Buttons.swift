@@ -17,10 +17,12 @@ struct UtilityButtons: View {
 		}.buttonStyle(AnimatedButtonStyle())
 		
 		Menu {
-			Button("None of these work yet!", action: { print("Selected Microphone") }).disabled(true)
-			Button("Microphone", action: { print("Selected Microphone") })
-			Button("System Audio", action: { print("Selected System Audio") })
-			Button("External Device", action: { print("Selected External Device") })
+      Button {
+        //
+      } label: {
+        Label("System Audio (active)", systemImage: "checkmark")
+      }
+
 		} label: {
 			Image("SourceButton")
 		}

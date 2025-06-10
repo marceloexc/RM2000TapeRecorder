@@ -47,19 +47,36 @@ import StoreKit
     storekitManager.hasPurchasedApp
   }
   
-	init() {
-  
-		KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
-			Task {
-				await startQuickSampleRecordAndShowHUD()
-			}
-		}
-		
-		if let bookmarkData = sampleDirectoryBookmark {
-			restoreBookmarkAccess(with: bookmarkData)
-		}
-		Logger.appState.info("\(String(describing: self.sampleDirectory)) as the user directory")
-	}
+  init() {
+    KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
+      Task {
+        await startQuickSampleRecordAndShowHUD()
+      }
+    }
+    
+    if let bookmarkData = sampleDirectoryBookmark {
+      restoreBookmarkAccess(with: bookmarkData)
+    }
+    
+    if sampleDirectory == nil && hasCompletedOnboarding {
+      // Fallback to ~/Music/Samples if sampleDirectory doesnt exist
+      // we only do this if they have completed onboarding,
+      // because I wouldnt want to pollute a user's files if they dont complete onboarding and decide
+      // not to use the app
+      let fallbackPath = FileManager.default.urls(for: .musicDirectory, in: .userDomainMask).first!.appendingPathComponent("Samples")
+      try? FileManager.default.createDirectory(at: fallbackPath, withIntermediateDirectories: true)
+      
+      if fallbackPath.startAccessingSecurityScopedResource() {
+        sampleDirectory = fallbackPath
+        saveBookmarkData(for: fallbackPath)
+      } else {
+        Logger.appState.error("Failed to access fallback sample directory at \(fallbackPath)")
+      }
+    }
+    
+    Logger.appState.info("\(String(describing: self.sampleDirectory)) as the user directory")
+  }
+
 	
 	func setOpenWindowAction(_ action: OpenWindowAction) {
 		self.openWindowAction = action

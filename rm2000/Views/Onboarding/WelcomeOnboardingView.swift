@@ -32,6 +32,7 @@ struct WelcomeOnboardingView: View {
 
       Text(pText0 + pText1 + pText2)
         .multilineTextAlignment(.center)
+        .foregroundStyle(.black)
         .shadow(color: Color(hex: 0x898a8b), radius: 10)
 
     }

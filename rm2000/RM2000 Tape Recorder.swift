@@ -36,6 +36,10 @@ struct RM2000TapeRecorderApp: App {
 		}
     .commands {
       CommandGroup(after: .help) {
+        Button("Email Developer (Support)") {
+          let mailtoURL = URL(string: "mailto:marcelomendez@live.com")!
+          NSWorkspace.shared.open(mailtoURL)
+        }
         Button("Open Source Acknowledgements") {
           guard let url = Bundle.main.url(forResource: "Acknowledgements", withExtension: "rtf") else {
             print("Acknowledgements.rtf not found in bundle")

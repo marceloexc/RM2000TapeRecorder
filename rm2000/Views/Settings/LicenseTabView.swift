@@ -84,7 +84,7 @@ struct LicenseWindowShopperView: View {
   var body: some View {
     HStack(spacing: 40) {
       VStack {
-        Text("Thank you for downloading my little app! I hope you find it useful - I built RM2000 Tape Recorder in order to make my life easier. It is a native Mac application, using SwiftUI+AppKit, and has an awesome retro user interface. \n \nThere are still many features I would like to include in future versions - If you see RM2000 Tape Recorder being a handy tool during the free trial, a purchase for a lifetime license helps support future development!")
+        Text("Thank you for downloading my app! I hope you find it useful - I built RM2000 Tape Recorder in order to make my life easier. It is a native Mac application, using SwiftUI+AppKit, and has an awesome retro user interface. \n \nThere are still many features I would like to include in future versions - If you see RM2000 Tape Recorder being a handy tool during the free trial, a purchase for a lifetime license helps support future development!")
           .font(.custom("LucidaGrande", size: 12))
           .foregroundStyle(Color(hex: 0xe7e9ea))
           .shadow(color: Color(hex:  0x494a57), radius: 10)
@@ -122,6 +122,14 @@ struct LicenseWindowShopperView: View {
           }
           .buttonStyle(.borderedProminent)
           .controlSize(.extraLarge)
+          Button {
+            Task {
+              await storeManager.restorePurchases()
+            }
+          } label: {
+            Text("Restore")
+          }
+          .controlSize(.mini)
         }
         else {
           Text("Error loading products from the store...")

@@ -9,22 +9,54 @@ import SwiftUI
 
 struct CompletedOnboardingView: View {
   
+  @ObservedObject private var storeManager = StoreManager.shared
+  
     var body: some View {
-      VStack {
-        Text("RM2000 Tape Recorder is now set up!")
+      VStack(spacing: 10) {
+        
+        Image(nsImage: NSApp.applicationIconImage)
+          .shadow(radius: 6)
+        
+        Text("Purchase RM2000 Tape Recorder")
           .font(.custom("LucidaGrande-Bold", size: 24))
+          .foregroundStyle(.black)
           .kerning(-1.0)
         
-        Text("Have fun!!!")
-          .font(.custom("LucidaGrande-Bold", size: 24))
-          .kerning(-1.0)
+        HStack {
+          Text("While RM2000 Tape Recorder is a paid product, you can evaluate the app with a 7-day free trial. \n\nPurchase information is located in the App Settings.")
+            .font(.custom("LucidaGrande", size: 12))
+            .foregroundStyle(.black)
+            .frame(width: 300)
+            .multilineTextAlignment(.leading)
+          
+          VStack(alignment: .trailing, spacing: 5) {
+            
+            if storeManager.isLoading {
+              Text("Loading...")
+                .font(.custom("LucidaGrande", size: 12))
+                .foregroundStyle(Color(hex: 0xe7e9ea))
+            }
+            
+            else if let product = storeManager.products.first {
+              Text(product.displayPrice)
+                .font(.custom("InstrumentSerif-Regular", size: 50))
+                .foregroundStyle(.black)
+              
+              Text("Lifetime, Forever.\nNot a Subscription; Never Expires.")
+                .font(.custom("LucidaGrande", size: 12))
+                .foregroundStyle(.black)
+                .multilineTextAlignment(.trailing)
+            }
+          }
+        }
         
         Button {
           relaunch()
         } label: {
-          Text("Restart")
-            .controlSize(.extraLarge)
+          Text("Complete Onboarding and Use Free Trial")
         }
+        .controlSize(.extraLarge)
+        .buttonStyle(.borderedProminent)
 
       }
       .frame(width: 700, height: 550)
@@ -41,9 +73,9 @@ struct CompletedOnboardingView: View {
             ]),
             center: UnitPoint(x: 0.5, y: 0.5),
             startRadius: 0,
-            endRadius: max(geometry.size.width, geometry.size.height) * 0.75
+            endRadius: max(geometry.size.width, geometry.size.height) * 0.8
           )
-          .scaleEffect(x: 1.4, y: 1)
+          .scaleEffect(x: 2, y: 1)
         }
       )
     }

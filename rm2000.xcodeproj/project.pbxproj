@@ -10,6 +10,7 @@
 		EB11B4422DF6126900B4F7CC /* WelcomeOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4412DF6126900B4F7CC /* WelcomeOnboardingView.swift */; };
 		EB11B4442DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4432DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift */; };
 		EB11B4462DF6337200B4F7CC /* SettingsOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4452DF6337200B4F7CC /* SettingsOnboardingView.swift */; };
+		EB11B44E2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */; };
 		EB12BC962DC7FE6A0011B7FF /* TagComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */; };
 		EB12BC9B2DC808210011B7FF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC9A2DC808210011B7FF /* WaveformView.swift */; };
 		EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9D2DC808680011B7FF /* DSWaveformImage */; };
@@ -100,6 +101,7 @@
 		EB11B4412DF6126900B4F7CC /* WelcomeOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeOnboardingView.swift; sourceTree = "<group>"; };
 		EB11B4432DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GettingStartedOnboardingView.swift; sourceTree = "<group>"; };
 		EB11B4452DF6337200B4F7CC /* SettingsOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOnboardingView.swift; sourceTree = "<group>"; };
+		EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPermissionOnboardingView.swift; sourceTree = "<group>"; };
 		EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagComponent.swift; sourceTree = "<group>"; };
 		EB12BC9A2DC808210011B7FF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryAutoPlayer.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				EB11B4412DF6126900B4F7CC /* WelcomeOnboardingView.swift */,
 				EB11B4432DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift */,
 				EB11B4452DF6337200B4F7CC /* SettingsOnboardingView.swift */,
+				EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -607,6 +610,7 @@
 				EB9C7A052DEE54A5009CDCA2 /* LicenseTabView.swift in Sources */,
 				EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */,
 				EBBBFE8F2CA2588A00E987B1 /* AudioManager.swift in Sources */,
+				EB11B44E2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,
 				EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */,
 				EB3DF85A2DDBFFC900198AAB /* CoreAudio.swift in Sources */,

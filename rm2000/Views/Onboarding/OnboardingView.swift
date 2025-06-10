@@ -6,13 +6,14 @@ enum OnboardingStep: CaseIterable {
   case welcome
   case gettingstarted
   case settings
+  case req_permission
   case complete
 
   static let fullOnboarding = OnboardingStep.allCases
 
   var shouldShowNextButton: Bool {
     switch self {
-    case .welcome, .settings, .gettingstarted:
+    case .welcome, .settings, .gettingstarted, .req_permission:
       return true
     default:
       return false
@@ -21,7 +22,7 @@ enum OnboardingStep: CaseIterable {
   
   var shouldShowPreviousButton: Bool {
     switch self {
-    case .gettingstarted, .settings, .complete:
+    case .gettingstarted, .settings, .complete, .req_permission:
       return true
     default:
       return false
@@ -39,6 +40,8 @@ enum OnboardingStep: CaseIterable {
       SettingsOnboardingView()
     case .complete:
       Text("Complete")
+    case .req_permission:
+      RequestPermissionOnboardingView()
     }
   }
 }

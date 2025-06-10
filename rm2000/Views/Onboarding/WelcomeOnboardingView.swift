@@ -35,7 +35,7 @@ struct WelcomeOnboardingView: View {
         .shadow(color: Color(hex: 0x898a8b), radius: 10)
 
     }
-    .frame(width: 600, height: 500)
+    .frame(width: 700, height: 550)
     .background(
       GeometryReader { geometry in
         RadialGradient(

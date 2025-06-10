@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct GettingStartedOnboardingView: View {
+  
+  // TODO - this shit is not aligned properly - when i have time to fix it i will!
+  
   var body: some View {
     VStack(spacing: 32) {
       Text("Getting Started is Easy")
@@ -10,7 +13,7 @@ struct GettingStartedOnboardingView: View {
           LinearGradient(
             stops: [
               .init(color: Color(hex: 0xdfdfdf), location: 0),
-              .init(color: Color(hex: 0xdfdfdf), location: 1),
+              .init(color: Color(hex: 0xc0c0c0), location: 1),
             ], startPoint: .bottom, endPoint: .top)
         )
         .shadow(color: .black, radius: 1, y: 1)
@@ -20,6 +23,7 @@ struct GettingStartedOnboardingView: View {
           HStack(alignment: .top, spacing: 16) {
             ActiveRecordButtonDecor()
 
+            Spacer()
             VStack(alignment: .leading, spacing: 4) {
               Text("1. Record Your Samples")
                 .font(.custom("LucidaGrande-Bold", size: 18))
@@ -34,17 +38,28 @@ struct GettingStartedOnboardingView: View {
 
         StepView {
           HStack(alignment: .top, spacing: 16) {
-            Text("2")
-              .font(.custom("LucidaGrande-Bold", size: 20))
-              .frame(width: 36, height: 36)
-              .background(Color(hex: 0xE7E9EA))
-              .foregroundColor(.black)
-              .clipShape(Circle())
+            
+            Image(systemName: "tag.fill")
+              .resizable()
+              .scaledToFit()
+              .frame(width: 50)
+              .padding()
+              .foregroundStyle(
+                LinearGradient(
+                  stops: [
+                    .init(color: Color(hex: 0xdfdfdf), location: 0),
+                    .init(color: Color(hex: 0xc0c0c0), location: 1),
+                  ], startPoint: .bottom, endPoint: .top)
+              )
+              
+
+            
+            Spacer()
 
             VStack(alignment: .leading, spacing: 4) {
               Text("2. Organize Effortlessly")
                 .font(.custom("LucidaGrande-Bold", size: 18))
-                .foregroundStyle(Color(hex: 0xE7E9EA))
+                .foregroundStyle(Color(hex: 0xcccccc))
 
               Text(
                 "Tag, rename, and categorize your recordings for easy access."
@@ -57,19 +72,20 @@ struct GettingStartedOnboardingView: View {
 
         StepView {
           HStack(alignment: .top, spacing: 16) {
-            Text("3")
-              .font(.custom("LucidaGrande-Bold", size: 20))
-              .frame(width: 36, height: 36)
-              .background(Color(hex: 0xE7E9EA))
-              .foregroundColor(.black)
-              .clipShape(Circle())
+            Image("FolderButton")
+              .renderingMode(.original)
+              .resizable()
+              .scaledToFit()
+              .frame(width: 120)
+            
+            Spacer()
 
             VStack(alignment: .leading, spacing: 4) {
               Text("3. Use Them Anywhere")
                 .font(.custom("LucidaGrande-Bold", size: 18))
-                .foregroundStyle(Color(hex: 0xE7E9EA))
+                .foregroundStyle(Color(hex: 0xcccccc))
 
-              Text("Drop them into your DAW, or preview them on the fly.")
+              Text("Drop them into your DAW, or sort through them through the Sample Library Window")
                 .font(.custom("LucidaGrande", size: 14))
                 .foregroundStyle(Color(hex: 0xB0B2B3))
             }
@@ -78,7 +94,7 @@ struct GettingStartedOnboardingView: View {
       }
     }
     .padding()
-    .frame(width: 600, height: 500)
+    .frame(width: 700, height: 550)
     .background(
       RadialGradient(
         gradient: Gradient(stops: [
@@ -103,7 +119,7 @@ struct StepView<Content: View>: View {
   var body: some View {
     content
       .padding()
-      .frame(minHeight: 90)
+      .frame(maxWidth: 550, minHeight: 90)
 
       .background(
         RoundedRectangle(cornerRadius: 12)

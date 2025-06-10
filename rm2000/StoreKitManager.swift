@@ -2,6 +2,13 @@ import Foundation
 import OSLog
 import StoreKit
 
+enum TrialStatus: Equatable{
+  case loading
+  case active(daysLeft: Int)
+  case expired
+  case purchased // user bought app
+}
+
 @MainActor
 final class StoreManager: ObservableObject {
   @Published var products: [Product] = []
@@ -14,13 +21,6 @@ final class StoreManager: ObservableObject {
   @Published var daysRemaining: Int = 0
   @Published var hoursRemaining: Int = 0
   private let trialDuration: TimeInterval = 7 * 24 * 60 * 60 // 7 days
-
-  enum TrialStatus {
-    case loading
-    case active(daysLeft: Int)
-    case expired
-    case purchased // user bought app
-  }
   
   static let shared = StoreManager()
   private let licenseProductID = "com.marceloexc.rm2000.lifetime"

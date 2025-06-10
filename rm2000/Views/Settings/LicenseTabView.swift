@@ -123,6 +123,9 @@ struct LicenseWindowShopperView: View {
           .buttonStyle(.borderedProminent)
           .controlSize(.extraLarge)
         }
+        else {
+          Text("Error loading products from the store...")
+        }
       }
     }
   }

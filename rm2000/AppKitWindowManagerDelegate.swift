@@ -13,6 +13,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 	@Published var willTerminate = false
 	var mainWindowController: WindowController?
 	let recordingState = TapeRecorderState.shared
+  let storeKitManager = StoreManager.shared
 	private var onboardingWindowController: NSWindowController?
 	private var hudHostingView: NSHostingView<AnyView>?
 	
@@ -52,6 +53,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 		
 		let contentView = ContentView()
 			.environmentObject(self.recordingState)
+      .environmentObject(self.storeKitManager)
 			.openSettingsAccess()
 		
 		window.center()

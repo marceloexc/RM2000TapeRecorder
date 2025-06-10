@@ -136,11 +136,13 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 		window.center()
 	}
 	
-	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-		self.willTerminate = true
-		self.promptQuitConfirmation()
-		return .terminateLater
-	}
+//  TODO - uncomment this later when i have a proper implementation
+
+//	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+//		self.willTerminate = true
+//		self.promptQuitConfirmation()
+//		return .terminateLater
+//	}
 	
 	/// dont close (user canceled)
 	func `continue`() {

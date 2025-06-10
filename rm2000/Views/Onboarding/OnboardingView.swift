@@ -39,7 +39,7 @@ enum OnboardingStep: CaseIterable {
     case .settings:
       SettingsOnboardingView()
     case .complete:
-      Text("Complete")
+      CompletedOnboardingView()
     case .req_permission:
       RequestPermissionOnboardingView()
     }

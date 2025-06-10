@@ -11,6 +11,7 @@
 		EB11B4442DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4432DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift */; };
 		EB11B4462DF6337200B4F7CC /* SettingsOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4452DF6337200B4F7CC /* SettingsOnboardingView.swift */; };
 		EB11B44E2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */; };
+		EB11B4512DF7CCA900B4F7CC /* CompletedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4502DF7CCA900B4F7CC /* CompletedOnboardingView.swift */; };
 		EB12BC962DC7FE6A0011B7FF /* TagComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */; };
 		EB12BC9B2DC808210011B7FF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC9A2DC808210011B7FF /* WaveformView.swift */; };
 		EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9D2DC808680011B7FF /* DSWaveformImage */; };
@@ -102,6 +103,7 @@
 		EB11B4432DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GettingStartedOnboardingView.swift; sourceTree = "<group>"; };
 		EB11B4452DF6337200B4F7CC /* SettingsOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOnboardingView.swift; sourceTree = "<group>"; };
 		EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPermissionOnboardingView.swift; sourceTree = "<group>"; };
+		EB11B4502DF7CCA900B4F7CC /* CompletedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedOnboardingView.swift; sourceTree = "<group>"; };
 		EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagComponent.swift; sourceTree = "<group>"; };
 		EB12BC9A2DC808210011B7FF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryAutoPlayer.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 				EB11B4432DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift */,
 				EB11B4452DF6337200B4F7CC /* SettingsOnboardingView.swift */,
 				EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */,
+				EB11B4502DF7CCA900B4F7CC /* CompletedOnboardingView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				EBE4E9482C43244D00397EF2 /* RM2000 Tape Recorder.swift in Sources */,
 				EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */,
 				EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */,
+				EB11B4512DF7CCA900B4F7CC /* CompletedOnboardingView.swift in Sources */,
 				EB467BD82D920D34007E19E8 /* LCDScreenView.swift in Sources */,
 				EB9C7A052DEE54A5009CDCA2 /* LicenseTabView.swift in Sources */,
 				EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */,

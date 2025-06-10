@@ -18,9 +18,18 @@ enum OnboardingStep: CaseIterable {
       return false
     }
   }
+  
+  var shouldShowPreviousButton: Bool {
+    switch self {
+    case .gettingstarted, .settings, .complete:
+      return true
+    default:
+      return false
+    }
+  }
 
   @ViewBuilder
-  func view(action: @escaping () -> Void) -> some View {
+  func view() -> some View {
     switch self {
     case .welcome:
       WelcomeOnboardingView()
@@ -34,190 +43,66 @@ enum OnboardingStep: CaseIterable {
   }
 }
 
-class OnboardingViewModel: ObservableObject {
-  @Published var currentStep: OnboardingStep = .welcome
-}
-
-struct FinalOnboardingCompleteView: View {
-  @Environment(\.dismiss) var dismiss
-  @ObservedObject var viewModel: OnboardingViewModel
-  @EnvironmentObject var appState: AppState
-
-  var body: some View {
-    Text("Complete!")
-
-    Text("App will now close. Please restart")
-    HStack {
-      Button("Back") {
-        viewModel.currentStep = .settings
-      }
-
-      Button("Finish") {
-        appState.hasCompletedOnboarding = true
-        /*
-						 this has to be appkit compatible as the mainwindow uses
-						 an appkit based lifetime
-						 */
-        print("closing")
-        exit(0)
-      }
-      .buttonStyle(.borderedProminent)
-    }
-  }
-}
-
-struct SettingsStepView: View {
-
-  private let streamManager = SCStreamManager()
-
-  @ObservedObject var viewModel: OnboardingViewModel
-  @EnvironmentObject var appState: AppState
-
-  @State private var showFileChooser: Bool = false
-
-  var body: some View {
-    Text("Set directory for all samples to get saved in")
-    HStack {
-      TextField(
-        "Set RM2000 Sample Directory",
-        text: Binding(
-          get: { appState.sampleDirectory?.path ?? "" },
-          set: { appState.sampleDirectory = URL(fileURLWithPath: $0) }
-        ))
-      Button("Browse") {
-        showFileChooser = true
-      }
-      .fileImporter(
-        isPresented: $showFileChooser, allowedContentTypes: [.directory]
-      ) { result in
-        switch result {
-        case .success(let directory):
-
-          // get security scoped bookmark
-          guard directory.startAccessingSecurityScopedResource() else {
-            Logger.appState.error(
-              "Could not get security scoped to the directory \(directory)")
-            return
-          }
-          appState.sampleDirectory = directory
-          Logger.viewModels.info("Set new sampleDirectory as \(directory)")
-        case .failure(let error):
-          Logger.viewModels.error("Could not set sampleDirectory: \(error)")
-        }
-      }
-    }
-    HStack {
-      Button("Back") {
-        viewModel.currentStep = .welcome
-      }
-
-      Button("Next") {
-        viewModel.currentStep = .complete
-        print(appState.sampleDirectory?.path ?? "No directory set")
-      }
-      .buttonStyle(.borderedProminent)
-    }
-  }
-
-  private func invokeRecordingPermission() async {
-    do {
-      try await streamManager.setupAudioStream()
-    } catch {
-      Logger.viewModels.error("Recording permission declined")
-
-      // https://stackoverflow.com/a/78740238
-      // i seriously have to use NSAlert for this?
-
-      let alert = showPermissionAlert()
-      if alert.runModal() == .alertFirstButtonReturn {
-        NSWorkspace.shared.open(
-          URL(
-            string:
-              "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"
-          )!)
-      }
-    }
-  }
-
-  private func showPermissionAlert() -> NSAlert {
-    let alert = NSAlert()
-    alert.messageText = "Permission Request"
-    alert.alertStyle = .informational
-    alert.informativeText =
-      "RM2000 requires permission to record the screen in order to grab system audio."
-    alert.addButton(withTitle: "Open System Settings")
-    alert.addButton(withTitle: "Quit")
-    return alert
-  }
-}
-
-struct WelcomeView: View {
-
-  @ObservedObject var viewModel: OnboardingViewModel
-  var body: some View {
-    VStack {
-      Image(nsImage: NSApp.applicationIconImage)
-      Text("Welcome to RM2000")
-        .font(.title)
-    }
-    Text("This build is considered ")
-      + Text("incredibly fragile")
-      .foregroundColor(.red)
-
-    Text("Consider all the samples you record with this app as ephemeral")
-
-    Text("More stable builds will follow in the next weeks")
-    HStack {
-      Button("Next") {
-        viewModel.currentStep = .settings
-      }
-      .buttonStyle(.borderedProminent)
-    }
-  }
-}
-
 struct OnboardingView: View {
   @EnvironmentObject var appState: AppState
   @State private var currentPage: OnboardingStep = .welcome
+  @State private var transitionDirection: AnimationDirection = .forward
   private let pages: [OnboardingStep]
+  
+  enum AnimationDirection {
+    case forward
+    case backward
+  }
 
   init(pages: [OnboardingStep]) {
     self.pages = pages
   }
   var body: some View {
     ZStack(alignment: .bottom) {
-      //      Color(hex: 0x00010f)
-      //        .ignoresSafeArea(.all)
+      currentPage.view()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-      ForEach(pages, id: \.self) { page in
-        if page == currentPage {
-          page.view(action: showNextPage)
-            .clipped()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .transition(
-              AnyTransition.asymmetric(
-                insertion: .move(edge: .trailing),
-                removal: .move(edge: .leading))
-            )
-            .animation(.snappy)
+        .id(currentPage)
+        .transition(transition)
+        .animation(.smooth(duration: 0.3), value: currentPage)
+      
+      HStack {
+        if currentPage.shouldShowPreviousButton {
+          Button(action: showPreviousPage) {
+            Text("Previous")
+          }
         }
-      }
-
-      if currentPage.shouldShowNextButton {
-        HStack {
-          Spacer()
+        
+        Spacer()
+        
+        if currentPage.shouldShowNextButton {
           Button(action: showNextPage) {
             Text("Next")
           }
           .buttonStyle(.borderedProminent)
           .controlSize(.extraLarge)
-        }
-        .padding()
+          }
+      }      .padding()
+        
       }
-    }
-    .background(Color(.gray))
-    .frame(width: 600, height: 500.0)
+    .background(Color(hex: 0x00010f))
+    .frame(width: 700, height: 550.0)
     .edgesIgnoringSafeArea(.bottom)
+  }
+  
+  private var transition: AnyTransition {
+    switch transitionDirection {
+    case .forward:
+      return AnyTransition.asymmetric(
+        insertion: .move(edge: .trailing),
+        removal: .move(edge: .leading)
+      )
+    case .backward:
+      return AnyTransition.asymmetric(
+        insertion: .move(edge: .leading),
+        removal: .move(edge: .trailing)
+      )
+    }
   }
 
   private func showNextPage() {
@@ -226,7 +111,18 @@ struct OnboardingView: View {
     else {
       return
     }
+    transitionDirection = .forward
     currentPage = pages[currentIndex + 1]
+  }
+  
+  private func showPreviousPage() {
+    guard let currentIndex = pages.firstIndex(of: currentPage),
+          currentIndex > 0
+    else {
+      return
+    }
+    transitionDirection = .backward
+    currentPage = pages[currentIndex - 1]
   }
 }
 

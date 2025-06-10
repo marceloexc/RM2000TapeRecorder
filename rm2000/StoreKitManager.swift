@@ -2,18 +2,80 @@ import Foundation
 import OSLog
 import StoreKit
 
+enum TrialStatus: Equatable{
+  case loading
+  case active(daysLeft: Int)
+  case expired
+  case purchased // user bought app
+}
+
 @MainActor
 final class StoreManager: ObservableObject {
   @Published var products: [Product] = []
   @Published var purchasedProductIDs: Set<String> = []
   @Published var isLoading = false
   @Published var purchaseError: String?
-
+  
+  // trial stuff
+  @Published var trialStatus: TrialStatus = .loading
+  @Published var daysRemaining: Int = 0
+  @Published var hoursRemaining: Int = 0
+  private let trialDuration: TimeInterval = 7 * 24 * 60 * 60 // 7 days
+  
   static let shared = StoreManager()
   private let licenseProductID = "com.marceloexc.rm2000.lifetime"
 
   var hasPurchasedApp: Bool {
     purchasedProductIDs.contains(licenseProductID)
+  }
+  
+  var hasAccess: Bool {
+    switch trialStatus {
+    case .active, .purchased:
+      return true
+    case .expired, .loading:
+      return false
+    }
+  }
+  
+  var isPurchased: Bool {
+    if case .purchased = trialStatus {
+      return true
+    }
+    return false
+  }
+  
+  var isTrialActive: Bool {
+    if case .active = trialStatus {
+      return true
+    }
+    return false
+  }
+  
+  var isTrialExpired: Bool {
+    if case .expired = trialStatus {
+      return true
+    }
+    return false
+  }
+  
+  var timeRemainingString: String {
+    switch trialStatus {
+    case .active(let daysLeft):
+      if daysLeft > 1 {
+        return "\(daysLeft) days remaining"
+      } else if daysLeft == 1 {
+        return "1 day remaining"
+      } else {
+        return "\(hoursRemaining) hours remaining"
+      }
+    case .expired:
+      return "Trial expired"
+    case .purchased:
+      return "Lifetime access"
+    case .loading:
+      return "Loading..."
+    }
   }
 
   private var transactionListener: Task<Void, Error>?
@@ -24,6 +86,7 @@ final class StoreManager: ObservableObject {
     Task {
       await loadProductsFromAppStore()
       await updatePurchasedProducts()
+      updateTrialStatus()
     }
   }
 
@@ -63,6 +126,7 @@ final class StoreManager: ObservableObject {
         let transaction = try checkVerified(verification)
         await transaction.finish()
         await updatePurchasedProducts()
+        purchaseCompleted()
         Logger.store.info("Successfully purchased lifetime access")
 
       case .userCancelled:
@@ -136,6 +200,60 @@ final class StoreManager: ObservableObject {
     case .verified(let safe):
       return safe
     }
+  }
+  
+  func updateTrialStatus() {
+    // Check if user has purchased lifetime access first
+    if hasPurchasedApp { 
+      trialStatus = .purchased
+      return
+    }
+    
+    let installDate = getInstallDate()
+    let now = Date()
+    let timeElapsed = now.timeIntervalSince(installDate)
+    
+    if timeElapsed < trialDuration {
+      // Trial is still active
+      let timeRemaining = trialDuration - timeElapsed
+      let daysLeft = Int(ceil(timeRemaining / (24 * 60 * 60)))
+      let hoursLeft = Int(ceil(timeRemaining / (60 * 60))) % 24
+      
+      self.daysRemaining = max(0, daysLeft)
+      self.hoursRemaining = hoursLeft
+      self.trialStatus = .active(daysLeft: daysLeft)
+      
+      Logger.store.info("Trial active: \(daysLeft) days remaining")
+    } else {
+      // Trial has expired
+      self.daysRemaining = 0
+      self.hoursRemaining = 0
+      self.trialStatus = .expired
+      
+      Logger.store.info("Trial expired")
+    }
+  }
+  
+  private func getInstallDate() -> Date {
+    let key = "app_first_launch_date"
+    
+    // Check if we already have an install date
+    if let existingDate = UserDefaults.standard.object(forKey: key) as? Date {
+      return existingDate
+    }
+    
+    // This is the first launch, record the install date
+    let installDate = Date()
+    UserDefaults.standard.set(installDate, forKey: key)
+    
+    Logger.store.info("First app launch recorded: \(installDate)")
+    return installDate
+  }
+  
+  // Call this when the user purchases lifetime access
+  func purchaseCompleted() {
+    trialStatus = .purchased
+    Logger.store.info("Switched trial to .purchased")
   }
 }
 

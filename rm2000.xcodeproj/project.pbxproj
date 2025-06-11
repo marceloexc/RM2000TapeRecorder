@@ -10,10 +10,10 @@
 		EB11B4422DF6126900B4F7CC /* WelcomeOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4412DF6126900B4F7CC /* WelcomeOnboardingView.swift */; };
 		EB11B4442DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4432DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift */; };
 		EB11B4462DF6337200B4F7CC /* SettingsOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4452DF6337200B4F7CC /* SettingsOnboardingView.swift */; };
-		EB11B44E2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */; };
-		EB11B4512DF7CCA900B4F7CC /* CompletedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4502DF7CCA900B4F7CC /* CompletedOnboardingView.swift */; };
 		EB11B44A2DF662FC00B4F7CC /* Acknowledgements.rtf in Resources */ = {isa = PBXBuildFile; fileRef = EB11B4492DF662FC00B4F7CC /* Acknowledgements.rtf */; };
 		EB11B44C2DF77D9B00B4F7CC /* InstrumentSerif-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB11B44B2DF77D9B00B4F7CC /* InstrumentSerif-Regular.ttf */; };
+		EB11B44E2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */; };
+		EB11B4512DF7CCA900B4F7CC /* CompletedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4502DF7CCA900B4F7CC /* CompletedOnboardingView.swift */; };
 		EB12BC962DC7FE6A0011B7FF /* TagComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */; };
 		EB12BC9B2DC808210011B7FF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC9A2DC808210011B7FF /* WaveformView.swift */; };
 		EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9D2DC808680011B7FF /* DSWaveformImage */; };
@@ -104,10 +104,10 @@
 		EB11B4412DF6126900B4F7CC /* WelcomeOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeOnboardingView.swift; sourceTree = "<group>"; };
 		EB11B4432DF61FFF00B4F7CC /* GettingStartedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GettingStartedOnboardingView.swift; sourceTree = "<group>"; };
 		EB11B4452DF6337200B4F7CC /* SettingsOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOnboardingView.swift; sourceTree = "<group>"; };
-		EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPermissionOnboardingView.swift; sourceTree = "<group>"; };
-		EB11B4502DF7CCA900B4F7CC /* CompletedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedOnboardingView.swift; sourceTree = "<group>"; };
 		EB11B4492DF662FC00B4F7CC /* Acknowledgements.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Acknowledgements.rtf; sourceTree = "<group>"; };
 		EB11B44B2DF77D9B00B4F7CC /* InstrumentSerif-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InstrumentSerif-Regular.ttf"; sourceTree = "<group>"; };
+		EB11B44D2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPermissionOnboardingView.swift; sourceTree = "<group>"; };
+		EB11B4502DF7CCA900B4F7CC /* CompletedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedOnboardingView.swift; sourceTree = "<group>"; };
 		EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagComponent.swift; sourceTree = "<group>"; };
 		EB12BC9A2DC808210011B7FF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryAutoPlayer.swift; sourceTree = "<group>"; };
@@ -783,7 +783,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"rm2000/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L5B87F6FJ;
@@ -799,7 +799,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.2025.3;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = marceloexc.rm2000;
 				PRODUCT_NAME = "RM2000 Tape Recorder";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -820,7 +820,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"rm2000/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L5B87F6FJ;
@@ -836,7 +836,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.2025.3;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = marceloexc.rm2000;
 				PRODUCT_NAME = "RM2000 Tape Recorder";
 				PROVISIONING_PROFILE_SPECIFIER = "";

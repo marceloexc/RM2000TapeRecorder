@@ -6,21 +6,17 @@ struct TemporaryActiveRecording {
 	var fileURL: URL
 	
 	// TODO - hardcoded file extension string
-	init() {
+  init(directory: URL) {
 		
 		// ensure directory exists
 		// TODO - terrible - maybe belongs in SampleStorage instead?
-		// (why are we still using workingdirectory? that thing needs to die...
-		if !(WorkingDirectory.applicationSupportPath().isDirectory) {
-			
-			let directory = WorkingDirectory.applicationSupportPath()
+    if !(directory.isDirectory) {
 			
 			try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 			Logger().info("Had to make a directory for the application support path at: \(directory)")
 		}
 		self.id = UUID()
-		self.fileURL = WorkingDirectory.applicationSupportPath()
-			.appendingPathComponent("\(id.uuidString).caf")
+    self.fileURL = directory.appendingPathComponent(".cached-\(id.uuidString).caf")
 	}
 	
 	init(fileURL: URL) {

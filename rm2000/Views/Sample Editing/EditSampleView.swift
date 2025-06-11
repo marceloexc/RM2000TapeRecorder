@@ -106,7 +106,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 						}
 					}
 					
-					Button("Save Sample") {
+					Button("Save to Sample Directory") {
 						if (title.isEmpty && tags.isEmpty) {
 							NSSound.beep()
 						} else {

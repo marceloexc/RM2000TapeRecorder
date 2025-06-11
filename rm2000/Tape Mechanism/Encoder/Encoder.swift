@@ -41,6 +41,16 @@ enum EncodingInputType {
   case existingSample
 }
 
+// TODO
+// TODO
+// TODO
+
+// We are going to have to start refactoring this.
+// The encoder should be able to catch errors and NOT automatically delete files if the encoder doesnt succeed.
+// We should also be able to have an NSAlert with the error message just in case.
+
+// once we implement sample collections, detect when leftover .cache caf files are in there and move them to archive
+
 class Encoder {
   private(set) var isProcessing = false
   private(set) var sourceType: EncodingInputType
@@ -124,11 +134,12 @@ class Encoder {
         let trimmedSourceURL = sourceURL?.deletingLastPathComponent()
           .appendingPathComponent(newFileName)
 
-        try writeToAACWithAVAudioFile(
-          buffer: trimmedBuffer, to: trimmedSourceURL!)
+        try writeToAACWithAVAudioFile(buffer: trimmedBuffer, to: trimmedSourceURL!)
         await RMAudioConverter.convert(
           input: trimmedSourceURL!, output: config.outputURL!,
           format: config.outputFormat)
+        try? FileManager.default.removeItem(at: self.sourceURL!)
+        try? FileManager.default.removeItem(at: trimmedSourceURL!)
 
       } else {
         Logger().debug(
@@ -136,6 +147,8 @@ class Encoder {
         await RMAudioConverter.convert(
           input: self.sourceURL!, output: config.outputURL!,
           format: config.outputFormat)
+        // remove trimmed output
+        try? FileManager.default.removeItem(at: self.sourceURL!)
       }
 
     case .existingSample:

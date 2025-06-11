@@ -16,7 +16,7 @@ final class SampleStorage: ObservableObject {
 
 	init() {
 		self.UserDirectory = SampleDirectory(
-			directory: appState.sampleDirectory ?? WorkingDirectory.applicationSupportPath())
+      directory: appState.sampleDirectory ?? <#default value#>)
 		self.ArchiveDirectory = SampleDirectory(
 			directory: WorkingDirectory.applicationSupportPath())
 	}

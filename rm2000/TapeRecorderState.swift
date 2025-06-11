@@ -23,7 +23,8 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 				self.status = .recording
 			}
 			startTimer()
-			let newRecording = TemporaryActiveRecording()
+      
+      let newRecording = TemporaryActiveRecording(directory: SampleStorage.shared.UserDirectory.directory)
 			currentSampleFilename = newRecording.fileURL.lastPathComponent
 			self.currentActiveRecording = newRecording
 			NSApp.dockTile.badgeLabel = "REC"

@@ -17,10 +17,7 @@ struct OpenInFinderButton: View {
       Label {
         Text("Open in Finder")
       } icon: {
-        Image(
-          nsImage: NSWorkspace.shared.icon(
-            forFile: "/System/Library/CoreServices/Finder.app")
-        )
+        Image("SmallHappyFolder")
         .resizable()
         .scaledToFit()
         //					.frame(width: 20, height: 20)

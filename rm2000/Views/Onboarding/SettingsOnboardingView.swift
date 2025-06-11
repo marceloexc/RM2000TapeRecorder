@@ -51,27 +51,11 @@ struct SettingsOnboardingView: View {
   @State private var mousePosition: CGPoint = .zero
   @State private var iconCenter: CGPoint = .zero
   @State private var showFileChooser = false
-  let image: NSImage
-
-  init() {
-    let finderFullRes = NSWorkspace.shared.icon(
-      forFile: "/System/Library/CoreServices/Finder.app"
-    )
-    .bestRepresentation(
-      for: NSRect(x: 0, y: 0, width: 200, height: 200), context: nil, hints: nil
-    )
-
-    // this shouldnt fail, as the finder icon is in every single mac...but you never know...
-    // this should just be empty if it doesnt exist
-    self.image = NSImage(
-      size: finderFullRes?.size ?? NSSize(width: 200, height: 200))
-    self.image.addRepresentation(finderFullRes ?? NSImageRep())
-  }
-
+  
   var body: some View {
     VStack(spacing: 40) {
       VStack {
-        Image(nsImage: image)
+        Image("HappyFolder")
           .resizable()
           .scaledToFit()
           .frame(width: 200, height: 200)

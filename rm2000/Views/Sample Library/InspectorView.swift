@@ -60,7 +60,7 @@ struct InspectorView: View {
 						Button {
 							NSWorkspace.shared.activateFileViewerSelecting([sample.fileURL])
 						} label: {
-							Image(nsImage: NSWorkspace.shared.icon(forFile: "/System/Library/CoreServices/Finder.app"))
+							Image("SmallHappyFolder")
 								.resizable()
 								.scaledToFit()
 								.frame(width: 16, height: 16)

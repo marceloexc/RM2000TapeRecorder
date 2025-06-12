@@ -8,6 +8,7 @@ import SwiftDirectoryWatcher
 @MainActor
 final class SampleStorage: ObservableObject {
 
+  let defaultSampleFolder = FileManager.default.urls(for: .musicDirectory, in: .userDomainMask).first!.appendingPathComponent("RM2000 Tape Recorder")
 	let appState = AppState.shared
 	static let shared = SampleStorage()
 
@@ -16,7 +17,7 @@ final class SampleStorage: ObservableObject {
 
 	init() {
 		self.UserDirectory = SampleDirectory(
-      directory: appState.sampleDirectory ?? <#default value#>)
+      directory: appState.sampleDirectory ?? defaultSampleFolder)
 		self.ArchiveDirectory = SampleDirectory(
 			directory: WorkingDirectory.applicationSupportPath())
 	}

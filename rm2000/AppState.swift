@@ -63,7 +63,7 @@ import StoreKit
       // we only do this if they have completed onboarding,
       // because I wouldnt want to pollute a user's files if they dont complete onboarding and decide
       // not to use the app
-      let fallbackPath = FileManager.default.urls(for: .musicDirectory, in: .userDomainMask).first!.appendingPathComponent("Samples")
+      let fallbackPath = FileManager.default.urls(for: .musicDirectory, in: .userDomainMask).first!.appendingPathComponent("RM2000 Tape Recorder")
       try? FileManager.default.createDirectory(at: fallbackPath, withIntermediateDirectories: true)
       
       if fallbackPath.startAccessingSecurityScopedResource() {

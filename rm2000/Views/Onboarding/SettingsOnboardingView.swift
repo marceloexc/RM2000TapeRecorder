@@ -107,7 +107,7 @@ struct SettingsOnboardingView: View {
             sampleDirectoryURL: AppState.shared.sampleDirectory
               ?? FileManager.default.urls(
                 for: .musicDirectory, in: .userDomainMask
-              ).first!.appendingPathComponent("Samples")
+              ).first!.appendingPathComponent("RM2000 Tape Recorder")
           )
           .frame(height: 30)
           .background(
@@ -147,7 +147,7 @@ struct SettingsOnboardingView: View {
           }
         }
 
-        Text("The Default Folder Location is ~/Music/Samples/")
+        Text("The Default Folder Location is ~/Music/RM2000 Tape Recorder/")
           .font(.custom("LucidaGrande", size: 12))
           .foregroundStyle(Color(.white))
       }

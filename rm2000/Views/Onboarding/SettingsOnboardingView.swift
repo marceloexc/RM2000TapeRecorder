@@ -51,7 +51,8 @@ struct SettingsOnboardingView: View {
   @State private var mousePosition: CGPoint = .zero
   @State private var iconCenter: CGPoint = .zero
   @State private var showFileChooser = false
-  
+  @State private var hasChosenFolder = false
+
   var body: some View {
     VStack(spacing: 40) {
       VStack {
@@ -103,28 +104,31 @@ struct SettingsOnboardingView: View {
 
       VStack {
         HStack(alignment: .center, spacing: 5) {
-          PathControlView(
-            sampleDirectoryURL: AppState.shared.sampleDirectory
-              ?? FileManager.default.urls(
-                for: .musicDirectory, in: .userDomainMask
-              ).first!.appendingPathComponent("RM2000 Tape Recorder")
-          )
-          .frame(height: 30)
-          .background(
-            LinearGradient(
-              stops: [
-                .init(color: Color(hex: 0xdfdfdf), location: 0),
-                .init(color: Color(hex: 0xc0c0c0), location: 1),
-              ], startPoint: .bottom, endPoint: .top)
-          )
-          .cornerRadius(6)
 
-          Spacer()
+          if hasChosenFolder {
+            PathControlView(
+              selectedPath: $appState.sampleDirectory,
+              sampleDirectoryURL: appState.sampleDirectory
+                ?? URL(fileURLWithPath: "/")
+            )
+            .frame(height: 30)
+            .background(
+              LinearGradient(
+                stops: [
+                  .init(color: Color(hex: 0xdfdfdf), location: 0),
+                  .init(color: Color(hex: 0xc0c0c0), location: 1),
+                ], startPoint: .bottom, endPoint: .top)
+            )
+            .cornerRadius(6)
+
+            Spacer()
+
+          }
 
           Button {
             showFileChooser = true
           } label: {
-            Text("Choose Different Folder")
+            Text("Choose Folder")
           }
           .controlSize(.large)
           .fileImporter(
@@ -139,6 +143,7 @@ struct SettingsOnboardingView: View {
                 return
               }
               appState.sampleDirectory = directory
+              hasChosenFolder = true
               Logger.viewModels.info("Set new sampleDirectory as \(directory)")
             case .failure(let error):
               Logger.viewModels.error("Could not set sampleDirectory: \(error)")
@@ -150,6 +155,7 @@ struct SettingsOnboardingView: View {
         Text("The Default Folder Location is ~/Music/RM2000 Tape Recorder/")
           .font(.custom("LucidaGrande", size: 12))
           .foregroundStyle(Color(.white))
+          .padding(.top, 30)
       }
       .frame(width: 600)
     }
@@ -185,4 +191,5 @@ struct SettingsOnboardingView: View {
 
 #Preview {
   SettingsOnboardingView()
+    .environmentObject(AppState.shared)
 }

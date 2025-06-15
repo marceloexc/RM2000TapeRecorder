@@ -16,14 +16,6 @@ struct MenuBarView: View {
 				Text("RM2000 Tape Recorder")
 					.font(.system(.headline))
 					.fontWeight(.bold)
-				Text("Beta")
-					.font(.caption)
-					.foregroundColor(.secondary)
-					.padding(.horizontal, 4)
-					.background(
-						RoundedRectangle(cornerRadius: 4)
-							.fill(Color.secondary.opacity(0.2))
-					)
 			}
 			.padding(.top, 5)
 			
@@ -95,6 +87,26 @@ struct MenuBarView: View {
 			
 			Divider()
 			
+      if (StoreManager.shared.isTrialActive) {
+        Text("Trial: \(StoreManager.shared.daysRemaining) day(s) left")
+          .font(.caption)
+          .foregroundColor(.secondary)
+          .padding(.horizontal, 4)
+          .background(
+            RoundedRectangle(cornerRadius: 4)
+              .fill(Color.secondary.opacity(0.2))
+          )
+      } else if (StoreManager.shared.isTrialExpired) {
+        Text("Trial Expired!")
+          .font(.caption)
+          .foregroundColor(.red)
+          .padding(.horizontal, 4)
+          .background(
+            RoundedRectangle(cornerRadius: 4)
+              .fill(Color.secondary.opacity(0.2))
+          )
+      }
+      
 			// Footer
 			Button(action: {
 				NSApplication.shared.terminate(nil)

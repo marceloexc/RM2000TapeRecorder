@@ -166,7 +166,7 @@
 		EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDWindowView.swift; sourceTree = "<group>"; };
 		EBDF782D2D80146E00941981 /* Tachyo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tachyo.otf; sourceTree = "<group>"; };
 		EBDF782F2D8016A700941981 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RM2000 Tape Recorder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder (Debug).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RM2000 Tape Recorder (Debug).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE4E9472C43244D00397EF2 /* RM2000 Tape Recorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RM2000 Tape Recorder.swift"; sourceTree = "<group>"; };
 		EBE4E9492C43244D00397EF2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EBE4E94B2C43244F00397EF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -417,7 +417,7 @@
 		EBE4E9452C43244D00397EF2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */,
+				EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder (Debug).app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -514,7 +514,7 @@
 				EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */,
 			);
 			productName = replica;
-			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
+			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder (Debug).app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -791,7 +791,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = rm2000/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "RM2000 Tape Recorder";
+				INFOPLIST_KEY_CFBundleDisplayName = "RM2000 Tape Recorder (Debug)";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -801,7 +801,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = marceloexc.rm2000;
-				PRODUCT_NAME = "RM2000 Tape Recorder";
+				PRODUCT_NAME = "RM2000 Tape Recorder (Debug)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -828,7 +828,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = rm2000/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "RM2000 Tape Recorder";
+				INFOPLIST_KEY_CFBundleDisplayName = "RM2000 Tape Recorder (Debug)";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (

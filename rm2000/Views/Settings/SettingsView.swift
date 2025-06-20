@@ -33,6 +33,20 @@ struct SettingsView: View {
         .padding()
         .frame(width: 450)
         .tag("Recording")
+      
+#if DEBUG
+      DebugTabView()
+        .tabItem {
+          Label {
+            Text("Debugging")
+          } icon: {
+            Image(systemName: "ladybug")
+          }
+        }
+        .padding()
+        .frame(width: 450)
+        .tag("Debugging")
+#endif
 
       LicenseTabView()
         .tabItem {

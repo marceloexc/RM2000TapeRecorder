@@ -7,7 +7,9 @@ struct GeneralTabView: View {
 
   var body: some View {
     Form {
-      LaunchAtLogin.Toggle()
+      Form {
+        LaunchAtLogin.Toggle()
+      }
       KeyboardShortcuts.Recorder(
         "Quick Recording Hotkey", name: .recordGlobalShortcut)
     }

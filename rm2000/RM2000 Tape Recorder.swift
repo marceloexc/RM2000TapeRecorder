@@ -42,7 +42,6 @@ struct RM2000TapeRecorderApp: App {
         }
         Button("Open Source Acknowledgements") {
           guard let url = Bundle.main.url(forResource: "Acknowledgements", withExtension: "rtf") else {
-            print("Acknowledgements.rtf not found in bundle")
             return
           }
           NSWorkspace.shared.open(url)

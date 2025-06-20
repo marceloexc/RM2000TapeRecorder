@@ -9,9 +9,9 @@ struct RMAudioConverter {
   static func convert(input: URL, output: URL, format: AudioFormat) async {
     do {
       try AudioConverter.convert(input, to: output)
-      Logger().info("Conversion complete")
+      Logger.encoder.info("Conversion complete")
     } catch {
-      Logger().error("Conversion failed: \(error.localizedDescription)")
+      Logger.encoder.error("Conversion failed: \(error.localizedDescription)")
     }
   }
 }
@@ -95,23 +95,21 @@ class Encoder {
     case .fileURL:
 
       if needsTrimming {
-        Logger().debug("Sample needs trimming")
+        Logger.encoder.debug("Sample needs trimming")
 
         guard let decoder = try? AudioDecoder(url: self.sourceURL!) else {
-          Logger().error("Failed to init decoder for \(self.sourceURL!)")
+          Logger.encoder.error("Failed to init decoder for \(self.sourceURL!)")
           return
         }
         try decoder.open()
         let processingFormat = decoder.processingFormat
-        print(
-          "Processing format: \(processingFormat), processing format length: \(decoder.length)"
-        )
+        Logger.encoder.info("Processing format: \(processingFormat), processing format length: \(decoder.length)")
         let frameCount = AVAudioFrameCount(decoder.length)
         guard
           let buffer = AVAudioPCMBuffer(
             pcmFormat: processingFormat, frameCapacity: frameCount)
         else {
-          Logger().error(
+          Logger.encoder.error(
             "Failed to get buffers from the decoder for \(self.sourceURL!)")
           return
         }
@@ -125,7 +123,7 @@ class Encoder {
             reverseEndTime: config.reverseEndTime!
           )
         else {
-          Logger().error("Failed to trim buffer")
+          Logger.encoder.error("Failed to trim buffer")
           return
         }
 
@@ -142,7 +140,7 @@ class Encoder {
         try? FileManager.default.removeItem(at: trimmedSourceURL!)
 
       } else {
-        Logger().debug(
+        Logger.encoder.debug(
           "Sending encode configuration as \(String(describing: config))")
         await RMAudioConverter.convert(
           input: self.sourceURL!, output: config.outputURL!,
@@ -172,17 +170,17 @@ class Encoder {
 
     // validating range
     guard startTimeSeconds >= 0 else {
-      Logger().error("Start time is less than zero for buffer")
+      Logger.encoder.error("Start time is less than zero for buffer")
       return nil
     }
 
     if endTimeSeconds > bufferDuration {
-      Logger().info("End time larger than buffer duration - adjusting...")
+      Logger.encoder.info("End time larger than buffer duration - adjusting...")
       endTimeSeconds = bufferDuration
     }
 
     guard startTimeSeconds < endTimeSeconds else {
-      Logger().error(
+      Logger.encoder.error(
         "Invalid trim range: \(startTimeSeconds) to \(endTimeSeconds) seconds (buffer duration: \(bufferDuration))"
       )
       return nil
@@ -196,14 +194,14 @@ class Encoder {
       let trimmedBuffer = AVAudioPCMBuffer(
         pcmFormat: buffer.format, frameCapacity: frameCount)
     else {
-      Logger().error("Failed to create trimmed buffer")
+      Logger.encoder.error("Failed to create trimmed buffer")
       return nil
     }
 
     // copy audio data - handle interleaved vs non-interleaved
     if buffer.format.isInterleaved {
 
-      Logger().info("Format is interleaved - converting...")
+      Logger.encoder.info("Format is interleaved - converting...")
       // Interleaved
       let sourcePtr = buffer.floatChannelData![0]
       let destPtr = trimmedBuffer.floatChannelData![0]
@@ -218,7 +216,7 @@ class Encoder {
       }
     } else {
       // Non-interleaved
-      Logger().info("Format is not-interleaved - converting...")
+      Logger.encoder.info("Format is not-interleaved - converting...")
 
       for channel in 0..<Int(buffer.format.channelCount) {
         let source = buffer.floatChannelData![channel] + Int(startFrame)

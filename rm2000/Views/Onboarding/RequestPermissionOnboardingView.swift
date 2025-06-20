@@ -50,7 +50,7 @@ struct RequestPermissionOnboardingView: View {
     )
     .onAppear {
       AppState.shared.hasCompletedOnboarding = true
-      Logger().info("Set hasCompletedOnboarding to true")
+      Logger.appState.info("Set hasCompletedOnboarding to true")
     }
   }
 

@@ -10,7 +10,7 @@ struct RM2000TapeRecorderApp: App {
 
 	var body: some Scene {
 		MenuBarExtra {
-			MenuBarView()
+      MenuBarView(appDelegate: appDelegate)
 				.environmentObject(appDelegate.recordingState)
 				.environmentObject(sampleStorage)
 		} label: {

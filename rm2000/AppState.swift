@@ -6,8 +6,6 @@ import SwiftUI
 
 @MainActor final class AppState: ObservableObject {
   static let shared = AppState()
-  private var appDelegate = AppKitWindowManagerDelegate()
-
   @AppStorage("completedOnboarding") var hasCompletedOnboarding: Bool = false {
     didSet {
       if !hasCompletedOnboarding {
@@ -47,6 +45,8 @@ import SwiftUI
   var hasPurchasedApp: Bool {
     storekitManager.hasPurchasedApp
   }
+  
+  weak var appDelegate: AppKitWindowManagerDelegate?
 
   init() {
     KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
@@ -91,20 +91,20 @@ import SwiftUI
   }
 
   func closeHUDWindow() {
-    appDelegate.closeHUDWindow()
+    appDelegate?.closeHUDWindow()
   }
 
   private func startQuickSampleRecordAndShowHUD() async {
     if TapeRecorderState.shared.status == .idle {
       TapeRecorderState.shared.startRecording()
-      appDelegate.showHUDWindow()
+      appDelegate?.showHUDWindow()
     } else {
       TapeRecorderState.shared.stopRecording()
-      appDelegate.closeHUDWindow()
+      appDelegate?.closeHUDWindow()
 
       // pop up window so that user can start editing
       NSApp.requestUserAttention(.criticalRequest)
-      appDelegate.mainWindowController?.window?.makeKeyAndOrderFront(nil)
+      appDelegate?.showMainWindow()
     }
   }
 

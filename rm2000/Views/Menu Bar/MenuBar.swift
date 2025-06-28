@@ -7,7 +7,7 @@ struct MenuBarView: View {
 	@EnvironmentObject private var sampleStorage: SampleStorage
 	@Environment(\.openWindow) private var openWindow
 	
-	private var appDelegate = AppKitWindowManagerDelegate()
+  weak var appDelegate: AppKitWindowManagerDelegate?
 	
 	var body: some View {
 		VStack(spacing: 12) {
@@ -59,7 +59,7 @@ struct MenuBarView: View {
 			
 			VStack() {
 				Button(action: {
-					appDelegate.showMainWindow()
+          appDelegate?.showMainWindow()
 				}) {
 					HStack {
 						Image(systemName: "macwindow")

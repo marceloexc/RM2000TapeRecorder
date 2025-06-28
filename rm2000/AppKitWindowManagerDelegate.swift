@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 import KeyboardShortcuts
+import OSLog
 
 class WindowController: NSWindowController {
 	override func windowDidLoad() {
@@ -18,8 +19,10 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 	private var hudHostingView: NSHostingView<AnyView>?
 	
 	private var hudWindow: NSWindow?
+  private var mainWindow: NSWindow?
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
+    AppState.shared.appDelegate = self
 		registerCustomFonts()
 		if AppState.shared.hasCompletedOnboarding {
 			showMainWindow()
@@ -29,20 +32,22 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 	}
 	
 	func showMainWindow() {
-		
+    Logger.appDelegate.info("'Show Main Window' called")
 		// if window is already created, just show it, dont make another window
-		if let windowController = mainWindowController,
-			 let window = windowController.window {
+		if let windowController = mainWindowController, let window = windowController.window {
+      Logger.appDelegate.info("Main Window already exists!")
 			// If window is visible, just bring it to front
-			if window.isVisible {
+      if !window.isVisible || window.isMiniaturized {
+        window.deminiaturize(nil)
 				window.makeKeyAndOrderFront(nil)
-				return
-			}
-			// If window exists but isn't visible, it might be minimized - show it
-			window.makeKeyAndOrderFront(nil)
+      } else {
+        // If window exists but isn't visible, it might be minimized - show it
+        window.makeKeyAndOrderFront(nil)
+      }
 			return
 		}
 		
+    Logger.appDelegate.info("Main Window does not exist - creating NSWindow.....")
 		// else, create the window
 		let window = SkeuromorphicWindow(
 			contentRect: NSRect(x: 100, y: 100, width: 600, height: 400),
@@ -67,6 +72,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 	}
 	
 	func showHUDWindow() {
+    Logger.appDelegate.info("Showing HUD Window")
 		closeHUDWindow()
 		
 		// wait a bit for window destruction
@@ -136,43 +142,6 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 		onboardingWindowController = NSWindowController(window: window)
 		onboardingWindowController?.showWindow(nil)
 		window.center()
-	}
-	
-//  TODO - uncomment this later when i have a proper implementation
-
-//	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-//		self.willTerminate = true
-//		self.promptQuitConfirmation()
-//		return .terminateLater
-//	}
-	
-	/// dont close (user canceled)
-	func `continue`() {
-		NSApplication.shared.reply(toApplicationShouldTerminate: false)
-	}
-	/// close
-	func close() {
-		NSApplication.shared.reply(toApplicationShouldTerminate: true)
-	}
-	
-	func promptQuitConfirmation() {
-		let alert = NSAlert()
-		alert.messageText = "Really Quit?"
-		alert.informativeText = "You will not be able to start Recordings with the Global Shortcut when the application is not running."
-		alert.alertStyle = .critical
-		alert.addButton(withTitle: "Yes, Quit")
-		alert.addButton(withTitle: "No, Cancel")
-		
-		DispatchQueue.main.async {
-			let response = alert.runModal()
-			if response == .alertFirstButtonReturn {
-				// "Quit" pressed
-				self.close()
-			} else {
-				// "Cancel" pressed
-				self.continue()
-			}
-		}
 	}
 
 	/*

@@ -49,6 +49,7 @@ import SwiftUI
   }
 
   init() {
+    Logger.appState.info("Welcome to RM2000 Tape Recorder!")
     KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
       Task {
         await startQuickSampleRecordAndShowHUD()

@@ -8,9 +8,7 @@ import UniformTypeIdentifiers
 @MainActor
 final class SampleStorage: ObservableObject {
 
-  let defaultSampleFolder = FileManager.default.urls(
-    for: .musicDirectory, in: .userDomainMask
-  ).first!.appendingPathComponent("RM2000 Tape Recorder")
+  let defaultSampleFolder = FileManager.default.urls(for: .musicDirectory, in: .userDomainMask).first!.appendingPathComponent("RM2000 Tape Recorder")
   let appState = AppState.shared
   static let shared = SampleStorage()
 
@@ -41,19 +39,20 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
     setupDirectoryWatching()
   }
 
-  private func startInitialFileScan() {
+  fileprivate func startInitialFileScan() {
     do {
       let directoryContents = try FileManager.default.contentsOfDirectory(
         at: self.directory, includingPropertiesForKeys: nil)
-
+      
+      cleanupLeftoverFiles(in: directoryContents)
+      
       for fileURL in directoryContents {
         // Only add files we haven't processed yet
-        let filePath = fileURL.path
-        if !processedFilePaths.contains(filePath) {
+        if !processedFilePaths.contains(fileURL.path) {
           if let SampleFile = Sample(fileURL: fileURL) {
             samplesInStorage.append(SampleFile)
             indexedTags.formUnion(SampleFile.tags)
-            processedFilePaths.insert(filePath)
+            processedFilePaths.insert(fileURL.path)
           }
         }
       }
@@ -145,6 +144,16 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
           self.processedFilePaths.remove(path)
           Logger.sampleStorage.debug("File deleted: \(url.lastPathComponent)")
         }
+      }
+    }
+  }
+  
+  private func cleanupLeftoverFiles(in contents: [URL]) {
+    for fileURL in contents {
+      // remove leftover caf files
+      if (fileURL.isHidden && fileURL.pathExtension == "caf") {
+        Logger.sampleStorage.info("Removing \(fileURL.lastPathComponent) as it was leftover from the last session")
+        try! FileManager.default.removeItem(at: fileURL)
       }
     }
   }

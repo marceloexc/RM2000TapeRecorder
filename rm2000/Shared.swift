@@ -32,6 +32,22 @@ extension URL {
 		let value = try? resourceValues(forKeys: [.fileSizeKey])
 		return value?.fileSize
 	}
+  
+  // https://stackoverflow.com/a/34746109/30724926
+  var isHidden: Bool {
+    get {
+      return (try? resourceValues(forKeys: [.isHiddenKey]))?.isHidden == true
+    }
+    set {
+      var resourceValues = URLResourceValues()
+      resourceValues.isHidden = newValue
+      do {
+        try setResourceValues(resourceValues)
+      } catch {
+        print("isHidden error:", error)
+      }
+    }
+  }
 }
 
 func timeString(_ time: TimeInterval) -> String {

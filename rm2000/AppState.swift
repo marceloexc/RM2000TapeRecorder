@@ -101,7 +101,10 @@ import SwiftUI
     } else {
       TapeRecorderState.shared.stopRecording()
       appDelegate.closeHUDWindow()
-      await displayTestingGlobalNotication()
+
+      // pop up window so that user can start editing
+      NSApp.requestUserAttention(.criticalRequest)
+      appDelegate.mainWindowController?.window?.makeKeyAndOrderFront(nil)
     }
   }
 

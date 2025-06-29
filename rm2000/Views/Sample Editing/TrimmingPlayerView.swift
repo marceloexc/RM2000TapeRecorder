@@ -95,6 +95,12 @@ class PlayerViewModel: ObservableObject {
       }
     }
   }
+  
+  deinit {
+    // make sure audio gets stopped when sheet is dismissed
+    player?.volume = 0.0
+    player?.pause()
+  }
 }
 
 struct TrimmingPlayerView<Model: FileRepresentable>: View {

@@ -3,37 +3,37 @@ import SwiftUI
 
 @main
 struct RM2000TapeRecorderApp: App {
-	@StateObject var appState = AppState.shared
-	@StateObject var sampleStorage = SampleStorage.shared
-	@StateObject private var recordingState = TapeRecorderState.shared
-	@NSApplicationDelegateAdaptor(AppKitWindowManagerDelegate.self) var appDelegate
+  @StateObject var appState = AppState.shared
+  @StateObject var sampleStorage = SampleStorage.shared
+  @StateObject private var recordingState = TapeRecorderState.shared
+  @NSApplicationDelegateAdaptor(AppKitWindowManagerDelegate.self) var appDelegate
 
-	var body: some Scene {
-		MenuBarExtra {
+  var body: some Scene {
+    MenuBarExtra {
       MenuBarView(appDelegate: appDelegate)
-				.environmentObject(appDelegate.recordingState)
-				.environmentObject(sampleStorage)
-		} label: {
-			Image("RecordingTapeBlackFlipped")
-		}
-		.menuBarExtraStyle(.window)
+        .environmentObject(appDelegate.recordingState)
+        .environmentObject(sampleStorage)
+    } label: {
+      Image("RecordingTapeBlackFlipped")
+    }
+    .menuBarExtraStyle(.window)
 
-		Window("Recordings", id: "recordings-window") {
-			SampleLibraryView()
-				.environmentObject(sampleStorage)
-		}
-		Window("Getting Started", id: "onboarding") {
+    Window("Recordings", id: "recordings-window") {
+      SampleLibraryView()
+        .environmentObject(sampleStorage)
+    }
+    Window("Getting Started", id: "onboarding") {
       OnboardingView(pages: OnboardingStep.fullOnboarding)
-				.environmentObject(appState)
-		}
+        .environmentObject(appState)
+    }
     .windowResizability(.contentSize)
     .windowStyle(.hiddenTitleBar)
-		
-		Settings {
-			SettingsView()
-				.environmentObject(appState)
-				.environmentObject(recordingState)
-		}
+
+    Settings {
+      SettingsView()
+        .environmentObject(appState)
+        .environmentObject(recordingState)
+    }
     .commands {
       CommandGroup(after: .help) {
         Button("Email Developer (Support)") {
@@ -41,12 +41,15 @@ struct RM2000TapeRecorderApp: App {
           NSWorkspace.shared.open(mailtoURL)
         }
         Button("Open Source Acknowledgements") {
-          guard let url = Bundle.main.url(forResource: "Acknowledgements", withExtension: "rtf") else {
+          guard
+            let url = Bundle.main.url(
+              forResource: "Acknowledgements", withExtension: "rtf")
+          else {
             return
           }
           NSWorkspace.shared.open(url)
         }
       }
     }
-	}
+  }
 }

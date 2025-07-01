@@ -138,15 +138,14 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
   }
   
   private func setupDrawer() {
-    let contentSize = NSSize(width: 270, height: 270) // Match this with your view size
-    let hostedView = NSHostingView(rootView: WhatsNewView())
-    hostedView.sizingOptions = .minSize
+    let contentSize = NSSize(width: 270, height: 270)
     whatsNewDrawer = NSDrawer(contentSize: contentSize, preferredEdge: .maxX)
     whatsNewDrawer?.parentWindow = mainWindow
-    whatsNewDrawer?.minContentSize = contentSize
-//    whatsNewDrawer?.maxContentSize = contentSize
-    whatsNewDrawer?.contentView = hostedView
     whatsNewDrawer?.leadingOffset = 50
+    
+    let hostedView = NSHostingView(rootView: WhatsNewView())
+    hostedView.sizingOptions = .minSize
+    whatsNewDrawer?.contentView = hostedView
     whatsNewDrawer?.open(on: .maxX)
   }
 

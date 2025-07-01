@@ -23,6 +23,7 @@
 		EB1A606A2DEA521E0067A4E3 /* PreviewFilenameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
 		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
+		EB32A24F2E144BE00082B7FD /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB32A24E2E144BE00082B7FD /* WhatsNewView.swift */; };
 		EB3DF85A2DDBFFC900198AAB /* CoreAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */; };
 		EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */; };
 		EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BCD2D920849007E19E8 /* OnboardingView.swift */; };
@@ -116,6 +117,7 @@
 		EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewFilenameView.swift; sourceTree = "<group>"; };
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
 		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		EB32A24E2E144BE00082B7FD /* WhatsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewView.swift; sourceTree = "<group>"; };
 		EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAudio.swift; sourceTree = "<group>"; };
 		EB3DF85F2DDD114A00198AAB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryView.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -380,6 +382,7 @@
 				EB8313EF2D4DCCD200B343FF /* Sample Library */,
 				EB467BD22D9208BF007E19E8 /* Settings */,
 				EB467BCE2D920849007E19E8 /* Onboarding */,
+				EB32A24E2E144BE00082B7FD /* WhatsNewView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				EB11B44E2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,
 				EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */,
+				EB32A24F2E144BE00082B7FD /* WhatsNewView.swift in Sources */,
 				EB3DF85A2DDBFFC900198AAB /* CoreAudio.swift in Sources */,
 				EB5BB4382DD6590800DFAA33 /* SampleLibraryViewModel.swift in Sources */,
 				EB467BD42D920919007E19E8 /* Buttons.swift in Sources */,

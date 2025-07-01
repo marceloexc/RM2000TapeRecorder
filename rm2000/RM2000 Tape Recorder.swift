@@ -50,6 +50,15 @@ struct RM2000TapeRecorderApp: App {
           NSWorkspace.shared.open(url)
         }
       }
+      CommandGroup(replacing: .textEditing) {
+        EmptyView()
+      }
+      CommandGroup(replacing: .undoRedo) {
+        EmptyView()
+      }
+      CommandGroup(replacing: .windowList) {
+        EmptyView()
+      }
     }
   }
 }

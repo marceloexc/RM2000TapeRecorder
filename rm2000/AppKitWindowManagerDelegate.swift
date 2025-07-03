@@ -75,7 +75,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
     
     mainWindow = window
 
-    setupDrawer()
+//    setupDrawer()
     
     mainWindowController = WindowController(window: window)
     mainWindowController?.showWindow(nil)

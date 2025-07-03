@@ -22,6 +22,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
 
   private var hudWindow: NSWindow?
   private var mainWindow: NSWindow?
+  private var whatsNewDrawer: NSDrawer?
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     AppState.shared.appDelegate = self
@@ -71,7 +72,11 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
     window.delegate = self  // track window closure
 
     window.isReleasedWhenClosed = false
+    
+    mainWindow = window
 
+//    setupDrawer()
+    
     mainWindowController = WindowController(window: window)
     mainWindowController?.showWindow(nil)
   }
@@ -130,6 +135,18 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
         }
       }
     }
+  }
+  
+  private func setupDrawer() {
+    let contentSize = NSSize(width: 300, height: 270)
+    whatsNewDrawer = NSDrawer(contentSize: contentSize, preferredEdge: .maxX)
+    whatsNewDrawer?.parentWindow = mainWindow
+    whatsNewDrawer?.leadingOffset = 50
+    
+    let hostedView = NSHostingView(rootView: WhatsNewView())
+    hostedView.sizingOptions = .minSize
+    whatsNewDrawer?.contentView = hostedView
+    whatsNewDrawer?.open(on: .maxX)
   }
 
   @MainActor private func showOnboardingWindow() {

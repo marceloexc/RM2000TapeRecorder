@@ -23,6 +23,7 @@
 		EB1A606A2DEA521E0067A4E3 /* PreviewFilenameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
 		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
+		EB32A24F2E144BE00082B7FD /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB32A24E2E144BE00082B7FD /* WhatsNewView.swift */; };
 		EB3DF85A2DDBFFC900198AAB /* CoreAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */; };
 		EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */; };
 		EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BCD2D920849007E19E8 /* OnboardingView.swift */; };
@@ -57,6 +58,7 @@
 		EB9E1AB72DF3839E008F6527 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9E1AB62DF38396008F6527 /* StoreKitManager.swift */; };
 		EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA1224E2DC722D200E603D3 /* InspectorView.swift */; };
 		EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */; };
+		EBA4165C2E171328007415CD /* Noise.metal in Sources */ = {isa = PBXBuildFile; fileRef = EBA4165B2E171328007415CD /* Noise.metal */; };
 		EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7D82DAB20E000160799 /* GeneralTabView.swift */; };
 		EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */; };
 		EBAF02632C8A132800520D44 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF02622C8A132800520D44 /* Logging.swift */; };
@@ -116,6 +118,7 @@
 		EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewFilenameView.swift; sourceTree = "<group>"; };
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
 		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		EB32A24E2E144BE00082B7FD /* WhatsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewView.swift; sourceTree = "<group>"; };
 		EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAudio.swift; sourceTree = "<group>"; };
 		EB3DF85F2DDD114A00198AAB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryView.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -148,6 +151,7 @@
 		EB9E1AB62DF38396008F6527 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
 		EBA1224E2DC722D200E603D3 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButtons.swift; sourceTree = "<group>"; };
+		EBA4165B2E171328007415CD /* Noise.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Noise.metal; sourceTree = "<group>"; };
 		EBACB7D82DAB20E000160799 /* GeneralTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTabView.swift; sourceTree = "<group>"; };
 		EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingTabView.swift; sourceTree = "<group>"; };
 		EBAF02622C8A132800520D44 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
@@ -168,7 +172,7 @@
 		EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDWindowView.swift; sourceTree = "<group>"; };
 		EBDF782D2D80146E00941981 /* Tachyo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tachyo.otf; sourceTree = "<group>"; };
 		EBDF782F2D8016A700941981 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder (Debug).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RM2000 Tape Recorder (Debug).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RM2000 Tape Recorder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE4E9472C43244D00397EF2 /* RM2000 Tape Recorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RM2000 Tape Recorder.swift"; sourceTree = "<group>"; };
 		EBE4E9492C43244D00397EF2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EBE4E94B2C43244F00397EF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -380,6 +384,8 @@
 				EB8313EF2D4DCCD200B343FF /* Sample Library */,
 				EB467BD22D9208BF007E19E8 /* Settings */,
 				EB467BCE2D920849007E19E8 /* Onboarding */,
+				EB32A24E2E144BE00082B7FD /* WhatsNewView.swift */,
+				EBA4165B2E171328007415CD /* Noise.metal */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -420,7 +426,7 @@
 		EBE4E9452C43244D00397EF2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder (Debug).app */,
+				EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -517,7 +523,7 @@
 				EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */,
 			);
 			productName = replica;
-			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder (Debug).app */;
+			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -628,6 +634,8 @@
 				EB11B44E2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,
 				EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */,
+				EB32A24F2E144BE00082B7FD /* WhatsNewView.swift in Sources */,
+				EBA4165C2E171328007415CD /* Noise.metal in Sources */,
 				EB3DF85A2DDBFFC900198AAB /* CoreAudio.swift in Sources */,
 				EB5BB4382DD6590800DFAA33 /* SampleLibraryViewModel.swift in Sources */,
 				EB467BD42D920919007E19E8 /* Buttons.swift in Sources */,
@@ -805,7 +813,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "marceloexc.rm2000-debug";
-				PRODUCT_NAME = "RM2000 Tape Recorder (Debug)";
+				PRODUCT_NAME = "RM2000 Tape Recorder";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

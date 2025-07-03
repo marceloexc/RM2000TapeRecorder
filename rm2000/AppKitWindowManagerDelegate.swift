@@ -138,7 +138,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
   }
   
   private func setupDrawer() {
-    let contentSize = NSSize(width: 270, height: 270)
+    let contentSize = NSSize(width: 300, height: 270)
     whatsNewDrawer = NSDrawer(contentSize: contentSize, preferredEdge: .maxX)
     whatsNewDrawer?.parentWindow = mainWindow
     whatsNewDrawer?.leadingOffset = 50

@@ -13,7 +13,19 @@ import SwiftUI
       }
     }
   }
-
+  
+  @AppStorage("hide_dock_icon") var hideDockIcon: Bool = false {
+    didSet {
+      if hideDockIcon {
+        NSApplication.Dock.setAppIconVisibleInDock(false)
+        appDelegate?.showMainWindow() // force window to be key
+      }
+      else {
+        NSApplication.Dock.setAppIconVisibleInDock(true)
+      }
+    }
+  }
+  
   @AppStorage("sample_directory") var sampleDirectoryPath: String = ""
   @AppStorage("sample_directory_bookmark") private var sampleDirectoryBookmark:
     Data?
@@ -50,12 +62,17 @@ import SwiftUI
 
   init() {
     Logger.appState.info("Welcome to RM2000 Tape Recorder!")
+    // register keyboard shortcuts
     KeyboardShortcuts.onKeyUp(for: .recordGlobalShortcut) { [self] in
       Task {
         await startQuickSampleRecordAndShowHUD()
       }
     }
 
+    if hideDockIcon {
+      NSApplication.Dock.setAppIconVisibleInDock(false)
+    }
+    
     if let bookmarkData = sampleDirectoryBookmark {
       restoreBookmarkAccess(with: bookmarkData)
     }

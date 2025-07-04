@@ -125,6 +125,21 @@ struct SampleIndividualListItem: View {
       Button("Open") {
         NSWorkspace.shared.open(sample.file.fileURL)
       }
+      
+      Button("Copy to Clipboard") {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.declareTypes([.fileURL], owner: nil)
+        let pasteboardItem = NSPasteboardItem()
+        
+        pasteboardItem.setData(sample.file.fileURL.dataRepresentation, forType: .fileURL)
+        
+        pasteboard.writeObjects([pasteboardItem])
+      }
+      
+      Button("Show in Enclosing Folder") {
+        NSWorkspace.shared.activateFileViewerSelecting([sample.file.fileURL])
+      }
 			
 			Divider()
 			

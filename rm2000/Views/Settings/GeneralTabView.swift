@@ -4,6 +4,7 @@ import OSLog
 import SwiftUI
 
 struct GeneralTabView: View {
+  @Environment(\.openURL) private var openURL
   @State private var isDockHidden: Bool = AppState.shared.hideDockIcon
 
   var body: some View {
@@ -39,7 +40,7 @@ struct GeneralTabView: View {
         VStack {
           Button(
             action: {
-              print("Hello world")
+              requestReviewInAP()
             },
             label: {
               Label {
@@ -54,6 +55,11 @@ struct GeneralTabView: View {
         Text("Support")
       }
     }
+  }
+  
+  private func requestReviewInAP() {
+    let url = "https://apps.apple.com/app/id6742876939?action=write-review"
+    openURL(URL(string: url)!)
   }
 }
 

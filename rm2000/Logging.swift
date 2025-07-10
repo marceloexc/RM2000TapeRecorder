@@ -43,4 +43,8 @@ extension Logger {
   static let encoder = Logger(subsystem: subsystem, category: "encoder")
   
   static let appDelegate = Logger(subsystem: subsystem, category: "AppDelegate")
+  
+  static let sampleLibrary = Logger(subsystem: subsystem, category: "SampleLibrary")
+  
+  static let mainWindow = Logger(subsystem: subsystem, category: "MainWindow")
 }

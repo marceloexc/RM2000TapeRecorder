@@ -129,6 +129,7 @@ struct SampleLibraryView: View {
       switch controlActiveState {
       case .key, .active:
         if (AppState.shared.hideDockIcon) {
+          Logger.sampleLibrary.debug("temporarily unhiding dock icon")
           NSApp.setActivationPolicy(.regular)
         }
       case .inactive:
@@ -148,7 +149,6 @@ struct SampleLibraryView: View {
         }
       }
     }
-    
     
     .searchable(
       text: $viewModel.searchText,

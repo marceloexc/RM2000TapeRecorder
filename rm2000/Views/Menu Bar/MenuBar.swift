@@ -24,6 +24,16 @@ struct MenuBarView: View {
         Button(action: {
           if recordingState.status == .recording {
             recordingState.stopRecording()
+            
+            // todo - this should just be an @Environment
+            if (AppState.shared.hideDockIcon) {
+              NSApp.setActivationPolicy(.regular)
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+              NSApp.requestUserAttention(.criticalRequest)
+
+            }
           } else {
             recordingState.startRecording()
           }

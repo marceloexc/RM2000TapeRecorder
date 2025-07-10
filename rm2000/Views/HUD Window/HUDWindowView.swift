@@ -135,6 +135,8 @@ struct FloatingGradientView: View {
 					showHintText = true
 				}
 			}
+      // make sure Dock Icon is not hidden
+      NSApp.setActivationPolicy(.regular)
 		}
 		.onDisappear() {
 			withAnimation(.easeIn(duration: 0.3)) { opacity = 0.0 }

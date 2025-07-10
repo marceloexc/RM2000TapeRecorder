@@ -6,6 +6,8 @@ struct ContentView: View {
   @Environment(\.openWindow) var openWindow
   @EnvironmentObject private var recordingState: TapeRecorderState
   @EnvironmentObject private var storeManager: StoreManager
+  @Environment(\.controlActiveState) private var controlActiveState
+
   @Environment(\.openSettingsLegacy) private var openSettingsLegacy
 
   @State private var showTrialExpiredSheet: Bool = false
@@ -49,6 +51,7 @@ struct ContentView: View {
         }
       }
       .sheet(isPresented: $showTrialExpiredSheet) {
+        
         VStack(spacing: 16) {
           Text("Trial Expired")
             .font(.title)
@@ -72,6 +75,24 @@ struct ContentView: View {
     .onAppear {
       if storeManager.trialStatus == .expired {
         showTrialExpiredSheet = true
+      }
+    }
+    /// if hideDockIcon is enabled, temporarily enable it whenever
+    /// we have this window open
+    
+    .onChange(of: controlActiveState) {
+      switch controlActiveState {
+      case .key:
+        if (AppState.shared.hideDockIcon) {
+          NSApp.setActivationPolicy(.regular)
+        }
+
+      case .inactive:
+        break
+      case .active:
+        break
+      @unknown default:
+        break
       }
     }
     .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in

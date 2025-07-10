@@ -23,9 +23,6 @@ struct GeneralTabView: View {
                 AppState.shared.hideDockIcon = newValue
               }
           } footer: {
-            //            Text("Use .")
-            //              .font(.caption)
-            //              .foregroundColor(.secondary)
           }
 
           KeyboardShortcuts.Recorder(

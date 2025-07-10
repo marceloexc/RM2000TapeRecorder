@@ -138,8 +138,14 @@ struct SampleLibraryView: View {
       }
     }
     .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
-      if (AppState.shared.hideDockIcon) {
-        NSApp.setActivationPolicy(.accessory)
+      if let window = newValue.object as? NSWindow {
+        let thisWindowIdentifier = NSUserInterfaceItemIdentifier("recordings-window")
+        if window.identifier == thisWindowIdentifier {
+          if (AppState.shared.hideDockIcon) {
+            Logger.sampleLibrary.debug("hiding dock icon")
+            NSApp.setActivationPolicy(.accessory)
+          }
+        }
       }
     }
     

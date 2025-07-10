@@ -35,6 +35,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
   }
 
   func showMainWindow() {
+    let mainWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
     Logger.appDelegate.info("'Show Main Window' called")
     // if window is already created, just show it, dont make another window
     if let windowController = mainWindowController,
@@ -72,6 +73,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
     window.delegate = self  // track window closure
 
     window.isReleasedWhenClosed = false
+    window.identifier = mainWindowIdentifier
     
     mainWindow = window
     

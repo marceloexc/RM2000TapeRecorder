@@ -74,6 +74,17 @@ struct ContentView: View {
         showTrialExpiredSheet = true
       }
     }
+    .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
+      if let window = newValue.object as? NSWindow {
+        let thisWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
+        if window.identifier == thisWindowIdentifier {
+          if (AppState.shared.hideDockIcon) {
+            Logger.mainWindow.debug("Hiding dock icon")
+            NSApp.setActivationPolicy(.accessory)
+          }
+        }
+      }
+    }
   }
 
   private func startRecording() {

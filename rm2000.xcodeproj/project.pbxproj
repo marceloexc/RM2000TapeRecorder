@@ -811,7 +811,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "marceloexc.rm2000-debug";
 				PRODUCT_NAME = "RM2000 Tape Recorder";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -848,7 +848,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = marceloexc.rm2000;
 				PRODUCT_NAME = "RM2000 Tape Recorder";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -17,11 +17,13 @@ import SwiftUI
   @AppStorage("hide_dock_icon") var hideDockIcon: Bool = false {
     didSet {
       if hideDockIcon {
-        NSApplication.Dock.setAppIconVisibleInDock(false)
-        appDelegate?.showMainWindow() // force window to be key
+        NSApp.setActivationPolicy(.accessory)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+          appDelegate?.showMainWindow()
+        }
       }
       else {
-        NSApplication.Dock.setAppIconVisibleInDock(true)
+        NSApp.setActivationPolicy(.regular)
       }
     }
   }
@@ -68,10 +70,6 @@ import SwiftUI
         await startQuickSampleRecordAndShowHUD()
       }
     }
-
-    if hideDockIcon {
-      NSApplication.Dock.setAppIconVisibleInDock(false)
-    }
     
     if let bookmarkData = sampleDirectoryBookmark {
       restoreBookmarkAccess(with: bookmarkData)
@@ -99,6 +97,10 @@ import SwiftUI
 
     Logger.appState.info(
       "\(String(describing: self.sampleDirectory)) as the user directory")
+    
+    if hideDockIcon {
+      NSApplication.shared.setActivationPolicy(.accessory)
+    }
   }
 
   func setOpenWindowAction(_ action: OpenWindowAction) {

@@ -10,6 +10,7 @@ extension ToolbarItemPlacement {
 struct SampleLibraryView: View {
   @StateObject private var viewModel: SampleLibraryViewModel
   @Environment(\.openURL) private var openURL
+  @Environment(\.controlActiveState) private var controlActiveState
   @State private var selection = "Apple"
 
   init() {
@@ -120,6 +121,29 @@ struct SampleLibraryView: View {
     .onAppear {
       setToolbarStyle()
     }
+    
+    /// if hideDockIcon is enabled, temporarily enable it whenever
+    /// we have this window open
+    
+    .onChange(of: controlActiveState) {
+      switch controlActiveState {
+      case .key, .active:
+        if (AppState.shared.hideDockIcon) {
+          NSApp.setActivationPolicy(.regular)
+        }
+      case .inactive:
+        break
+      @unknown default:
+        break
+      }
+    }
+    .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
+      if (AppState.shared.hideDockIcon) {
+        NSApp.setActivationPolicy(.accessory)
+      }
+    }
+    
+    
     .searchable(
       text: $viewModel.searchText,
       tokens: $viewModel.currentSearchTokens,

@@ -19,107 +19,33 @@ struct SampleLibraryView: View {
 
   var body: some View {
     NavigationSplitView {
-      SidebarView(viewModel: viewModel)
-        .toolbar(removing: .sidebarToggle)
-        .navigationSplitViewColumnWidth(min: 200, ideal: 200, max: 300)
+      if #available(macOS 14.0, *) {
+        SidebarView(viewModel: viewModel)
+          .toolbar(removing: .sidebarToggle)
+          .navigationSplitViewColumnWidth(min: 200, ideal: 200, max: 300)
+      } else {
+        SidebarView(viewModel: viewModel)
+          .navigationSplitViewColumnWidth(min: 200, ideal: 200, max: 300)
+      }
     } detail: {
       DetailView(viewModel: viewModel)
         .navigationSplitViewColumnWidth(min: 500, ideal: 500)
     }
-    .toolbar(id: "rm2000.main-toolbar") {
-
-      ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
-        SidebarButton()
-      }.customizationBehavior(.disabled)
-      ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
-        ShareSampleButton(sampleItem: viewModel.selectedSample)
-      }
-      //      ToolbarItem(id: "rm2000.import-sample-button", placement: .primaryAction)
-      //      {
-      //        ImportSampleButton()
-      //      }
-      ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction)
-      {
-        OpenInFinderButton()
-      }
-
-      ToolbarItem(id: "rm2000.divider", placement: .primaryAction) {
-        HStack {
-          Divider()
-        }
-      }
-      //      ToolbarItem(id: "rm2000.picker", placement: .primaryAction) {
-      //        Picker("View", selection: $selection) {
-      //          Label("Grid", systemImage: "square.grid.2x2")
-      //          Label("List", systemImage: "list.bullet")
-      //        }.pickerStyle(.menu)
-      //      }
-    }
-    .toolbar(id: "rm2000.favorites-toolbar") {
-      ToolbarItem(id: "rm2000.playpause", placement: .favoritesBar) {
-        Button {
-          viewModel.slAudioPlayer.playPause()
-        } label: {
-          Image(
-            systemName: viewModel.slAudioPlayer.isPlaying
-              ? "pause.fill" : "play.fill")
-        }
-        .disabled(viewModel.selectedSample == nil)
-      }
-      ToolbarItem(id: "rm2000.duration", placement: .favoritesBar) {
-        if viewModel.slAudioPlayer.isPlaying {
-          let mins: Int = Int(viewModel.slAudioPlayer.currentTime) / 60
-          let secs: Int = Int(
-            viewModel.slAudioPlayer.currentTime - Double(mins * 60))
-          Text(String(format: "%d:%02d", mins, secs))
-        } else {
-          Text("0:00")
-            .disabled(viewModel.selectedSample == nil)
-        }
-      }
-      ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
-        Slider(
-          value: Binding(
-            get: { viewModel.currentTime },
-            set: { viewModel.slAudioPlayer.seekTo(time: $0) }
-          ),
-          in: 0...viewModel.slAudioPlayer.duration
-        )
-        .disabled(viewModel.selectedSample == nil)
-      }
-
-      ToolbarItem(id: "rm2000.autoplay-toggle", placement: .favoritesBar) {
-        Toggle(
-          "Autoplay",
-          isOn: $viewModel.slAudioPlayer.isAutoplay
-        ).toggleStyle(.checkbox)
-      }
-
-    }
+    .toolbar(id: "rm2000.main-toolbar", content: mainToolbarContent)
+    .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
     .inspector(isPresented: $viewModel.showInspector) {
-
       InspectorView(viewModel: viewModel)
-
-        .toolbar(id: "rm2000.inspector.toolbar") {
-          ToolbarItem(id: "rm2000.spacer") {
-            Spacer()
-          }
-          ToolbarItem(id: "rm2000.inspector.button") {
-            Button {
-              viewModel.showInspector.toggle()
-            } label: {
-              Label("Inspector", systemImage: "info.circle")
-                .foregroundStyle(.cyan)
-            }
-          }
-        }
+        .toolbar(id: "rm2000.inspector.toolbar", content: inspectorToolbarContent)
         .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     }
     .toolbarRole(.editor)
     .navigationTitle("Sample Library")
     .navigationSubtitle("\(viewModel.filteredSamples.count) Samples")
     .onAppear {
-      setToolbarStyle()
+      if #available(macOS 14.0, *) {
+        // conditional, bc the style we want causes a crash when hiding the sidebar on macOS 13
+        setToolbarStyle()
+      }
     }
     
     /// if hideDockIcon is enabled, temporarily enable it whenever
@@ -153,7 +79,6 @@ struct SampleLibraryView: View {
     .searchable(
       text: $viewModel.searchText,
       tokens: $viewModel.currentSearchTokens,
-      //      suggestedTokens: .constant(viewModel.suggestedSearchTokens),
       placement: .sidebar,
       prompt: Text("Type to search")
     ) { token in
@@ -166,11 +91,90 @@ struct SampleLibraryView: View {
       }
     }
     .onReceive(
-      NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
-    ) { _ in
+      NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
       // window is closed, stop audio playback
       if viewModel.slAudioPlayer.isPlaying {
         viewModel.slAudioPlayer.forcePause()
+      }
+    }
+  }
+  
+  @ToolbarContentBuilder
+  func mainToolbarContent() -> some CustomizableToolbarContent {
+    ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
+      SidebarButton()
+    }.customizationBehavior(.disabled)
+    ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
+      ShareSampleButton(sampleItem: viewModel.selectedSample)
+    }
+    ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction)
+    {
+      OpenInFinderButton()
+    }
+    
+    if #available(macOS 14.0, *) {
+      ToolbarItem(id: "rm2000.divider", placement: .primaryAction) {
+        HStack {
+          Divider()
+        }
+      }
+    }
+  }
+  
+  @ToolbarContentBuilder
+  func accessoryBarContent() -> some CustomizableToolbarContent {
+    ToolbarItem(id: "rm2000.playpause", placement: .favoritesBar) {
+      Button {
+        viewModel.slAudioPlayer.playPause()
+      } label: {
+        Image(
+          systemName: viewModel.slAudioPlayer.isPlaying
+          ? "pause.fill" : "play.fill")
+      }
+      .disabled(viewModel.selectedSample == nil)
+    }
+    ToolbarItem(id: "rm2000.duration", placement: .favoritesBar) {
+      if viewModel.slAudioPlayer.isPlaying {
+        let mins: Int = Int(viewModel.slAudioPlayer.currentTime) / 60
+        let secs: Int = Int(
+          viewModel.slAudioPlayer.currentTime - Double(mins * 60))
+        Text(String(format: "%d:%02d", mins, secs))
+      } else {
+        Text("0:00")
+          .disabled(viewModel.selectedSample == nil)
+      }
+    }
+    ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
+      Slider(
+        value: Binding(
+          get: { viewModel.currentTime },
+          set: { viewModel.slAudioPlayer.seekTo(time: $0) }
+        ),
+        in: 0...viewModel.slAudioPlayer.duration
+      )
+      .disabled(viewModel.selectedSample == nil)
+    }
+    
+    ToolbarItem(id: "rm2000.autoplay-toggle", placement: .favoritesBar) {
+      Toggle(
+        "Autoplay",
+        isOn: $viewModel.slAudioPlayer.isAutoplay
+      ).toggleStyle(.checkbox)
+    }
+
+  }
+  
+  @ToolbarContentBuilder
+  func inspectorToolbarContent() -> some CustomizableToolbarContent {
+    ToolbarItem(id: "rm2000.spacer") {
+      Spacer()
+    }
+    ToolbarItem(id: "rm2000.inspector.button") {
+      Button {
+        viewModel.showInspector.toggle()
+      } label: {
+        Label("Inspector", systemImage: "info.circle")
+          .foregroundStyle(.cyan)
       }
     }
   }

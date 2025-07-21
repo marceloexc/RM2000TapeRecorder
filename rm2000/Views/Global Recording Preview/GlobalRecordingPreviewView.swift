@@ -24,11 +24,13 @@ struct GlobalRecordingPreviewView: View {
               timeString(recordingState.elapsedTimeRecording)
             )
             .frame(maxWidth: 150, alignment: .leading)
+            .foregroundColor(Color("LCDTextColor"))
           } else {
             LCDTextBigWithGradientHUD("STBY")
               .frame(maxWidth: 150, alignment: .leading)
+              .foregroundColor(Color("LCDTextColor"))
           }
-
+            
           VUMeter()
             .mask(
               LinearGradient(
@@ -52,7 +54,7 @@ struct GlobalRecordingPreviewView: View {
         }
         Group {
           if showHintText {
-            LCDTextCaptionWithGradient("Press ⌘ + ⌥ + G to stop recording")
+            LCDTextCaption("Press ⌘ + ⌥ + G to stop recording")
               .transition(.blurReplace)
           }
         }

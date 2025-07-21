@@ -68,6 +68,17 @@ struct ImportSampleButton: View {
   }
 }
 
+struct ViewModeButton: View {
+  
+  @State private var selection: DetailViewType = .list
+  var body: some View {
+    Picker("View", selection: $selection) {
+      Label("Table", systemImage: "table").tag("table")
+      Label("List", systemImage: "list.bullet").tag("list")
+    }.pickerStyle(.segmented)
+  }
+}
+
 func toggleSidebar() {
   #if os(macOS)
     NSApp.keyWindow?.firstResponder?.tryToPerform(

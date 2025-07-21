@@ -104,6 +104,9 @@ struct SampleLibraryView: View {
     ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
       SidebarButton()
     }.customizationBehavior(.disabled)
+    ToolbarItem(id: "rm2000.view-options", placement: .primaryAction) {
+      ViewModeButton()
+    }
     ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
       ShareSampleButton(sampleItem: viewModel.selectedSample)
     }

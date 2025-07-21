@@ -101,13 +101,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
         .environmentObject(self.recordingState)
 
       let hostingView = NSHostingView(rootView: AnyView(contentView))
-      self.hudHostingView = hostingView
-
-      if let windowContentView = window.contentView {
-        hostingView.autoresizingMask = [.width, .height]
-        hostingView.frame = windowContentView.bounds
-        windowContentView.addSubview(hostingView)
-      }
+      window.contentView = hostingView
 
       if let screenSize = NSScreen.main?.visibleFrame.size {
         window.setFrameOrigin(

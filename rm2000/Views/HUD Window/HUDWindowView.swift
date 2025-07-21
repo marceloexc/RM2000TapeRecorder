@@ -17,45 +17,6 @@ class GlobalRecordingPreviewWindow: NSPanel {
     self.titlebarAppearsTransparent = false
     self.isMovableByWindowBackground = true
     self.hidesOnDeactivate = false
-    
-    // Create the visual effect view for blurred edges
-    let visualEffectView = NSVisualEffectView(frame: contentRect)
-    visualEffectView.blendingMode = .behindWindow
-    visualEffectView.material = .fullScreenUI
-    visualEffectView.state = .active
-    visualEffectView.wantsLayer = true
-    //		visualEffectView.layer?.opacity = 0.8
-    visualEffectView.layer?.masksToBounds = true
-
-    // This is the key part - create a mask that makes the center transparent
-    let maskLayer = CALayer()
-    maskLayer.frame = visualEffectView.bounds
-    maskLayer.backgroundColor = NSColor.black.cgColor
-
-    // Create a hole in the center
-    let centerRect = NSRect(
-      x: contentRect.width * 0.1,
-      y: contentRect.height * 0.1,
-      width: contentRect.width * 1,
-      height: contentRect.height * 1
-    )
-
-    let path = CGMutablePath()
-    path.addRect(visualEffectView.bounds)
-    path.addRoundedRect(
-      in: centerRect,
-      cornerWidth: 10,
-      cornerHeight: 10
-    )
-
-    let maskShapeLayer = CAShapeLayer()
-    maskShapeLayer.path = path
-    maskShapeLayer.fillRule = .evenOdd
-
-    maskLayer.mask = maskShapeLayer
-    visualEffectView.layer?.mask = maskLayer
-
-    self.contentView = visualEffectView
   }
 
   override var canBecomeKey: Bool {

@@ -45,7 +45,6 @@ class TapeRecorderState: ObservableObject, TapeRecorderDelegate {
 				// TODO - this is very hacky
 			}
 		}
-		Logger.sharedStreamState.info("showing edit sample sheet")
 	}
 	
 	private func startTimer() {

@@ -22,7 +22,6 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
 
   private var hudWindow: NSWindow?
   private var mainWindow: NSWindow?
-  private var whatsNewDrawer: NSDrawer?
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     AppState.shared.appDelegate = self
@@ -38,9 +37,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
     let mainWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
     Logger.appDelegate.info("'Show Main Window' called")
     // if window is already created, just show it, dont make another window
-    if let windowController = mainWindowController,
-      let window = windowController.window
-    {
+    if let windowController = mainWindowController, let window = windowController.window {
       Logger.appDelegate.info("Main Window already exists!")
       // If window is visible, just bring it to front
       if !window.isVisible || window.isMiniaturized {

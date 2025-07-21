@@ -6,6 +6,11 @@ enum DetailViewType: Hashable {
   case untagged
 }
 
+enum DetailViewMode: String {
+  case list
+  case table
+}
+
 struct DetailView: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
 
@@ -25,10 +30,10 @@ struct DetailView: View {
   }
 
   var body: some View {
-    Group {
+    ZStack {
       switch currentViewType {
       case .all:
-        RecordingsListView(viewModel: viewModel, viewType: .all)
+        RecordingsTableView(viewModel: viewModel, viewType: .all)
       case .tagged(let tagName):
         RecordingsListView(viewModel: viewModel, viewType: .tagged(tagName))
       case .untagged:

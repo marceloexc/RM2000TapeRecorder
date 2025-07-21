@@ -16,7 +16,7 @@ struct RecordingsListView: View {
   }
   
   var body: some View {
-    Group {
+    ZStack {
       if viewModel.finishedProcessing {
         List(filteredSamples, id: \.id, selection: $viewModel.detailSelection) {
           sample in

@@ -2,20 +2,22 @@ import AppKit
 import FluidGradient
 import SwiftUI
 
-class FloatingWindow: NSWindow {
+class GlobalRecordingPreviewWindow: NSPanel {
   init(contentRect: NSRect, backing: NSWindow.BackingStoreType = .buffered, defer flag: Bool = false) {
-    super.init( contentRect: contentRect, styleMask: [.titled], backing: backing, defer: flag)
+    super.init( contentRect: contentRect, styleMask: [.titled, .hudWindow], backing: backing, defer: flag)
 
-    // Window configuration
+    /// we're using an NSPanel, but really i just want the .hudWindow style mask.
+    /// so, we're gonna make it behave like an NSWindow
     self.isOpaque = false
     self.backgroundColor = .clear
     self.level = .floating
     self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
     self.hasShadow = true
     self.title = "Recording..."
-    self.titlebarAppearsTransparent = true
+    self.titlebarAppearsTransparent = false
     self.isMovableByWindowBackground = true
-
+    self.hidesOnDeactivate = false
+    
     // Create the visual effect view for blurred edges
     let visualEffectView = NSVisualEffectView(frame: contentRect)
     visualEffectView.blendingMode = .behindWindow
@@ -24,8 +26,6 @@ class FloatingWindow: NSWindow {
     visualEffectView.wantsLayer = true
     //		visualEffectView.layer?.opacity = 0.8
     visualEffectView.layer?.masksToBounds = true
-
-    visualEffectView.maskImage = maskImage(cornerRadius: 20.0)
 
     // This is the key part - create a mask that makes the center transparent
     let maskLayer = CALayer()
@@ -61,24 +61,9 @@ class FloatingWindow: NSWindow {
   override var canBecomeKey: Bool {
     return true
   }
-
-  // https://eon.codes/blog/2016/01/23/Chromeless-window/
-  private func maskImage(cornerRadius: CGFloat) -> NSImage {
-    let edgeLength = 2.0 * cornerRadius + 1.0
-    let maskImage = NSImage(
-      size: NSSize(width: edgeLength, height: edgeLength), flipped: false
-    ) { rect in
-      let bezierPath = NSBezierPath(
-        roundedRect: rect, xRadius: cornerRadius, yRadius: cornerRadius)
-      NSColor.black.set()
-      bezierPath.fill()
-      return true
-    }
-    maskImage.capInsets = NSEdgeInsets(
-      top: cornerRadius, left: cornerRadius, bottom: cornerRadius,
-      right: cornerRadius)
-    maskImage.resizingMode = .stretch
-    return maskImage
+  
+  override var canBecomeMain: Bool {
+    return true
   }
 }
 

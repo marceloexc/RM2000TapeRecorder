@@ -89,7 +89,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
 
-      let window = FloatingWindow(
+      let window = GlobalRecordingPreviewWindow(
         contentRect: NSRect(x: 0, y: 0, width: 400, height: 250),
         backing: .buffered,
         defer: false

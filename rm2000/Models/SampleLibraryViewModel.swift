@@ -12,8 +12,9 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var samples: [Sample] = []
   @Published var indexedTags: [String] = []
   @Published var finishedProcessing: Bool = false
-  @Published var sidebarSelection: SidebarSelection?
-  @Published var detailSelection: SampleListItemModel.ID?
+  @Published var sidebarSelection: SampleFilterPredicate = .all
+  @Published var predicateSelection: SampleListItemModel.ID?
+  @Published var detailViewSelection: DetailViewType?
   @Published var showInspector: Bool = false
   @Published var slAudioPlayer = SLAudioPlayer()
   @Published var currentTime: Double = 0
@@ -22,7 +23,7 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var allTokens: [SampleTagToken] = []
 
   var selectedSample: Sample? {
-    return matchToSample(id: detailSelection)
+    return matchToSample(id: predicateSelection)
   }
 
   var suggestedSearchTokens: [SampleTagToken] {
@@ -82,7 +83,7 @@ class SampleLibraryViewModel: ObservableObject {
     }
 
     // Watch for changes in selection and update audio player
-    $detailSelection
+    $predicateSelection
       .sink { [weak self] newSelection in
         guard let self = self else { return }
         if let sample = self.matchToSample(id: newSelection) {
@@ -154,8 +155,9 @@ extension SampleListItemModel: Transferable {
   static var transferRepresentation: some TransferRepresentation {
     FileRepresentation(exportedContentType: .audio) { fileRepresentable in
       // when dragging from app to finder
-						Logger().debug("SentTransferredFile from \(fileRepresentable.file.fileURL)")
-						return SentTransferredFile(fileRepresentable.file.fileURL)
+      Logger().debug(
+        "SentTransferredFile from \(fileRepresentable.file.fileURL)")
+      return SentTransferredFile(fileRepresentable.file.fileURL)
     }
     // without this, finder wont recognize our dropped item
     ProxyRepresentation { fileRepresentable in fileRepresentable.file.fileURL }

@@ -2,10 +2,10 @@ import SwiftUI
 
 struct RecordingsListView: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
-  let viewType: DetailViewType
+  let predicate: SampleFilterPredicate
   
   private var filteredSamples: [Sample] {
-    switch viewType {
+    switch predicate {
     case .all:
       return viewModel.filteredSamples
     case .tagged(let tagName):
@@ -18,7 +18,7 @@ struct RecordingsListView: View {
   var body: some View {
     ZStack {
       if viewModel.finishedProcessing {
-        List(filteredSamples, id: \.id, selection: $viewModel.detailSelection) {
+        List(filteredSamples, id: \.id, selection: $viewModel.predicateSelection) {
           sample in
           let itemModel = SampleListItemModel(file: sample)
           SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
@@ -66,7 +66,7 @@ struct SampleIndividualListItem: View {
           .foregroundColor(.secondary)
         
         Button {
-          viewModel.detailSelection = sample.id
+          viewModel.predicateSelection = sample.id
           viewModel.showInspector = true
         } label: {
           Image(systemName: "info.circle")

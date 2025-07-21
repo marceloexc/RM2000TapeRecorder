@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RecordingsTableView: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
-  let viewType: DetailViewType
+  let viewType: SampleFilterPredicate
   
   private var filteredSamples: [Sample] {
     switch viewType {

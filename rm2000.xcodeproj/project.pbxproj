@@ -340,7 +340,6 @@
 			children = (
 				EB57F35B2E2ED57B006A5D94 /* Detail Views */,
 				EB12BCA12DC813C00011B7FF /* Audio Player */,
-				EBA122502DC722FD00E603D3 /* Toolbar Buttons */,
 				EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */,
 				EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */,
 				EB8313F12D4DCDD600B343FF /* SidebarView.swift */,
@@ -359,13 +358,6 @@
 				EB11B44B2DF77D9B00B4F7CC /* InstrumentSerif-Regular.ttf */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		EBA122502DC722FD00E603D3 /* Toolbar Buttons */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Toolbar Buttons";
 			sourceTree = "<group>";
 		};
 		EBA5E5792D77976D00D415DB /* Frameworks */ = {

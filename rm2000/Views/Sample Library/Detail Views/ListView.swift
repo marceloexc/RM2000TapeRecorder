@@ -1,47 +1,9 @@
 import SwiftUI
 
-enum DetailViewType: Hashable {
-  case all
-  case tagged(String)
-  case untagged
-}
-
-struct DetailView: View {
-  @ObservedObject var viewModel: SampleLibraryViewModel
-
-  private var currentViewType: DetailViewType {
-    guard let selection = viewModel.sidebarSelection else {
-      return .all
-    }
-
-    switch selection {
-    case .allRecordings:
-      return .all
-    case .untaggedRecordings:
-      return .untagged
-    case .tag(let tagName):
-      return .tagged(tagName)
-    }
-  }
-
-  var body: some View {
-    Group {
-      switch currentViewType {
-      case .all:
-        RecordingsListView(viewModel: viewModel, viewType: .all)
-      case .tagged(let tagName):
-        RecordingsListView(viewModel: viewModel, viewType: .tagged(tagName))
-      case .untagged:
-        RecordingsListView(viewModel: viewModel, viewType: .untagged)
-      }
-    }
-  }
-}
-
-private struct RecordingsListView: View {
+struct RecordingsListView: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
   let viewType: DetailViewType
-
+  
   private var filteredSamples: [Sample] {
     switch viewType {
     case .all:
@@ -52,7 +14,7 @@ private struct RecordingsListView: View {
       return viewModel.samples.filter { $0.tags.isEmpty }
     }
   }
-
+  
   var body: some View {
     Group {
       if viewModel.finishedProcessing {
@@ -73,7 +35,7 @@ struct SampleIndividualListItem: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
   @Environment(\.openWindow) var openWindow
   var sample: SampleListItemModel
-
+  
   var body: some View {
     HStack {
       VStack(alignment: .leading, spacing: 4) {
@@ -89,12 +51,12 @@ struct SampleIndividualListItem: View {
           }
         }
       }
-
+      
       Spacer()
-
+      
       StaticWaveformView(fileURL: sample.file.fileURL)
         .frame(maxWidth: 200, maxHeight: 20)
-
+      
       Spacer()
       HStack {
         // show extension of the sample
@@ -102,7 +64,7 @@ struct SampleIndividualListItem: View {
           .font(.system(.caption, design: .monospaced))
           .fontWeight(.semibold)
           .foregroundColor(.secondary)
-
+        
         Button {
           viewModel.detailSelection = sample.id
           viewModel.showInspector = true
@@ -140,17 +102,12 @@ struct SampleIndividualListItem: View {
       Button("Show in Enclosing Folder") {
         NSWorkspace.shared.activateFileViewerSelecting([sample.file.fileURL])
       }
-			
-			Divider()
-			
-			Button("Move to Trash") {
-				try! FileManager.default.trashItem(at: sample.file.fileURL, resultingItemURL: nil)
-			}
+      
+      Divider()
+      
+      Button("Move to Trash") {
+        try! FileManager.default.trashItem(at: sample.file.fileURL, resultingItemURL: nil)
+      }
     }
   }
-}
-
-#Preview {
-  SampleLibraryView()
-    .environmentObject(SampleStorage.shared)
 }

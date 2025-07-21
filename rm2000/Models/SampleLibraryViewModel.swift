@@ -14,7 +14,6 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var finishedProcessing: Bool = false
   @Published var sidebarSelection: SampleFilterPredicate = .all
   @Published var predicateSelection: SampleListItemModel.ID?
-  @Published var detailViewSelection: DetailViewType?
   @Published var showInspector: Bool = false
   @Published var slAudioPlayer = SLAudioPlayer()
   @Published var currentTime: Double = 0

@@ -14,11 +14,16 @@ struct DetailView: View {
   }
 
   
-  var currentView: DetailViewType = .list
+  @Binding var currentView: DetailViewType
 
   var body: some View {
     ZStack {
-      RecordingsListView(viewModel: viewModel, predicate: currentFilter)
+      switch currentView {
+      case .list:
+        RecordingsListView(viewModel: viewModel, predicate: currentFilter)
+      case .table:
+        RecordingsTableView(viewModel: viewModel, viewType: currentFilter)
+      }
     }
   }
 }

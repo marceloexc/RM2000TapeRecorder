@@ -70,11 +70,11 @@ struct ImportSampleButton: View {
 
 struct ViewModeButton: View {
   
-  @State private var selection: DetailViewType = .list
+  @Binding var selection: DetailViewType
   var body: some View {
     Picker("View", selection: $selection) {
-      Label("Table", systemImage: "table").tag("table")
-      Label("List", systemImage: "list.bullet").tag("list")
+      Label("Table", systemImage: "table").tag(DetailViewType.table)
+      Label("List", systemImage: "list.bullet").tag(DetailViewType.list)
     }.pickerStyle(.segmented)
   }
 }

@@ -11,7 +11,7 @@ struct SampleLibraryView: View {
   @StateObject private var viewModel: SampleLibraryViewModel
   @Environment(\.openURL) private var openURL
   @Environment(\.controlActiveState) private var controlActiveState
-  @State private var selection = "Apple"
+  @State var detailViewType: DetailViewType = .list
 
   init() {
     _viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
@@ -28,7 +28,7 @@ struct SampleLibraryView: View {
           .navigationSplitViewColumnWidth(min: 200, ideal: 200, max: 300)
       }
     } detail: {
-      DetailView(viewModel: viewModel)
+      DetailView(viewModel: viewModel, currentView: $detailViewType)
         .navigationSplitViewColumnWidth(min: 500, ideal: 500)
     }
     .toolbar(id: "rm2000.main-toolbar", content: mainToolbarContent)
@@ -105,7 +105,7 @@ struct SampleLibraryView: View {
       SidebarButton()
     }.customizationBehavior(.disabled)
     ToolbarItem(id: "rm2000.view-options", placement: .primaryAction) {
-      ViewModeButton()
+      ViewModeButton(selection: $detailViewType)
     }
     ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
       ShareSampleButton(sampleItem: viewModel.selectedSample)

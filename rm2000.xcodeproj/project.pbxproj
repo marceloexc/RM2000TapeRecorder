@@ -33,6 +33,7 @@
 		EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */ = {isa = PBXBuildFile; productRef = EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */; };
 		EB4776572DCAA6DD00B6D553 /* SwiftDirectoryWatcher in Embed Frameworks */ = {isa = PBXBuildFile; productRef = EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		EB516E3F2CB75BD100A1C1E6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = EB516E3E2CB75BD100A1C1E6 /* README.md */; };
+		EB57F35A2E2DDC13006A5D94 /* GlobalRecordingPreviewWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB57F3592E2DDC13006A5D94 /* GlobalRecordingPreviewWindow.swift */; };
 		EB5BB4382DD6590800DFAA33 /* SampleLibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */; };
 		EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */ = {isa = PBXBuildFile; productRef = EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */; };
 		EB5C8FCC2D99DBDD00C4C3C2 /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */; };
@@ -76,7 +77,7 @@
 		EBCA8F8F2D7A952D0041B03B /* Credits.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = EBCA8F8E2D7A952D0041B03B /* Credits.rtfd */; };
 		EBCB69112DF25B7600C30088 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = EBCB69102DF25B7600C30088 /* Products.storekit */; };
 		EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF5FEB2CEAD8950047405A /* TitleBar.swift */; };
-		EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */; };
+		EBD114F32DCBFE8D003ABBB9 /* GlobalRecordingPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD114F12DCBFE8D003ABBB9 /* GlobalRecordingPreviewView.swift */; };
 		EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = EBD114F52DCBFEA5003ABBB9 /* FluidGradient */; };
 		EBDF782E2D80146E00941981 /* Tachyo.otf in Resources */ = {isa = PBXBuildFile; fileRef = EBDF782D2D80146E00941981 /* Tachyo.otf */; };
 		EBE4E9482C43244D00397EF2 /* RM2000 Tape Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE4E9472C43244D00397EF2 /* RM2000 Tape Recorder.swift */; };
@@ -128,6 +129,7 @@
 		EB467BD72D920D2C007E19E8 /* LCDScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCDScreenView.swift; sourceTree = "<group>"; };
 		EB516E3D2CB75BC300A1C1E6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		EB516E3E2CB75BD100A1C1E6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		EB57F3592E2DDC13006A5D94 /* GlobalRecordingPreviewWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalRecordingPreviewWindow.swift; sourceTree = "<group>"; };
 		EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SampleLibraryViewModel.swift; sourceTree = "<group>"; tabWidth = 1; usesTabs = 1; wrapsLines = 1; };
 		EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encoder.swift; sourceTree = "<group>"; };
 		EB6065182C850A300017CB33 /* TapeRecorderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeRecorderState.swift; sourceTree = "<group>"; };
@@ -169,7 +171,7 @@
 		EBCA8F8E2D7A952D0041B03B /* Credits.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; path = Credits.rtfd; sourceTree = "<group>"; };
 		EBCB69102DF25B7600C30088 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 		EBCF5FEB2CEAD8950047405A /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; usesTabs = 0; };
-		EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDWindowView.swift; sourceTree = "<group>"; };
+		EBD114F12DCBFE8D003ABBB9 /* GlobalRecordingPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalRecordingPreviewView.swift; sourceTree = "<group>"; };
 		EBDF782D2D80146E00941981 /* Tachyo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tachyo.otf; sourceTree = "<group>"; };
 		EBDF782F2D8016A700941981 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RM2000 Tape Recorder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,7 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				EB90E5A22DB192D30067194C /* UserNotifications.swift */,
-				EBD114F22DCBFE8D003ABBB9 /* HUD Window */,
+				EBD114F22DCBFE8D003ABBB9 /* Global Recording Preview */,
 				EB467BD02D92087C007E19E8 /* Main Window */,
 				EB467BD12D9208B3007E19E8 /* Menu Bar */,
 				EB296DE52D653468008427DF /* Sample Editing */,
@@ -402,12 +404,13 @@
 			path = "Tape Mechanism";
 			sourceTree = "<group>";
 		};
-		EBD114F22DCBFE8D003ABBB9 /* HUD Window */ = {
+		EBD114F22DCBFE8D003ABBB9 /* Global Recording Preview */ = {
 			isa = PBXGroup;
 			children = (
-				EBD114F12DCBFE8D003ABBB9 /* HUDWindowView.swift */,
+				EB57F3592E2DDC13006A5D94 /* GlobalRecordingPreviewWindow.swift */,
+				EBD114F12DCBFE8D003ABBB9 /* GlobalRecordingPreviewView.swift */,
 			);
-			path = "HUD Window";
+			path = "Global Recording Preview";
 			sourceTree = "<group>";
 		};
 		EBE4E93B2C43244D00397EF2 = {
@@ -600,6 +603,7 @@
 				EBE4E94A2C43244D00397EF2 /* ContentView.swift in Sources */,
 				EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */,
 				EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */,
+				EB57F35A2E2DDC13006A5D94 /* GlobalRecordingPreviewWindow.swift in Sources */,
 				EBAF02632C8A132800520D44 /* Logging.swift in Sources */,
 				EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */,
 				EB467BD62D9209CA007E19E8 /* AppKitWindowManagerDelegate.swift in Sources */,
@@ -633,7 +637,7 @@
 				EBBBFE8F2CA2588A00E987B1 /* AudioManager.swift in Sources */,
 				EB11B44E2DF7C5B400B4F7CC /* RequestPermissionOnboardingView.swift in Sources */,
 				EBBBFE912CA2590100E987B1 /* Extensions.swift in Sources */,
-				EBD114F32DCBFE8D003ABBB9 /* HUDWindowView.swift in Sources */,
+				EBD114F32DCBFE8D003ABBB9 /* GlobalRecordingPreviewView.swift in Sources */,
 				EB32A24F2E144BE00082B7FD /* WhatsNewView.swift in Sources */,
 				EBA4165C2E171328007415CD /* Noise.metal in Sources */,
 				EB3DF85A2DDBFFC900198AAB /* CoreAudio.swift in Sources */,

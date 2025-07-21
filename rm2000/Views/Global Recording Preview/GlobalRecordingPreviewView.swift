@@ -1,34 +1,7 @@
-import AppKit
 import FluidGradient
 import SwiftUI
 
-class GlobalRecordingPreviewWindow: NSPanel {
-  init(contentRect: NSRect, backing: NSWindow.BackingStoreType = .buffered, defer flag: Bool = false) {
-    super.init( contentRect: contentRect, styleMask: [.titled, .hudWindow], backing: backing, defer: flag)
-
-    /// we're using an NSPanel, but really i just want the .hudWindow style mask.
-    /// so, we're gonna make it behave like an NSWindow
-    self.isOpaque = false
-    self.backgroundColor = .clear
-    self.level = .floating
-    self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-    self.hasShadow = true
-    self.title = "Recording..."
-    self.titlebarAppearsTransparent = false
-    self.isMovableByWindowBackground = true
-    self.hidesOnDeactivate = false
-  }
-
-  override var canBecomeKey: Bool {
-    return true
-  }
-  
-  override var canBecomeMain: Bool {
-    return true
-  }
-}
-
-struct FloatingGradientView: View {
+struct GlobalRecordingPreviewView: View {
   @EnvironmentObject private var recordingState: TapeRecorderState
   @State private var opacity: Double = 0.0
   @State private var isAnimating = true
@@ -106,6 +79,6 @@ struct FloatingGradientView: View {
 }
 
 #Preview {
-  FloatingGradientView()
+  GlobalRecordingPreviewView()
     .environmentObject(TapeRecorderState())
 }

@@ -97,7 +97,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
 
       window.isReleasedWhenClosed = false  // Keep window alive
 
-      let contentView = FloatingGradientView()
+      let contentView = GlobalRecordingPreviewView()
         .environmentObject(self.recordingState)
 
       let hostingView = NSHostingView(rootView: AnyView(contentView))

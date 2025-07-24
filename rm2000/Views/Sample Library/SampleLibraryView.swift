@@ -11,7 +11,7 @@ struct SampleLibraryView: View {
   @StateObject private var viewModel: SampleLibraryViewModel
   @Environment(\.openURL) private var openURL
   @Environment(\.controlActiveState) private var controlActiveState
-  @State var detailViewType: DetailViewType = .list
+  @AppStorage("detailViewType") var detailViewType: DetailViewType = .list
 
   init() {
     _viewModel = StateObject(wrappedValue: SampleLibraryViewModel())

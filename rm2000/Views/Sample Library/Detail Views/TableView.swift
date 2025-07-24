@@ -9,6 +9,7 @@ struct RecordingsTableView: View {
   
   // this binding makes us manually stop that
   @State private var isResizing: Bool = false
+  @State private var firstWindowAppearance: Bool = true
   let viewType: SampleFilterPredicate
   
   private var filteredSamples: [Sample] {
@@ -22,7 +23,8 @@ struct RecordingsTableView: View {
     }
   }
   
-    var body: some View {
+  var body: some View {
+    if viewModel.finishedProcessing {
       Table(filteredSamples) {
         TableColumn("Name", value: \.filename!)
         TableColumn("Title", value: \.title)
@@ -35,12 +37,22 @@ struct RecordingsTableView: View {
         }
       }
       .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResizeNotification)) { notification in
-        isResizing = true
+        if !firstWindowAppearance {
+          isResizing = true
+        }
+        firstWindowAppearance = false
+        
       }
       .onReceive(NotificationCenter.default.publisher(for: NSWindow.didEndLiveResizeNotification)) { notification in
         isResizing = false
       }
+      .onChange(of: isResizing) { oldValue, newValue in
+        print("isResizing changed: \(oldValue) -> \(newValue)")
+      }
+    } else {
+      ProgressView("Loading recordings...")
     }
+  }
 }
 
 #Preview {

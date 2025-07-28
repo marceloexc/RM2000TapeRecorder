@@ -10,7 +10,10 @@ struct RecordingsTableView: View {
   // this binding makes us manually stop that
   @State private var isResizing: Bool = false
   @State private var firstWindowAppearance: Bool = true
+  
   let viewType: SampleFilterPredicate
+  
+  @State private var sortedAndFilteredSamples: [Sample] = []
   
   private var filteredSamples: [Sample] {
     switch viewType {
@@ -23,32 +26,55 @@ struct RecordingsTableView: View {
     }
   }
   
+  @State private var sortOrder = [KeyPathComparator(\Sample.title)]
+  @SceneStorage("SampleLibraryTableConfig")
+  private var columnCustomization: TableColumnCustomization<Sample>
+  
+    
   var body: some View {
     if viewModel.finishedProcessing {
-      Table(filteredSamples) {
+      Table(sortedAndFilteredSamples, selection: $viewModel.predicateSelection, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
         TableColumn("Name", value: \.filename!)
+          .defaultVisibility(.hidden)
+          .customizationID("filename")
         TableColumn("Title", value: \.title)
+          .customizationID("title")
+
         TableColumn("Tags") { sample in
           Text(sample.tags.joined(separator: ", "))
         }
+        .customizationID("tags")
+        
+        // TODO - something is wrong with sample.metadata.fileFormat
+        TableColumn("Kind", value: \.fileURL.pathExtension)
+          .customizationID("kind")
+
         TableColumn("Waveform") { sample in
           StaticWaveformView(fileURL: sample.fileURL, isPaused: $isResizing)
             .frame(maxWidth: 200)
         }
+        .customizationID("waveform")
+        .disabledCustomizationBehavior(.resize)
       }
-      .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResizeNotification)) { notification in
-        if !firstWindowAppearance {
-          isResizing = true
-        }
-        firstWindowAppearance = false
-        
+      .onAppear {
+        sortedAndFilteredSamples = filteredSamples.sorted(using: sortOrder)
       }
-      .onReceive(NotificationCenter.default.publisher(for: NSWindow.didEndLiveResizeNotification)) { notification in
-        isResizing = false
-      }
-      .onChange(of: isResizing) { oldValue, newValue in
-        print("isResizing changed: \(oldValue) -> \(newValue)")
-      }
+      .onChange(of: sortOrder, { _, newSortOrder in
+        sortedAndFilteredSamples.sort(using: newSortOrder)
+      })
+//      .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResizeNotification)) { notification in
+//        if !firstWindowAppearance {
+//          isResizing = true
+//        }
+//        firstWindowAppearance = false
+//        
+//      }
+//      .onReceive(NotificationCenter.default.publisher(for: NSWindow.didEndLiveResizeNotification)) { notification in
+//        isResizing = false
+//      }
+//      .onChange(of: isResizing) { oldValue, newValue in
+//        print("isResizing changed: \(oldValue) -> \(newValue)")
+//      }
     } else {
       ProgressView("Loading recordings...")
     }

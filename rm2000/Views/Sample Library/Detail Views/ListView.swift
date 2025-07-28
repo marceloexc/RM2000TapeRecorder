@@ -20,7 +20,7 @@ struct RecordingsListView: View {
       if viewModel.finishedProcessing {
         List(filteredSamples, id: \.id, selection: $viewModel.predicateSelection) {
           sample in
-          let itemModel = SampleListItemModel(file: sample)
+          let itemModel = FileRepresentableItemModel(file: sample)
           SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
             .tag(sample.id)
         }
@@ -34,7 +34,7 @@ struct RecordingsListView: View {
 struct SampleIndividualListItem: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
   @Environment(\.openWindow) var openWindow
-  var sample: SampleListItemModel
+  var sample: FileRepresentableItemModel
   
   var body: some View {
     HStack {

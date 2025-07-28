@@ -13,7 +13,7 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var indexedTags: [String] = []
   @Published var finishedProcessing: Bool = false
   @Published var sidebarSelection: SampleFilterPredicate = .all
-  @Published var predicateSelection: SampleListItemModel.ID?
+  @Published var predicateSelection: FileRepresentableItemModel.ID?
   @Published var showInspector: Bool = false
   @Published var slAudioPlayer = SLAudioPlayer()
   @Published var currentTime: Double = 0
@@ -124,7 +124,7 @@ class SampleLibraryViewModel: ObservableObject {
   }
 }
 
-struct SampleListItemModel: Identifiable, Hashable {
+struct FileRepresentableItemModel: Identifiable, Hashable {
   var id: UUID
   var text: String
   var file: FileRepresentable
@@ -144,13 +144,13 @@ struct SampleListItemModel: Identifiable, Hashable {
     hasher.combine(id)
   }
 
-  static func == (lhs: SampleListItemModel, rhs: SampleListItemModel) -> Bool {
+  static func == (lhs: FileRepresentableItemModel, rhs: FileRepresentableItemModel) -> Bool {
     return lhs.id == rhs.id
   }
 }
 
 // necessary extension for draggable objects in sample library window
-extension SampleListItemModel: Transferable {
+extension FileRepresentableItemModel: Transferable {
   static var transferRepresentation: some TransferRepresentation {
     FileRepresentation(exportedContentType: .audio) { fileRepresentable in
       // when dragging from app to finder

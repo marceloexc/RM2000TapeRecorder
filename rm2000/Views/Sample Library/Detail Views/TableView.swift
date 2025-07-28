@@ -56,25 +56,17 @@ struct RecordingsTableView: View {
         .customizationID("waveform")
         .disabledCustomizationBehavior(.resize)
       }
+      .contextMenu {
+        Button("Print") {
+          print(viewModel.selectedSample)
+        }
+      }
       .onAppear {
         sortedAndFilteredSamples = filteredSamples.sorted(using: sortOrder)
       }
       .onChange(of: sortOrder, { _, newSortOrder in
         sortedAndFilteredSamples.sort(using: newSortOrder)
       })
-//      .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResizeNotification)) { notification in
-//        if !firstWindowAppearance {
-//          isResizing = true
-//        }
-//        firstWindowAppearance = false
-//        
-//      }
-//      .onReceive(NotificationCenter.default.publisher(for: NSWindow.didEndLiveResizeNotification)) { notification in
-//        isResizing = false
-//      }
-//      .onChange(of: isResizing) { oldValue, newValue in
-//        print("isResizing changed: \(oldValue) -> \(newValue)")
-//      }
     } else {
       ProgressView("Loading recordings...")
     }

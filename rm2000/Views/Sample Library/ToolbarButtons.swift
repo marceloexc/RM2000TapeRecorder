@@ -28,36 +28,23 @@ struct OpenInFinderButton: View {
 }
 
 struct ShareSampleButton: View {
-  var selectedItems: [FileRepresentable]?
-
-  private var shareURL: [URL] {
-    if selectedItems?.count == 1 {
-      return [selectedItems?.first!.fileURL ?? Bundle.main.bundleURL]
-    } else if let selectedItems = selectedItems {
-      return selectedItems.compactMap(\.fileURL)
-    }
-    return []
+  var selectedItems: [FileRepresentableItemModel]?
+  
+  private var validURLs: [URL] {
+    selectedItems?.compactMap { $0.file.fileURL } ?? []
   }
-
-  private var shareTitle: String {
-    return "Sample"
-  }
-
+  
   var body: some View {
-    ShareLink(items: shareURL)
-//    ShareLink(
-//      item: shareURL,
-//      preview: SharePreview(
-//        shareTitle,
-//        icon: Image(
-//          nsImage: NSWorkspace.shared.icon(forFile: shareURL.description))
-//      )
-//    ) {
-//      Label("Share", systemImage: "square.and.arrow.up")
-//    }
-//    .disabled(selectedItems == nil)
-//    .help(
-//      selectedItems != nil ? "Share \(selectedItems!.count) files" : "No sample selected")
+    ShareLink(
+      items: validURLs,
+      subject: Text("Samples"),
+      message: Text("Sharing \(validURLs.count) samples")) { item in
+      SharePreview(item.lastPathComponent, icon: Image(nsImage: NSWorkspace.shared.icon(forFile: item.path)))
+    } label: {
+      Label("Share", systemImage: "square.and.arrow.up")
+    }
+    .disabled(validURLs.isEmpty)
+    .help(validURLs.isEmpty ? "No sample selected" : "Share \(validURLs.count) file(s)")
   }
 }
 

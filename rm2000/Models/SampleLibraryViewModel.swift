@@ -21,7 +21,7 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var currentSearchTokens = [SampleTagToken]()
   @Published var allTokens: [SampleTagToken] = []
 
-  var selectedSamples: [Sample] {
+  var selectedSamples: [FileRepresentable] {
     samples.filter( { self.predicateSelection.contains($0.id) } )
   }
 

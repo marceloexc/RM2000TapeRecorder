@@ -30,35 +30,39 @@ struct RecordingsTableView: View {
   @SceneStorage("SampleLibraryTableConfig")
   private var columnCustomization: TableColumnCustomization<Sample>
   
+  var table: some View {
+    Table(sortedAndFilteredSamples, selection: $viewModel.predicateSelection, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
+      TableColumn("Name", value: \.filename!)
+        .defaultVisibility(.hidden)
+        .customizationID("filename")
+      TableColumn("Title", value: \.title)
+        .customizationID("title")
+      
+      TableColumn("Tags") { sample in
+        Text(sample.tags.joined(separator: ", "))
+      }
+      .customizationID("tags")
+      
+      // TODO - something is wrong with sample.metadata.fileFormat
+      TableColumn("Kind", value: \.fileURL.pathExtension)
+        .customizationID("kind")
+      
+      TableColumn("Waveform") { sample in
+        StaticWaveformView(fileURL: sample.fileURL, isPaused: $isResizing)
+        
+      }
+      .customizationID("waveform")
+      .disabledCustomizationBehavior(.resize)
+    }
+  }
+  
     
   var body: some View {
     if viewModel.finishedProcessing {
-      Table(sortedAndFilteredSamples, selection: $viewModel.predicateSelection, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
-        TableColumn("Name", value: \.filename!)
-          .defaultVisibility(.hidden)
-          .customizationID("filename")
-        TableColumn("Title", value: \.title)
-          .customizationID("title")
-
-        TableColumn("Tags") { sample in
-          Text(sample.tags.joined(separator: ", "))
-        }
-        .customizationID("tags")
-        
-        // TODO - something is wrong with sample.metadata.fileFormat
-        TableColumn("Kind", value: \.fileURL.pathExtension)
-          .customizationID("kind")
-
-        TableColumn("Waveform") { sample in
-          StaticWaveformView(fileURL: sample.fileURL, isPaused: $isResizing)
-            .frame(maxWidth: 200)
-        }
-        .customizationID("waveform")
-        .disabledCustomizationBehavior(.resize)
-      }
+      table
       .contextMenu {
         Button("Print") {
-          print(viewModel.selectedSample)
+          print(viewModel.selectedSamples)
         }
       }
       .onAppear {

@@ -13,7 +13,7 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var indexedTags: [String] = []
   @Published var finishedProcessing: Bool = false
   @Published var sidebarSelection: SampleFilterPredicate = .all
-  @Published var predicateSelection: FileRepresentableItemModel.ID?
+  @Published var predicateSelection = Set<UUID>()
   @Published var showInspector: Bool = false
   @Published var slAudioPlayer = SLAudioPlayer()
   @Published var currentTime: Double = 0
@@ -21,8 +21,8 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var currentSearchTokens = [SampleTagToken]()
   @Published var allTokens: [SampleTagToken] = []
 
-  var selectedSample: Sample? {
-    return matchToSample(id: predicateSelection)
+  var selectedSamples: [Sample] {
+    samples.filter( { self.predicateSelection.contains($0.id) } )
   }
 
   var suggestedSearchTokens: [SampleTagToken] {
@@ -85,6 +85,7 @@ class SampleLibraryViewModel: ObservableObject {
     $predicateSelection
       .sink { [weak self] newSelection in
         guard let self = self else { return }
+        guard self.predicateSelection.count == 1 else { self.slAudioPlayer.forcePause(); return }
         if let sample = self.matchToSample(id: newSelection) {
           self.slAudioPlayer.loadAudio(from: sample.fileURL)
           if self.slAudioPlayer.isAutoplay {
@@ -117,10 +118,9 @@ class SampleLibraryViewModel: ObservableObject {
 
   }
 
-  private func matchToSample(id: UUID?) -> Sample? {
-    // match uuid from detailSelection to its according sample object
-    guard let id = id else { return nil }
-    return samples.first { $0.id == id }
+  private func matchToSample(id: Set<UUID>?) -> Sample? {
+    guard id != nil else { return nil }
+    return samples.first(where: { $0.id == id?.first })
   }
 }
 

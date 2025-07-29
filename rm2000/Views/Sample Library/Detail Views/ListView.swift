@@ -66,7 +66,7 @@ struct SampleIndividualListItem: View {
           .foregroundColor(.secondary)
         
         Button {
-          viewModel.predicateSelection = sample.id
+//          viewModel.predicateSelection = sample.id
           viewModel.showInspector = true
         } label: {
           Image(systemName: "info.circle")

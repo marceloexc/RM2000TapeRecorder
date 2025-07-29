@@ -108,7 +108,7 @@ struct SampleLibraryView: View {
       ViewModeButton(selection: $detailViewType)
     }
     ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
-      ShareSampleButton(sampleItem: viewModel.selectedSample)
+      ShareSampleButton(selectedItems: viewModel.selectedSamples)
     }
     ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction)
     {
@@ -134,7 +134,7 @@ struct SampleLibraryView: View {
           systemName: viewModel.slAudioPlayer.isPlaying
           ? "pause.fill" : "play.fill")
       }
-      .disabled(viewModel.selectedSample == nil)
+      .disabled(viewModel.selectedSamples == nil)
     }
     ToolbarItem(id: "rm2000.duration", placement: .favoritesBar) {
       if viewModel.slAudioPlayer.isPlaying {
@@ -144,7 +144,7 @@ struct SampleLibraryView: View {
         Text(String(format: "%d:%02d", mins, secs))
       } else {
         Text("0:00")
-          .disabled(viewModel.selectedSample == nil)
+          .disabled(viewModel.selectedSamples == nil)
       }
     }
     ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
@@ -155,7 +155,7 @@ struct SampleLibraryView: View {
         ),
         in: 0...viewModel.slAudioPlayer.duration
       )
-      .disabled(viewModel.selectedSample == nil)
+      .disabled(viewModel.selectedSamples == nil)
     }
     
     ToolbarItem(id: "rm2000.autoplay-toggle", placement: .favoritesBar) {

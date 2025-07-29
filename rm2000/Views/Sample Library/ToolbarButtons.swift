@@ -28,30 +28,36 @@ struct OpenInFinderButton: View {
 }
 
 struct ShareSampleButton: View {
-  var sampleItem: Sample?
+  var selectedItems: [FileRepresentable]?
 
-  private var shareURL: URL {
-    sampleItem?.fileURL ?? Bundle.main.bundleURL
+  private var shareURL: [URL] {
+    if selectedItems?.count == 1 {
+      return [selectedItems?.first!.fileURL ?? Bundle.main.bundleURL]
+    } else if let selectedItems = selectedItems {
+      return selectedItems.compactMap(\.fileURL)
+    }
+    return []
   }
 
   private var shareTitle: String {
-    sampleItem?.filename ?? "No Sample Selected"
+    return "Sample"
   }
 
   var body: some View {
-    ShareLink(
-      item: shareURL,
-      preview: SharePreview(
-        shareTitle,
-        icon: Image(
-          nsImage: NSWorkspace.shared.icon(forFile: shareURL.description))
-      )
-    ) {
-      Label("Share", systemImage: "square.and.arrow.up")
-    }
-    .disabled(sampleItem == nil)
-    .help(
-      sampleItem != nil ? "Share \(sampleItem!.title)" : "No sample selected")
+    ShareLink(items: shareURL)
+//    ShareLink(
+//      item: shareURL,
+//      preview: SharePreview(
+//        shareTitle,
+//        icon: Image(
+//          nsImage: NSWorkspace.shared.icon(forFile: shareURL.description))
+//      )
+//    ) {
+//      Label("Share", systemImage: "square.and.arrow.up")
+//    }
+//    .disabled(selectedItems == nil)
+//    .help(
+//      selectedItems != nil ? "Share \(selectedItems!.count) files" : "No sample selected")
   }
 }
 

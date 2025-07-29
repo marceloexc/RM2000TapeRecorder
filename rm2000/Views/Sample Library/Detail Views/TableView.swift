@@ -26,12 +26,15 @@ struct RecordingsTableView: View {
     }
   }
   
-  @State private var sortOrder = [KeyPathComparator(\Sample.title)]
+  @State private var sortOrder = [
+    KeyPathComparator(\Sample.title)
+  ]
+  
   @SceneStorage("SampleLibraryTableConfig")
   private var columnCustomization: TableColumnCustomization<Sample>
   
   var table: some View {
-    Table(sortedAndFilteredSamples, selection: $viewModel.predicateSelection, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
+    Table(selection: $viewModel.predicateSelection, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
       TableColumn("Name", value: \.filename!)
         .defaultVisibility(.hidden)
         .customizationID("filename")
@@ -49,10 +52,29 @@ struct RecordingsTableView: View {
       
       TableColumn("Waveform") { sample in
         StaticWaveformView(fileURL: sample.fileURL, isPaused: $isResizing)
-        
       }
       .customizationID("waveform")
       .disabledCustomizationBehavior(.resize)
+    } rows: {
+      ForEach(sortedAndFilteredSamples) { sample in
+        TableRow(sample)
+          .contextMenu {
+            if viewModel.selectedSamples.count > 1 {
+              Button("Open \(viewModel.selectedSamples.count) files") {
+                for file in viewModel.selectedSamples {
+                  NSWorkspace.shared.open(file.fileURL)
+                }
+              }
+            } else {
+              Button("Open") {
+                NSWorkspace.shared.open(viewModel.selectedSamples.first!.fileURL)
+              }
+            }
+            Button("Print") {
+              print(viewModel.selectedSamples)
+            }
+          }
+      }
     }
   }
   
@@ -60,11 +82,6 @@ struct RecordingsTableView: View {
   var body: some View {
     if viewModel.finishedProcessing {
       table
-      .contextMenu {
-        Button("Print") {
-          print(viewModel.selectedSamples)
-        }
-      }
       .onAppear {
         sortedAndFilteredSamples = filteredSamples.sorted(using: sortOrder)
       }

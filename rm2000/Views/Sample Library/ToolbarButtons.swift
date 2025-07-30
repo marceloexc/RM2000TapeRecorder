@@ -3,8 +3,8 @@ import SwiftUI
 struct SidebarButton: View {
   var body: some View {
     Button(action: toggleSidebar) {
-      Label("Sidebar", systemImage: "sidebar.leading")
-        .foregroundStyle(.teal)
+      Label("Sidebar", systemImage: "rectangle.leftthird.inset.filled")
+        .foregroundStyle(Color.accentColor)
     }
   }
 }
@@ -14,14 +14,8 @@ struct OpenInFinderButton: View {
     Button(action: {
       NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
     }) {
-      Label {
-        Text("Open in Finder")
-      } icon: {
-        Image("SmallHappyFolder")
-        .resizable()
-        .scaledToFit()
-        //					.frame(width: 20, height: 20)
-      }
+      Label("Reveal Folder", systemImage: "folder.badge.person.crop")
+        .foregroundStyle(.teal)
     }
     .help("Open in Finder")
   }
@@ -41,7 +35,15 @@ struct ShareSampleButton: View {
       message: Text("Sharing \(validURLs.count) samples")) { item in
       SharePreview(item.lastPathComponent, icon: Image(nsImage: NSWorkspace.shared.icon(forFile: item.path)))
     } label: {
-      Label("Share", systemImage: "square.and.arrow.up")
+      if validURLs.isEmpty {
+        Label("Share", systemImage: "square.and.arrow.up")
+//          .fontWeight(.semibold)
+      }
+      else {
+        Label("Share", image: "share_file")
+          .foregroundStyle(.orange)
+          .fontWeight(.semibold)
+      }
     }
     .disabled(validURLs.isEmpty)
     .help(validURLs.isEmpty ? "No sample selected" : "Share \(validURLs.count) file(s)")
@@ -66,8 +68,10 @@ struct ViewModeButton: View {
   @Binding var selection: DetailViewType
   var body: some View {
     Picker("View", selection: $selection) {
-      Label("Table", systemImage: "table").tag(DetailViewType.table)
-      Label("List", systemImage: "list.bullet").tag(DetailViewType.list)
+      Label("Table", systemImage: "rectangle.split.3x1")
+        .tag(DetailViewType.table)
+      Label("List", systemImage: "list.bullet")
+        .tag(DetailViewType.list)
     }.pickerStyle(.segmented)
   }
 }

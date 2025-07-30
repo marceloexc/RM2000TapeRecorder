@@ -104,9 +104,6 @@ struct SampleLibraryView: View {
     ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
       SidebarButton()
     }.customizationBehavior(.disabled)
-    ToolbarItem(id: "rm2000.view-options", placement: .primaryAction) {
-      ViewModeButton(selection: $detailViewType)
-    }
     ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
       ShareSampleButton(selectedItems: viewModel.selectedSamples.map { FileRepresentableItemModel(file: $0.self) } )
     }
@@ -114,13 +111,8 @@ struct SampleLibraryView: View {
     {
       OpenInFinderButton()
     }
-    
-    if #available(macOS 14.0, *) {
-      ToolbarItem(id: "rm2000.divider", placement: .primaryAction) {
-        HStack {
-          Divider()
-        }
-      }
+    ToolbarItem(id: "rm2000.view-options", placement: .primaryAction) {
+      ViewModeButton(selection: $detailViewType)
     }
   }
   
@@ -169,14 +161,11 @@ struct SampleLibraryView: View {
   
   @ToolbarContentBuilder
   func inspectorToolbarContent() -> some CustomizableToolbarContent {
-    ToolbarItem(id: "rm2000.spacer") {
-      Spacer()
-    }
-    ToolbarItem(id: "rm2000.inspector.button") {
+    ToolbarItem(id: "rm2000.inspector.button", placement: .destructiveAction) {
       Button {
         viewModel.showInspector.toggle()
       } label: {
-        Label("Inspector", systemImage: "info.circle")
+        Label("Inspector", systemImage: "info.circle.fill")
           .foregroundStyle(.cyan)
       }
     }

@@ -13,24 +13,23 @@ struct RecordingsTableView: View {
   
   let viewType: SampleFilterPredicate
   
-  @State private var sortedAndFilteredSamples: [FileRepresentableItemModel] = []
-  
-  private var filteredSamples: [FileRepresentableItemModel] {
+  private var sortedFilteredSamples: [FileRepresentableItemModel] {
+    let filtered: [FileRepresentableItemModel]
     
-    let tableItemsAsFileRepresentable = viewModel.filteredSamples
-      .map { FileRepresentableItemModel(file: $0) }
     switch viewType {
     case .all:
-      return tableItemsAsFileRepresentable
+      filtered = viewModel.filteredSamples.map { FileRepresentableItemModel(file: $0) }
     case .tagged(let tagName):
-      return viewModel.samples
+      filtered = viewModel.samples
         .filter { $0.tags.contains(tagName) }
         .map { FileRepresentableItemModel(file: $0) }
     case .untagged:
-      return viewModel.samples
+      filtered = viewModel.samples
         .filter { $0.tags.isEmpty }
         .map { FileRepresentableItemModel(file: $0) }
     }
+    
+    return filtered.sorted(using: sortOrder)
   }
   
   @State private var sortOrder = [
@@ -68,7 +67,7 @@ struct RecordingsTableView: View {
       .customizationID("waveform")
       .disabledCustomizationBehavior(.resize)
     } rows: {
-      ForEach(sortedAndFilteredSamples) { itemModel in
+      ForEach(sortedFilteredSamples) { itemModel in
         TableRow(itemModel)
           .draggable(itemModel)
           .contextMenu {
@@ -95,12 +94,6 @@ struct RecordingsTableView: View {
   var body: some View {
     if viewModel.finishedProcessing {
       table
-      .onAppear {
-        sortedAndFilteredSamples = filteredSamples.sorted(using: sortOrder)
-      }
-      .onChange(of: sortOrder, { _, newSortOrder in
-        sortedAndFilteredSamples.sort(using: newSortOrder)
-      })
     } else {
       ProgressView("Loading recordings...")
     }

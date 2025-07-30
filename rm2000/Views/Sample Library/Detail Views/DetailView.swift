@@ -22,7 +22,7 @@ struct DetailView: View {
       case .list:
         RecordingsListView(viewModel: viewModel, predicate: currentFilter)
       case .table:
-        RecordingsTableView(viewModel: viewModel, viewType: currentFilter)
+        RecordingsTableView(viewModel: viewModel, predicate: currentFilter)
       }
     }
   }

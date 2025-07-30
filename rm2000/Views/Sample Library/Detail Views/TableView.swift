@@ -2,21 +2,15 @@ import SwiftUI
 
 struct RecordingsTableView: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
-  
-  // the waveform package may crash the app when resizing because
-  // it doesn't know when to stop and just recomputes the waveform
-  // randomly.
-  
-  // this binding makes us manually stop that
-  @State private var isResizing: Bool = false
-  @State private var firstWindowAppearance: Bool = true
-  
-  let viewType: SampleFilterPredicate
-  
+  let predicate: SampleFilterPredicate
+
+  @SceneStorage("SampleLibraryTableConfig")
+  private var columnCustomization: TableColumnCustomization<FileRepresentableItemModel>
+    
   private var sortedFilteredSamples: [FileRepresentableItemModel] {
     let filtered: [FileRepresentableItemModel]
     
-    switch viewType {
+    switch predicate {
     case .all:
       filtered = viewModel.filteredSamples.map { FileRepresentableItemModel(file: $0) }
     case .tagged(let tagName):
@@ -36,9 +30,6 @@ struct RecordingsTableView: View {
     KeyPathComparator(\FileRepresentableItemModel.text)
   ]
   
-  @SceneStorage("SampleLibraryTableConfig")
-  private var columnCustomization: TableColumnCustomization<FileRepresentableItemModel>
-  
   var table: some View {
     Table(selection: $viewModel.predicateSelection, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
       TableColumn("Title", value: \.text)
@@ -53,7 +44,6 @@ struct RecordingsTableView: View {
       }
       .customizationID("tags")
       
-      // TODO - something is wrong with sample.metadata.fileFormat
       TableColumn("Kind", value: \.file.fileURL.pathExtension)
         .customizationID("kind")
       
@@ -62,7 +52,7 @@ struct RecordingsTableView: View {
         .customizationID("filename")
       
       TableColumn("Waveform") { itemModel in
-        StaticWaveformView(fileURL: itemModel.file.fileURL, isPaused: $isResizing)
+        StaticWaveformView(fileURL: itemModel.file.fileURL)
       }
       .customizationID("waveform")
       .disabledCustomizationBehavior(.resize)
@@ -101,6 +91,6 @@ struct RecordingsTableView: View {
 }
 
 #Preview {
-  RecordingsTableView(viewModel: SampleLibraryViewModel(), viewType: .all)
+  RecordingsTableView(viewModel: SampleLibraryViewModel(), predicate: .all)
     .frame(width:600, height: 700)
 }

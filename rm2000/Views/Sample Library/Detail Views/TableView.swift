@@ -13,51 +13,64 @@ struct RecordingsTableView: View {
   
   let viewType: SampleFilterPredicate
   
-  @State private var sortedAndFilteredSamples: [Sample] = []
+  @State private var sortedAndFilteredSamples: [FileRepresentableItemModel] = []
   
-  private var filteredSamples: [Sample] {
+  private var filteredSamples: [FileRepresentableItemModel] {
+    
+    let tableItemsAsFileRepresentable = viewModel.filteredSamples
+      .map { FileRepresentableItemModel(file: $0) }
     switch viewType {
     case .all:
-      return viewModel.filteredSamples
+      return tableItemsAsFileRepresentable
     case .tagged(let tagName):
-      return viewModel.samples.filter { $0.tags.contains(tagName) }
+      return viewModel.samples
+        .filter { $0.tags.contains(tagName) }
+        .map { FileRepresentableItemModel(file: $0) }
     case .untagged:
-      return viewModel.samples.filter { $0.tags.isEmpty }
+      return viewModel.samples
+        .filter { $0.tags.isEmpty }
+        .map { FileRepresentableItemModel(file: $0) }
     }
   }
   
   @State private var sortOrder = [
-    KeyPathComparator(\Sample.title)
+    KeyPathComparator(\FileRepresentableItemModel.text)
   ]
   
   @SceneStorage("SampleLibraryTableConfig")
-  private var columnCustomization: TableColumnCustomization<Sample>
+  private var columnCustomization: TableColumnCustomization<FileRepresentableItemModel>
   
   var table: some View {
     Table(selection: $viewModel.predicateSelection, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
-      TableColumn("Name", value: \.filename!)
+      TableColumn("Name", value: \.file.fileURL.lastPathComponent)
         .defaultVisibility(.hidden)
         .customizationID("filename")
-      TableColumn("Title", value: \.title)
+      TableColumn("Title", value: \.text)
         .customizationID("title")
       
-      TableColumn("Tags") { sample in
-        Text(sample.tags.joined(separator: ", "))
+      TableColumn("Tags") { itemModel in
+        if let sample = itemModel.file as? Sample {
+          Text(sample.tags.joined(separator: ", "))
+        } else {
+          Text("")
+        }
       }
       .customizationID("tags")
       
       // TODO - something is wrong with sample.metadata.fileFormat
-      TableColumn("Kind", value: \.fileURL.pathExtension)
+      TableColumn("Kind", value: \.file.fileURL.pathExtension)
         .customizationID("kind")
       
-      TableColumn("Waveform") { sample in
-        StaticWaveformView(fileURL: sample.fileURL, isPaused: $isResizing)
+      TableColumn("Waveform") { itemModel in
+        StaticWaveformView(fileURL: itemModel.file.fileURL, isPaused: $isResizing)
       }
       .customizationID("waveform")
       .disabledCustomizationBehavior(.resize)
     } rows: {
       ForEach(sortedAndFilteredSamples) { sample in
         TableRow(sample)
+      ForEach(sortedAndFilteredSamples) { itemModel in
+        TableRow(itemModel)
           .contextMenu {
             if viewModel.selectedSamples.count > 1 {
               Button("Open \(viewModel.selectedSamples.count) files") {
@@ -95,5 +108,6 @@ struct RecordingsTableView: View {
 }
 
 #Preview {
-//    RecordingsTableView()
+  RecordingsTableView(viewModel: SampleLibraryViewModel(), viewType: .all)
+    .frame(width:600, height: 700)
 }

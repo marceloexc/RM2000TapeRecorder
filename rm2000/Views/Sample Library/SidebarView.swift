@@ -1,9 +1,9 @@
 import SwiftUI
 
-enum SidebarSelection: Hashable {
-	case allRecordings
-	case untaggedRecordings
-	case tag(String)
+enum SampleFilterPredicate: Hashable {
+	case all
+	case untagged
+	case tagged(String)
 }
 
 struct SidebarView: View {
@@ -16,10 +16,10 @@ struct SidebarView: View {
 	var body: some View {
 		List(selection: $viewModel.sidebarSelection) {
 			Section(header: Text("Collections")) {
-				NavigationLink(value: SidebarSelection.allRecordings) {
+				NavigationLink(value: SampleFilterPredicate.all) {
 					Label("All Recordings", systemImage: "folder")
 				}
-				NavigationLink(value: SidebarSelection.untaggedRecordings) {
+				NavigationLink(value: SampleFilterPredicate.untagged) {
 					HStack {
 						Image("untagged")
 							.symbolRenderingMode(.palette)
@@ -31,7 +31,7 @@ struct SidebarView: View {
 			}
 			Section(header: Text("Available tags")) {
 				ForEach(viewModel.indexedTags, id: \.self) { tagName in
-					NavigationLink(value: SidebarSelection.tag(tagName)) {
+					NavigationLink(value: SampleFilterPredicate.tagged(tagName)) {
 						Label("\(tagName)", systemImage: "number")
 					}
 				}

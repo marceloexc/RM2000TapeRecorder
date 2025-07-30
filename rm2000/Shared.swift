@@ -72,9 +72,14 @@ extension Color {
 protocol FileRepresentable {
 	var fileURL: URL { get }
 	var id: UUID { get }
+  var title: String { get }
 }
 
-extension TemporaryActiveRecording: FileRepresentable { }
+extension TemporaryActiveRecording: FileRepresentable {
+  var title: String {
+    "Temporary Audio File"
+  }
+}
 extension Sample: FileRepresentable { }
 
 // i borrowed a lot of this from https://github.com/sindresorhus/Gifski/blob/main/Gifski/Utilities.swift

@@ -5,7 +5,7 @@ struct InspectorView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading, spacing: 0) {
-			if let sample = viewModel.selectedSample {
+      if let sample = viewModel.selectedSamples.first as! Sample? {
 				Form {
 					Section(header: Text("Metadata")) {
 						HStack {

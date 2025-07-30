@@ -28,30 +28,23 @@ struct OpenInFinderButton: View {
 }
 
 struct ShareSampleButton: View {
-  var sampleItem: Sample?
-
-  private var shareURL: URL {
-    sampleItem?.fileURL ?? Bundle.main.bundleURL
+  var selectedItems: [FileRepresentableItemModel]?
+  
+  private var validURLs: [URL] {
+    selectedItems?.compactMap { $0.file.fileURL } ?? []
   }
-
-  private var shareTitle: String {
-    sampleItem?.filename ?? "No Sample Selected"
-  }
-
+  
   var body: some View {
     ShareLink(
-      item: shareURL,
-      preview: SharePreview(
-        shareTitle,
-        icon: Image(
-          nsImage: NSWorkspace.shared.icon(forFile: shareURL.description))
-      )
-    ) {
+      items: validURLs,
+      subject: Text("Samples"),
+      message: Text("Sharing \(validURLs.count) samples")) { item in
+      SharePreview(item.lastPathComponent, icon: Image(nsImage: NSWorkspace.shared.icon(forFile: item.path)))
+    } label: {
       Label("Share", systemImage: "square.and.arrow.up")
     }
-    .disabled(sampleItem == nil)
-    .help(
-      sampleItem != nil ? "Share \(sampleItem!.title)" : "No sample selected")
+    .disabled(validURLs.isEmpty)
+    .help(validURLs.isEmpty ? "No sample selected" : "Share \(validURLs.count) file(s)")
   }
 }
 
@@ -65,6 +58,17 @@ struct ImportSampleButton: View {
         .foregroundStyle(.green)
     }
     .help("Import a Sample")
+  }
+}
+
+struct ViewModeButton: View {
+  
+  @Binding var selection: DetailViewType
+  var body: some View {
+    Picker("View", selection: $selection) {
+      Label("Table", systemImage: "table").tag(DetailViewType.table)
+      Label("List", systemImage: "list.bullet").tag(DetailViewType.list)
+    }.pickerStyle(.segmented)
   }
 }
 

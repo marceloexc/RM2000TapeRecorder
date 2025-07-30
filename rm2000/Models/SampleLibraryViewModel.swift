@@ -12,8 +12,8 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var samples: [Sample] = []
   @Published var indexedTags: [String] = []
   @Published var finishedProcessing: Bool = false
-  @Published var sidebarSelection: SidebarSelection?
-  @Published var detailSelection: SampleListItemModel.ID?
+  @Published var sidebarSelection: SampleFilterPredicate = .all
+  @Published var predicateSelection = Set<UUID>()
   @Published var showInspector: Bool = false
   @Published var slAudioPlayer = SLAudioPlayer()
   @Published var currentTime: Double = 0
@@ -21,8 +21,8 @@ class SampleLibraryViewModel: ObservableObject {
   @Published var currentSearchTokens = [SampleTagToken]()
   @Published var allTokens: [SampleTagToken] = []
 
-  var selectedSample: Sample? {
-    return matchToSample(id: detailSelection)
+  var selectedSamples: [FileRepresentable] {
+    samples.filter( { self.predicateSelection.contains($0.id) } )
   }
 
   var suggestedSearchTokens: [SampleTagToken] {
@@ -82,9 +82,10 @@ class SampleLibraryViewModel: ObservableObject {
     }
 
     // Watch for changes in selection and update audio player
-    $detailSelection
+    $predicateSelection
       .sink { [weak self] newSelection in
         guard let self = self else { return }
+        guard self.predicateSelection.count == 1 else { self.slAudioPlayer.forcePause(); return }
         if let sample = self.matchToSample(id: newSelection) {
           self.slAudioPlayer.loadAudio(from: sample.fileURL)
           if self.slAudioPlayer.isAutoplay {
@@ -117,14 +118,13 @@ class SampleLibraryViewModel: ObservableObject {
 
   }
 
-  private func matchToSample(id: UUID?) -> Sample? {
-    // match uuid from detailSelection to its according sample object
-    guard let id = id else { return nil }
-    return samples.first { $0.id == id }
+  private func matchToSample(id: Set<UUID>?) -> Sample? {
+    guard id != nil else { return nil }
+    return samples.first(where: { $0.id == id?.first })
   }
 }
 
-struct SampleListItemModel: Identifiable, Hashable {
+struct FileRepresentableItemModel: Identifiable, Hashable {
   var id: UUID
   var text: String
   var file: FileRepresentable
@@ -144,18 +144,19 @@ struct SampleListItemModel: Identifiable, Hashable {
     hasher.combine(id)
   }
 
-  static func == (lhs: SampleListItemModel, rhs: SampleListItemModel) -> Bool {
+  static func == (lhs: FileRepresentableItemModel, rhs: FileRepresentableItemModel) -> Bool {
     return lhs.id == rhs.id
   }
 }
 
 // necessary extension for draggable objects in sample library window
-extension SampleListItemModel: Transferable {
+extension FileRepresentableItemModel: Transferable {
   static var transferRepresentation: some TransferRepresentation {
-    FileRepresentation(exportedContentType: .audio) { fileRepresentable in
+    FileRepresentation(exportedContentType: .data) { fileRepresentable in
       // when dragging from app to finder
-						Logger().debug("SentTransferredFile from \(fileRepresentable.file.fileURL)")
-						return SentTransferredFile(fileRepresentable.file.fileURL)
+      Logger().debug(
+        "SentTransferredFile from \(fileRepresentable.file.fileURL)")
+      return SentTransferredFile(fileRepresentable.file.fileURL)
     }
     // without this, finder wont recognize our dropped item
     ProxyRepresentation { fileRepresentable in fileRepresentable.file.fileURL }

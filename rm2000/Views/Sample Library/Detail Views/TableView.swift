@@ -42,9 +42,6 @@ struct RecordingsTableView: View {
   
   var table: some View {
     Table(selection: $viewModel.predicateSelection, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
-      TableColumn("Name", value: \.file.fileURL.lastPathComponent)
-        .defaultVisibility(.hidden)
-        .customizationID("filename")
       TableColumn("Title", value: \.text)
         .customizationID("title")
       
@@ -61,16 +58,19 @@ struct RecordingsTableView: View {
       TableColumn("Kind", value: \.file.fileURL.pathExtension)
         .customizationID("kind")
       
+      TableColumn("Name", value: \.file.fileURL.lastPathComponent)
+        .defaultVisibility(.hidden)
+        .customizationID("filename")
+      
       TableColumn("Waveform") { itemModel in
         StaticWaveformView(fileURL: itemModel.file.fileURL, isPaused: $isResizing)
       }
       .customizationID("waveform")
       .disabledCustomizationBehavior(.resize)
     } rows: {
-      ForEach(sortedAndFilteredSamples) { sample in
-        TableRow(sample)
       ForEach(sortedAndFilteredSamples) { itemModel in
         TableRow(itemModel)
+          .draggable(itemModel)
           .contextMenu {
             if viewModel.selectedSamples.count > 1 {
               Button("Open \(viewModel.selectedSamples.count) files") {

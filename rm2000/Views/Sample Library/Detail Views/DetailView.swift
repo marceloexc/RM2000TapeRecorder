@@ -23,6 +23,9 @@ struct DetailView: View {
         RecordingsTableView(viewModel: viewModel, predicate: currentFilter)
       }
     }
+    .onChange(of: viewModel.sidebarSelection) { oldValue, newValue in
+      viewModel.predicateSelection = []
+    }
   }
 }
 

@@ -85,7 +85,6 @@ class SampleLibraryViewModel: ObservableObject {
     $predicateSelection
       .sink { [weak self] newSelection in
         guard let self = self else { return }
-        guard self.predicateSelection.count == 1 else { self.slAudioPlayer.forcePause(); return }
         if let sample = self.matchToSample(id: newSelection) {
           self.slAudioPlayer.loadAudio(from: sample.fileURL)
           if self.slAudioPlayer.isAutoplay {

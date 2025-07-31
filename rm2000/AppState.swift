@@ -124,7 +124,6 @@ import SwiftUI
 
       // pop up window so that user can start editing
       NSApp.requestUserAttention(.criticalRequest)
-      appDelegate?.showMainWindow()
     }
   }
 

@@ -22,7 +22,6 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
 
   private var hudWindow: NSWindow?
   private var mainWindow: NSWindow?
-  private var whatsNewDrawer: NSDrawer?
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     AppState.shared.appDelegate = self
@@ -38,9 +37,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
     let mainWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
     Logger.appDelegate.info("'Show Main Window' called")
     // if window is already created, just show it, dont make another window
-    if let windowController = mainWindowController,
-      let window = windowController.window
-    {
+    if let windowController = mainWindowController, let window = windowController.window {
       Logger.appDelegate.info("Main Window already exists!")
       // If window is visible, just bring it to front
       if !window.isVisible || window.isMiniaturized {
@@ -89,7 +86,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
 
-      let window = FloatingWindow(
+      let window = GlobalRecordingPreviewWindow(
         contentRect: NSRect(x: 0, y: 0, width: 400, height: 250),
         backing: .buffered,
         defer: false
@@ -97,17 +94,11 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
 
       window.isReleasedWhenClosed = false  // Keep window alive
 
-      let contentView = FloatingGradientView()
+      let contentView = GlobalRecordingPreviewView()
         .environmentObject(self.recordingState)
 
       let hostingView = NSHostingView(rootView: AnyView(contentView))
-      self.hudHostingView = hostingView
-
-      if let windowContentView = window.contentView {
-        hostingView.autoresizingMask = [.width, .height]
-        hostingView.frame = windowContentView.bounds
-        windowContentView.addSubview(hostingView)
-      }
+      window.contentView = hostingView
 
       if let screenSize = NSScreen.main?.visibleFrame.size {
         window.setFrameOrigin(

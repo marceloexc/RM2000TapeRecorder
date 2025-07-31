@@ -88,7 +88,7 @@ func setToolbarStyle() {
     if let window = NSApp.windows.first(where: { $0.isKeyWindow }),
       let toolbar = window.toolbar
     {
-      toolbar.displayMode = .iconAndLabel
+//      toolbar.displayMode = .iconAndLabel
       toolbar.allowsUserCustomization = true
       toolbar.autosavesConfiguration = true
     }

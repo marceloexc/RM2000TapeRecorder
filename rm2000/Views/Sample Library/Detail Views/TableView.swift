@@ -37,14 +37,23 @@ struct RecordingsTableView: View {
       
       TableColumn("Tags") { itemModel in
         if let sample = itemModel.file as? Sample {
-          Text(sample.tags.joined(separator: ", "))
+          HStack {
+            ForEach(Array(sample.tags), id: \.self) { tagName in
+              TagComponent(string: tagName)
+            }
+          }
         } else {
           Text("")
         }
       }
       .customizationID("tags")
       
-      TableColumn("Kind", value: \.file.fileURL.pathExtension)
+      TableColumn("Kind", value: \.file.fileURL.pathExtension) { itemModel in
+        Text(itemModel.file.fileURL.pathExtension.uppercased())
+          .font(.system(.caption, design: .monospaced))
+          .fontWeight(.semibold)
+          .foregroundColor(.secondary)
+      }
         .customizationID("kind")
       
       TableColumn("Name", value: \.file.fileURL.lastPathComponent)

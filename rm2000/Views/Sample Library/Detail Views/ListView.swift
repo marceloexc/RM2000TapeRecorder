@@ -1,49 +1,11 @@
 import SwiftUI
 
-enum DetailViewType: Hashable {
-  case all
-  case tagged(String)
-  case untagged
-}
-
-struct DetailView: View {
+struct RecordingsListView: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
-
-  private var currentViewType: DetailViewType {
-    guard let selection = viewModel.sidebarSelection else {
-      return .all
-    }
-
-    switch selection {
-    case .allRecordings:
-      return .all
-    case .untaggedRecordings:
-      return .untagged
-    case .tag(let tagName):
-      return .tagged(tagName)
-    }
-  }
-
-  var body: some View {
-    Group {
-      switch currentViewType {
-      case .all:
-        RecordingsListView(viewModel: viewModel, viewType: .all)
-      case .tagged(let tagName):
-        RecordingsListView(viewModel: viewModel, viewType: .tagged(tagName))
-      case .untagged:
-        RecordingsListView(viewModel: viewModel, viewType: .untagged)
-      }
-    }
-  }
-}
-
-private struct RecordingsListView: View {
-  @ObservedObject var viewModel: SampleLibraryViewModel
-  let viewType: DetailViewType
-
+  let predicate: SampleFilterPredicate
+  
   private var filteredSamples: [Sample] {
-    switch viewType {
+    switch predicate {
     case .all:
       return viewModel.filteredSamples
     case .tagged(let tagName):
@@ -52,13 +14,13 @@ private struct RecordingsListView: View {
       return viewModel.samples.filter { $0.tags.isEmpty }
     }
   }
-
+  
   var body: some View {
-    Group {
+    ZStack {
       if viewModel.finishedProcessing {
-        List(filteredSamples, id: \.id, selection: $viewModel.detailSelection) {
+        List(filteredSamples, id: \.id, selection: $viewModel.predicateSelection) {
           sample in
-          let itemModel = SampleListItemModel(file: sample)
+          let itemModel = FileRepresentableItemModel(file: sample)
           SampleIndividualListItem(viewModel: viewModel, sample: itemModel)
             .tag(sample.id)
         }
@@ -72,8 +34,8 @@ private struct RecordingsListView: View {
 struct SampleIndividualListItem: View {
   @ObservedObject var viewModel: SampleLibraryViewModel
   @Environment(\.openWindow) var openWindow
-  var sample: SampleListItemModel
-
+  var sample: FileRepresentableItemModel
+  
   var body: some View {
     HStack {
       VStack(alignment: .leading, spacing: 4) {
@@ -89,12 +51,12 @@ struct SampleIndividualListItem: View {
           }
         }
       }
-
+      
       Spacer()
-
+      
       StaticWaveformView(fileURL: sample.file.fileURL)
         .frame(maxWidth: 200, maxHeight: 20)
-
+      
       Spacer()
       HStack {
         // show extension of the sample
@@ -102,9 +64,9 @@ struct SampleIndividualListItem: View {
           .font(.system(.caption, design: .monospaced))
           .fontWeight(.semibold)
           .foregroundColor(.secondary)
-
+        
         Button {
-          viewModel.detailSelection = sample.id
+//          viewModel.predicateSelection = sample.id
           viewModel.showInspector = true
         } label: {
           Image(systemName: "info.circle")
@@ -122,35 +84,28 @@ struct SampleIndividualListItem: View {
         .shadow(radius: 2)
     }
     .contextMenu {
-      Button("Open") {
-        NSWorkspace.shared.open(sample.file.fileURL)
+      let urls = viewModel.selectedSamples.map { $0.fileURL }
+
+      Button(urls.count == 1 ? "Open" : "Open \(urls.count) files") {
+        ContextMenu.openInDefaultApp(urls: urls)
       }
-      
       Button("Copy to Clipboard") {
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.declareTypes([.fileURL], owner: nil)
-        let pasteboardItem = NSPasteboardItem()
-        
-        pasteboardItem.setData(sample.file.fileURL.dataRepresentation, forType: .fileURL)
-        
-        pasteboard.writeObjects([pasteboardItem])
+        ContextMenu.copyToClipboard(urls: urls)
+      }
+      Button("Show in Enclosing Folder") {
+        ContextMenu.revealFinder(urls: urls)
       }
       
-      Button("Show in Enclosing Folder") {
-        NSWorkspace.shared.activateFileViewerSelecting([sample.file.fileURL])
+      Divider()
+      
+      Button("Move to Trash") {
+        ContextMenu.moveToTrash(urls: urls)
       }
-			
-			Divider()
-			
-			Button("Move to Trash") {
-				try! FileManager.default.trashItem(at: sample.file.fileURL, resultingItemURL: nil)
-			}
     }
   }
 }
 
 #Preview {
-  SampleLibraryView()
-    .environmentObject(SampleStorage.shared)
+  RecordingsListView(viewModel: SampleLibraryViewModel(), predicate: .all)
+    .frame(width:600, height: 700)
 }

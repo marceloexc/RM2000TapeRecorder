@@ -54,11 +54,12 @@ struct GlobalRecordingPreviewView: View {
         }
         Group {
           if showHintText {
-            LCDTextCaption("Press ⌘ + ⌥ + G to stop recording")
+            Text("(Press ⌘ + ⌥ + G to stop recording)")
               .transition(.blurReplace)
           }
         }
         .font(Font.tasaFont)
+        .foregroundStyle(Color("LCDTextColor"))
         .animation(.easeInOut, value: showHintText)
       }
     }

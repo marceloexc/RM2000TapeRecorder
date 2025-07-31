@@ -2,12 +2,10 @@ import AppKit
 
 class GlobalRecordingPreviewWindow: NSPanel {
   init(contentRect: NSRect, backing: NSWindow.BackingStoreType = .buffered, defer flag: Bool = false) {
-    super.init( contentRect: contentRect, styleMask: [.titled, .hudWindow], backing: backing, defer: flag)
+    super.init( contentRect: contentRect, styleMask: [.titled, .utilityWindow, .hudWindow], backing: backing, defer: flag)
 
     /// we're using an NSPanel, but really i just want the .hudWindow style mask.
     /// so, we're gonna make it behave like an NSWindow
-    self.isOpaque = false
-    self.backgroundColor = .clear
     self.level = .floating
     self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
     self.hasShadow = true

@@ -84,30 +84,28 @@ struct SampleIndividualListItem: View {
         .shadow(radius: 2)
     }
     .contextMenu {
-      Button("Open") {
-        NSWorkspace.shared.open(sample.file.fileURL)
+      let urls = viewModel.selectedSamples.map { $0.fileURL }
+
+      Button(urls.count == 1 ? "Open" : "Open \(urls.count) files") {
+        ContextMenu.openInDefaultApp(urls: urls)
       }
-      
       Button("Copy to Clipboard") {
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.declareTypes([.fileURL], owner: nil)
-        let pasteboardItem = NSPasteboardItem()
-        
-        pasteboardItem.setData(sample.file.fileURL.dataRepresentation, forType: .fileURL)
-        
-        pasteboard.writeObjects([pasteboardItem])
+        ContextMenu.copyToClipboard(urls: urls)
       }
-      
       Button("Show in Enclosing Folder") {
-        NSWorkspace.shared.activateFileViewerSelecting([sample.file.fileURL])
+        ContextMenu.revealFinder(urls: urls)
       }
       
       Divider()
       
       Button("Move to Trash") {
-        try! FileManager.default.trashItem(at: sample.file.fileURL, resultingItemURL: nil)
+        ContextMenu.moveToTrash(urls: urls)
       }
     }
   }
+}
+
+#Preview {
+  RecordingsListView(viewModel: SampleLibraryViewModel(), predicate: .all)
+    .frame(width:600, height: 700)
 }

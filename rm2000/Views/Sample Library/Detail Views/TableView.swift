@@ -70,26 +70,28 @@ struct RecordingsTableView: View {
         TableRow(itemModel)
           .draggable(itemModel)
           .contextMenu {
-            if viewModel.selectedSamples.count > 1 {
-              Button("Open \(viewModel.selectedSamples.count) files") {
-                for file in viewModel.selectedSamples {
-                  NSWorkspace.shared.open(file.fileURL)
-                }
-              }
-            } else {
-              Button("Open") {
-                NSWorkspace.shared.open(viewModel.selectedSamples.first!.fileURL)
-              }
+            let urls = viewModel.selectedSamples.map { $0.fileURL }
+
+            Button(urls.count == 1 ? "Open" : "Open \(urls.count) files") {
+              ContextMenu.openInDefaultApp(urls: urls)
             }
-            Button("Print") {
-              print(viewModel.selectedSamples)
+            Button("Copy to Clipboard") {
+              ContextMenu.copyToClipboard(urls: urls)
+            }
+            Button("Show in Enclosing Folder") {
+              ContextMenu.revealFinder(urls: urls)
+            }
+            
+            Divider()
+            
+            Button("Move to Trash") {
+              ContextMenu.moveToTrash(urls: urls)
             }
           }
       }
     }
   }
   
-    
   var body: some View {
     if viewModel.finishedProcessing {
       table

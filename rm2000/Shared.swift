@@ -27,11 +27,26 @@ extension URL {
 		(try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
 	}
 	
-	// https://stackoverflow.com/a/56044623
-	var fileSize: Int? {
-		let value = try? resourceValues(forKeys: [.fileSizeKey])
-		return value?.fileSize
-	}
+  var attributes: [FileAttributeKey : Any]? {
+    do {
+      return try FileManager.default.attributesOfItem(atPath: path)
+    } catch let error as NSError {
+      print("FileAttribute error: \(error)")
+    }
+    return nil
+  }
+  
+  var fileSize: UInt64 {
+    return attributes?[.size] as? UInt64 ?? UInt64(0)
+  }
+  
+  var fileSizeString: String {
+    return ByteCountFormatter.string(fromByteCount: Int64(fileSize), countStyle: .file)
+  }
+  
+  var creationDate: Date? {
+    return attributes?[.creationDate] as? Date
+  }
   
   // https://stackoverflow.com/a/34746109/30724926
   var isHidden: Bool {
@@ -46,6 +61,128 @@ extension URL {
       } catch {
         print("isHidden error:", error)
       }
+    }
+  }
+}
+
+// https://stackoverflow.com/questions/38343186/write-extend-file-attributes-swift-example/38343753#38343753
+extension URL {
+  
+  /// Get extended attribute.
+  func extendedAttribute(forName name: String) throws -> Data  {
+    
+    let data = try self.withUnsafeFileSystemRepresentation { fileSystemPath -> Data in
+      
+      // Determine attribute size:
+      let length = getxattr(fileSystemPath, name, nil, 0, 0, 0)
+      guard length >= 0 else { throw URL.posixError(errno) }
+      
+      // Create buffer with required size:
+      var data = Data(count: length)
+      
+      // Retrieve attribute:
+      let result =  data.withUnsafeMutableBytes { [count = data.count] in
+        getxattr(fileSystemPath, name, $0.baseAddress, count, 0, 0)
+      }
+      guard result >= 0 else { throw URL.posixError(errno) }
+      return data
+    }
+    return data
+  }
+  
+  /// Set extended attribute.
+  func setExtendedAttribute(data: Data, forName name: String) throws {
+    
+    try self.withUnsafeFileSystemRepresentation { fileSystemPath in
+      let result = data.withUnsafeBytes {
+        setxattr(fileSystemPath, name, $0.baseAddress, data.count, 0, 0)
+      }
+      guard result >= 0 else { throw URL.posixError(errno) }
+    }
+  }
+  
+  /// Remove extended attribute.
+  func removeExtendedAttribute(forName name: String) throws {
+    
+    try self.withUnsafeFileSystemRepresentation { fileSystemPath in
+      let result = removexattr(fileSystemPath, name, 0)
+      guard result >= 0 else { throw URL.posixError(errno) }
+    }
+  }
+  
+  /// Get list of all extended attributes.
+  func listExtendedAttributes() throws -> [String] {
+    
+    let list = try self.withUnsafeFileSystemRepresentation { fileSystemPath -> [String] in
+      let length = listxattr(fileSystemPath, nil, 0, 0)
+      guard length >= 0 else { throw URL.posixError(errno) }
+      
+      // Create buffer with required size:
+      var namebuf = Array<CChar>(repeating: 0, count: length)
+      
+      // Retrieve attribute list:
+      let result = listxattr(fileSystemPath, &namebuf, namebuf.count, 0)
+      guard result >= 0 else { throw URL.posixError(errno) }
+      
+      // Extract attribute names:
+      let list = namebuf.split(separator: 0).compactMap {
+        $0.withUnsafeBufferPointer {
+          $0.withMemoryRebound(to: UInt8.self) {
+            String(bytes: $0, encoding: .utf8)
+          }
+        }
+      }
+      return list
+    }
+    return list
+  }
+  
+  /// Helper function to create an NSError from a Unix errno.
+  private static func posixError(_ err: Int32) -> NSError {
+    return NSError(domain: NSPOSIXErrorDomain, code: Int(err),
+                   userInfo: [NSLocalizedDescriptionKey: String(cString: strerror(err))])
+  }
+}
+
+// https://stackoverflow.com/a/39501096/30724926
+extension URL {
+  /// The time at which the resource was created.
+  /// This key corresponds to an Date value, or nil if the volume doesn't support creation dates.
+  /// A resource’s creationDateKey value should be less than or equal to the resource’s contentModificationDateKey and contentAccessDateKey values. Otherwise, the file system may change the creationDateKey to the lesser of those values.
+  var creation: Date? {
+    get {
+      return (try? resourceValues(forKeys: [.creationDateKey]))?.creationDate
+    }
+    set {
+      var resourceValues = URLResourceValues()
+      resourceValues.creationDate = newValue
+      try? setResourceValues(resourceValues)
+    }
+  }
+  /// The time at which the resource was most recently modified.
+  /// This key corresponds to an Date value, or nil if the volume doesn't support modification dates.
+  var contentModification: Date? {
+    get {
+      return (try? resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+    }
+    set {
+      var resourceValues = URLResourceValues()
+      resourceValues.contentModificationDate = newValue
+      try? setResourceValues(resourceValues)
+    }
+  }
+  /// The time at which the resource was most recently accessed.
+  /// This key corresponds to an Date value, or nil if the volume doesn't support access dates.
+  ///  When you set the contentAccessDateKey for a resource, also set contentModificationDateKey in the same call to the setResourceValues(_:) method. Otherwise, the file system may set the contentAccessDateKey value to the current contentModificationDateKey value.
+  var contentAccess: Date? {
+    get {
+      return (try? resourceValues(forKeys: [.contentAccessDateKey]))?.contentAccessDate
+    }
+    // Beginning in macOS 10.13, iOS 11, watchOS 4, tvOS 11, and later, contentAccessDateKey is read-write. Attempts to set a value for this file resource property on earlier systems are ignored.
+    set {
+      var resourceValues = URLResourceValues()
+      resourceValues.contentAccessDate = newValue
+      try? setResourceValues(resourceValues)
     }
   }
 }
@@ -166,85 +303,6 @@ extension NSLayoutConstraint {
 			multiplier: multiplier.flatMap(CGFloat.init) ?? self.multiplier,
 			constant: constant.flatMap(CGFloat.init) ?? self.constant
 		)
-	}
-}
-
-// https://stackoverflow.com/questions/38343186/write-extend-file-attributes-swift-example/38343753#38343753
-extension URL {
-
-	/// Get extended attribute.
-	func extendedAttribute(forName name: String) throws -> Data  {
-
-		let data = try self.withUnsafeFileSystemRepresentation { fileSystemPath -> Data in
-
-			// Determine attribute size:
-			let length = getxattr(fileSystemPath, name, nil, 0, 0, 0)
-			guard length >= 0 else { throw URL.posixError(errno) }
-
-			// Create buffer with required size:
-			var data = Data(count: length)
-
-			// Retrieve attribute:
-			let result =  data.withUnsafeMutableBytes { [count = data.count] in
-				getxattr(fileSystemPath, name, $0.baseAddress, count, 0, 0)
-			}
-			guard result >= 0 else { throw URL.posixError(errno) }
-			return data
-		}
-		return data
-	}
-
-	/// Set extended attribute.
-	func setExtendedAttribute(data: Data, forName name: String) throws {
-
-		try self.withUnsafeFileSystemRepresentation { fileSystemPath in
-			let result = data.withUnsafeBytes {
-				setxattr(fileSystemPath, name, $0.baseAddress, data.count, 0, 0)
-			}
-			guard result >= 0 else { throw URL.posixError(errno) }
-		}
-	}
-
-	/// Remove extended attribute.
-	func removeExtendedAttribute(forName name: String) throws {
-
-		try self.withUnsafeFileSystemRepresentation { fileSystemPath in
-			let result = removexattr(fileSystemPath, name, 0)
-			guard result >= 0 else { throw URL.posixError(errno) }
-		}
-	}
-
-	/// Get list of all extended attributes.
-	func listExtendedAttributes() throws -> [String] {
-
-		let list = try self.withUnsafeFileSystemRepresentation { fileSystemPath -> [String] in
-			let length = listxattr(fileSystemPath, nil, 0, 0)
-			guard length >= 0 else { throw URL.posixError(errno) }
-
-			// Create buffer with required size:
-			var namebuf = Array<CChar>(repeating: 0, count: length)
-
-			// Retrieve attribute list:
-			let result = listxattr(fileSystemPath, &namebuf, namebuf.count, 0)
-			guard result >= 0 else { throw URL.posixError(errno) }
-
-			// Extract attribute names:
-			let list = namebuf.split(separator: 0).compactMap {
-				$0.withUnsafeBufferPointer {
-					$0.withMemoryRebound(to: UInt8.self) {
-						String(bytes: $0, encoding: .utf8)
-					}
-				}
-			}
-			return list
-		}
-		return list
-	}
-
-	/// Helper function to create an NSError from a Unix errno.
-	private static func posixError(_ err: Int32) -> NSError {
-		return NSError(domain: NSPOSIXErrorDomain, code: Int(err),
-									 userInfo: [NSLocalizedDescriptionKey: String(cString: strerror(err))])
 	}
 }
 

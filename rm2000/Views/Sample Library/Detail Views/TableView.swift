@@ -55,10 +55,23 @@ struct RecordingsTableView: View {
           .foregroundColor(.secondary)
       }
         .customizationID("kind")
+        .defaultVisibility(.hidden)
       
       TableColumn("Name", value: \.file.fileURL.lastPathComponent)
         .defaultVisibility(.hidden)
         .customizationID("filename")
+      
+      TableColumn("Date", value:\.file.fileURL.creation!) { itemModel in
+        Text(itemModel.file.fileURL.creation!.formatted(date: .abbreviated, time: .shortened))
+          .foregroundColor(.secondary)
+      }
+      .customizationID("date")
+      
+      TableColumn("Size", value:\.file.fileURL.fileSize) {itemModel in
+        Text(itemModel.file.fileURL.fileSizeString)
+          .foregroundColor(.secondary)
+      }
+      .customizationID("id")
       
       TableColumn("Waveform") { itemModel in
         StaticWaveformView(fileURL: itemModel.file.fileURL)

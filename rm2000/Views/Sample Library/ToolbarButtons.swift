@@ -14,7 +14,7 @@ struct OpenInFinderButton: View {
     Button(action: {
       NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
     }) {
-      Label("Reveal Folder", systemImage: "folder.badge.person.crop")
+      Label("Reveal Folder", systemImage: "folder.badge.person.crop.fill")
         .foregroundStyle(.teal)
     }
     .help("Open in Finder")
@@ -36,13 +36,16 @@ struct ShareSampleButton: View {
       SharePreview(item.lastPathComponent, icon: Image(nsImage: NSWorkspace.shared.icon(forFile: item.path)))
     } label: {
       if validURLs.isEmpty {
-        Label("Share", systemImage: "square.and.arrow.up")
-//          .fontWeight(.semibold)
+        Label("Share", systemImage: "arrowshape.turn.up.left.fill")
+          .fontWeight(.semibold)
+          .scaleEffect(x: -1, y: 1) //flip
+
       }
       else {
-        Label("Share", image: "share_file")
+        Label("Share", systemImage:"arrowshape.turn.up.left.fill")
           .foregroundStyle(.orange)
           .fontWeight(.semibold)
+          .scaleEffect(x: -1, y: 1) //flip
       }
     }
     .disabled(validURLs.isEmpty)
@@ -55,7 +58,7 @@ struct ImportSampleButton: View {
     Button(action: {
       NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
     }) {
-      Label("Import", systemImage: "plus")
+      Label("Import", systemImage: "plus.circle.fill")
         //				.fontWeight(.black)
         .foregroundStyle(.green)
     }
@@ -68,9 +71,9 @@ struct ViewModeButton: View {
   @Binding var selection: DetailViewType
   var body: some View {
     Picker("View", selection: $selection) {
-      Label("Table", systemImage: "rectangle.split.3x1")
+      Label("Table", systemImage: "rectangle.split.3x1.fill")
         .tag(DetailViewType.table)
-      Label("List", systemImage: "list.bullet")
+      Label("List", systemImage: "list.bullet.rectangle.fill")
         .tag(DetailViewType.list)
     }.pickerStyle(.segmented)
   }

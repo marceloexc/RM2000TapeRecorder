@@ -107,6 +107,9 @@ struct SampleLibraryView: View {
     ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
       ShareSampleButton(selectedItems: viewModel.selectedSamples.map { FileRepresentableItemModel(file: $0.self) } )
     }
+//    ToolbarItem(id: "rm2000.import", placement: .primaryAction) {
+//      ImportSampleButton()
+//    }
     ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction)
     {
       OpenInFinderButton()

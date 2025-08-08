@@ -23,6 +23,14 @@ struct SampleLibraryView: View {
         SidebarView(viewModel: viewModel)
           .toolbar(removing: .sidebarToggle)
           .navigationSplitViewColumnWidth(min: 200, ideal: 200, max: 300)
+          .searchable(
+            text: $viewModel.searchText,
+            tokens: $viewModel.currentSearchTokens,
+            placement: .sidebar,
+            prompt: Text("Type to search")
+          ) { token in
+            Label("\(token.tag)", systemImage: "number")
+          }
       } else {
         SidebarView(viewModel: viewModel)
           .navigationSplitViewColumnWidth(min: 200, ideal: 200, max: 300)
@@ -74,15 +82,6 @@ struct SampleLibraryView: View {
           }
         }
       }
-    }
-    
-    .searchable(
-      text: $viewModel.searchText,
-      tokens: $viewModel.currentSearchTokens,
-      placement: .sidebar,
-      prompt: Text("Type to search")
-    ) { token in
-      Label("\(token.tag)", systemImage: "number")
     }
     .searchSuggestions {
       ForEach(viewModel.suggestedSearchTokens, id: \.self) { suggestion in

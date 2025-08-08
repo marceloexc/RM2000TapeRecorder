@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import OSLog
 import SwiftDirectoryWatcher
-import SwiftUICore
+import SwiftUI
 import UniformTypeIdentifiers
 
 @MainActor

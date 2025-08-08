@@ -35,9 +35,9 @@ struct SampleLibraryView: View {
     .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
     .inspector(isPresented: $viewModel.showInspector) {
       InspectorView(viewModel: viewModel)
-        .toolbar(id: "rm2000.inspector.toolbar", content: inspectorToolbarContent)
-        .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     }
+    .toolbar(id: "rm2000.inspector.toolbar", content: inspectorToolbarContent)
+    .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     .toolbarRole(.editor)
     .navigationTitle("Sample Library")
     .navigationSubtitle("\(viewModel.filteredSamples.count) Samples")

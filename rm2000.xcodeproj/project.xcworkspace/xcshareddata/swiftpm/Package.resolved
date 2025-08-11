@@ -1,5 +1,5 @@
 {
-  "originHash" : "bc0d71a37ca2e660c1d546b6354b77616a54f5dd2f9200bba327ba013467555d",
+  "originHash" : "35d42483c02b222c6dceeca86b38b05e03418f1917b2a844473e8e48aadb775b",
   "pins" : [
     {
       "identity" : "avfaudioextensions",
@@ -56,12 +56,12 @@
       }
     },
     {
-      "identity" : "dswaveformimage",
+      "identity" : "dswaveformimage-rm2000",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/dmrschmidt/DSWaveformImage",
+      "location" : "https://github.com/marceloexc/DSWaveformImage-RM2000",
       "state" : {
-        "revision" : "4c56578ee10128ee2b2c04c9c5aa73812de722db",
-        "version" : "14.2.2"
+        "branch" : "main",
+        "revision" : "ae082e780feb23266e4666b23ff10583076fae04"
       }
     },
     {

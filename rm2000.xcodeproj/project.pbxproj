@@ -16,8 +16,6 @@
 		EB11B4512DF7CCA900B4F7CC /* CompletedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB11B4502DF7CCA900B4F7CC /* CompletedOnboardingView.swift */; };
 		EB12BC962DC7FE6A0011B7FF /* TagComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */; };
 		EB12BC9B2DC808210011B7FF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC9A2DC808210011B7FF /* WaveformView.swift */; };
-		EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9D2DC808680011B7FF /* DSWaveformImage */; };
-		EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */; };
 		EB12BCA32DC813D30011B7FF /* SampleLibraryAutoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */; };
 		EB1565122D558F2100A3D339 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1565112D558F1F00A3D339 /* Sample.swift */; };
 		EB1A606A2DEA521E0067A4E3 /* PreviewFilenameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */; };
@@ -62,6 +60,8 @@
 		EBA1224F2DC722D200E603D3 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA1224E2DC722D200E603D3 /* InspectorView.swift */; };
 		EBA122522DC7230C00E603D3 /* ToolbarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */; };
 		EBA4165C2E171328007415CD /* Noise.metal in Sources */ = {isa = PBXBuildFile; fileRef = EBA4165B2E171328007415CD /* Noise.metal */; };
+		EBAAA3E12E4A951700BD1CF9 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = EBAAA3E02E4A951700BD1CF9 /* DSWaveformImage */; };
+		EBAAA3E32E4A951700BD1CF9 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = EBAAA3E22E4A951700BD1CF9 /* DSWaveformImageViews */; };
 		EBACB7D92DAB20E900160799 /* GeneralTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7D82DAB20E000160799 /* GeneralTabView.swift */; };
 		EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBACB7DA2DAB213E00160799 /* RecordingTabView.swift */; };
 		EBAF02632C8A132800520D44 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF02622C8A132800520D44 /* Logging.swift */; };
@@ -197,11 +197,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBAAA3E12E4A951700BD1CF9 /* DSWaveformImage in Frameworks */,
 				EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
-				EB12BCA02DC808680011B7FF /* DSWaveformImageViews in Frameworks */,
+				EBAAA3E32E4A951700BD1CF9 /* DSWaveformImageViews in Frameworks */,
 				EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */,
-				EB12BC9E2DC808680011B7FF /* DSWaveformImage in Frameworks */,
 				EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */,
 				EB9C7A032DEE4AFE009CDCA2 /* LaunchAtLogin in Frameworks */,
 				EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */,
@@ -524,12 +524,12 @@
 			packageProductDependencies = (
 				EBFCB1122D77988600A9A226 /* SettingsAccess */,
 				EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */,
-				EB12BC9D2DC808680011B7FF /* DSWaveformImage */,
-				EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */,
 				EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */,
 				EBD114F52DCBFEA5003ABBB9 /* FluidGradient */,
 				EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */,
 				EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */,
+				EBAAA3E02E4A951700BD1CF9 /* DSWaveformImage */,
+				EBAAA3E22E4A951700BD1CF9 /* DSWaveformImageViews */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -562,11 +562,11 @@
 			packageReferences = (
 				EBFCB1112D77988600A9A226 /* XCRemoteSwiftPackageReference "SettingsAccess" */,
 				EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
-				EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */,
 				EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */,
 				EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 				EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */,
 				EB9C7A012DEE4AFE009CDCA2 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
+				EBAAA3DF2E4A951700BD1CF9 /* XCRemoteSwiftPackageReference "DSWaveformImage-RM2000" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -893,14 +893,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dmrschmidt/DSWaveformImage";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 14.2.2;
-			};
-		};
 		EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/blackbeltlabs/SwiftDirectoryWatcher";
@@ -933,6 +925,14 @@
 				minimumVersion = 1.1.0;
 			};
 		};
+		EBAAA3DF2E4A951700BD1CF9 /* XCRemoteSwiftPackageReference "DSWaveformImage-RM2000" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marceloexc/DSWaveformImage-RM2000";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Cindori/FluidGradient";
@@ -952,16 +952,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		EB12BC9D2DC808680011B7FF /* DSWaveformImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */;
-			productName = DSWaveformImage;
-		};
-		EB12BC9F2DC808680011B7FF /* DSWaveformImageViews */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EB12BC9C2DC808680011B7FF /* XCRemoteSwiftPackageReference "DSWaveformImage" */;
-			productName = DSWaveformImageViews;
-		};
 		EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */;
@@ -981,6 +971,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB9C7A012DEE4AFE009CDCA2 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
 			productName = LaunchAtLogin;
+		};
+		EBAAA3E02E4A951700BD1CF9 /* DSWaveformImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAAA3DF2E4A951700BD1CF9 /* XCRemoteSwiftPackageReference "DSWaveformImage-RM2000" */;
+			productName = DSWaveformImage;
+		};
+		EBAAA3E22E4A951700BD1CF9 /* DSWaveformImageViews */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAAA3DF2E4A951700BD1CF9 /* XCRemoteSwiftPackageReference "DSWaveformImage-RM2000" */;
+			productName = DSWaveformImageViews;
 		};
 		EBD114F52DCBFEA5003ABBB9 /* FluidGradient */ = {
 			isa = XCSwiftPackageProductDependency;

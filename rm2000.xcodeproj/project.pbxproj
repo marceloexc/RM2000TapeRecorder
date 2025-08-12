@@ -429,8 +429,10 @@
 				EBA5E5792D77976D00D415DB /* Frameworks */,
 				EBE4E9452C43244D00397EF2 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
-			usesTabs = 1;
+			tabWidth = 1;
+			usesTabs = 0;
 		};
 		EBE4E9452C43244D00397EF2 /* Products */ = {
 			isa = PBXGroup;

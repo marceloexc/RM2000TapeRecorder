@@ -32,8 +32,8 @@ struct MenuBarView: View {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
               NSApp.requestUserAttention(.criticalRequest)
-
             }
+              appDelegate?.bringToFront()
           } else {
             recordingState.startRecording()
           }

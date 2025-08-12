@@ -2,6 +2,7 @@ import AppKit
 import KeyboardShortcuts
 import OSLog
 import SwiftUI
+import SettingsAccess
 
 class WindowController: NSWindowController {
   override func windowDidLoad() {
@@ -17,6 +18,8 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
   var mainWindowController: WindowController?
   let recordingState = TapeRecorderState.shared
   let storeKitManager = StoreManager.shared
+  let mainWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
+
   private var onboardingWindowController: NSWindowController?
   private var hudHostingView: NSHostingView<AnyView>?
 
@@ -34,19 +37,10 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
   }
 
   func showMainWindow() {
-    let mainWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
     Logger.appDelegate.info("'Show Main Window' called")
     // if window is already created, just show it, dont make another window
-    if let windowController = mainWindowController, let window = windowController.window {
-      Logger.appDelegate.info("Main Window already exists!")
-      // If window is visible, just bring it to front
-      if !window.isVisible || window.isMiniaturized {
-        window.deminiaturize(nil)
-        window.makeKeyAndOrderFront(nil)
-      } else {
-        // If window exists but isn't visible, it might be minimized - show it
-        window.makeKeyAndOrderFront(nil)
-      }
+    if let window = mainWindow, window.isVisible {
+      bringToFront()
       return
     }
 
@@ -64,18 +58,23 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
       .environmentObject(self.recordingState)
       .environmentObject(self.storeKitManager)
       .openSettingsAccess()
-
-    window.center()
-    window.contentView = NSHostingView(rootView: contentView)
-    window.delegate = self  // track window closure
-
-    window.isReleasedWhenClosed = false
-    window.identifier = mainWindowIdentifier
     
-    mainWindow = window
-    
-    mainWindowController = WindowController(window: window)
-    mainWindowController?.showWindow(nil)
+    self.mainWindow = window
+
+    self.mainWindow?.contentView = NSHostingView(rootView: contentView)
+    self.mainWindow?.delegate = self  // track window closure
+
+    self.mainWindow?.isReleasedWhenClosed = false
+    self.mainWindow?.identifier = mainWindowIdentifier
+    self.mainWindowController = WindowController(window: window)
+    self.mainWindowController?.window?.center()
+    self.mainWindowController?.showWindow(nil)
+  }
+  
+  func bringToFront() {
+    self.mainWindow?.deminiaturize(nil)
+    self.mainWindow?.makeKeyAndOrderFront(nil)
+    NSApp.activate(ignoringOtherApps: true)
   }
 
   func showHUDWindow() {
@@ -126,6 +125,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
         }
       }
     }
+    bringToFront()
   }
 
   @MainActor private func showOnboardingWindow() {
@@ -173,5 +173,17 @@ extension AppKitWindowManagerDelegate {
     {
       mainWindowController = nil
     }
+  }
+  
+  func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+    if !flag {
+        for window in sender.windows {
+          if window.identifier == mainWindowIdentifier {
+            window.makeKeyAndOrderFront(self)
+          }
+        }
+    }
+
+    return true
   }
 }

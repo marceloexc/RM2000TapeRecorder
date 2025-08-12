@@ -28,6 +28,8 @@ import SwiftUI
     }
   }
   
+  @AppStorage("confirm_on_quit") var confirmOnQuit: Bool = false
+  
   @AppStorage("sample_directory") var sampleDirectoryPath: String = ""
   @AppStorage("sample_directory_bookmark") private var sampleDirectoryBookmark:
     Data?

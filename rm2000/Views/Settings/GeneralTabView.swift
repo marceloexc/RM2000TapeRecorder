@@ -6,7 +6,8 @@ import SwiftUI
 struct GeneralTabView: View {
   @Environment(\.openURL) private var openURL
   @State private var isDockHidden: Bool = AppState.shared.hideDockIcon
-
+  @State private var isConfirmOnQuit: Bool = AppState.shared.hideDockIcon
+  
   var body: some View {
     VStack {
       GroupBox {
@@ -23,6 +24,16 @@ struct GeneralTabView: View {
                 AppState.shared.hideDockIcon = newValue
               }
           } footer: {
+              //
+          }
+          
+          Section {
+            Toggle(isOn: $isConfirmOnQuit) {
+              Text("Warn Before Quitting (⌘Q)")
+            }.toggleStyle(.switch)
+              .onChange(of: isConfirmOnQuit) { _, newValue in
+                AppState.shared.confirmOnQuit = newValue
+              }
           }
 
           KeyboardShortcuts.Recorder(

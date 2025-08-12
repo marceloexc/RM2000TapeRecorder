@@ -9,16 +9,17 @@ class WindowController: NSWindowController {
   }
 }
 
-class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
-  NSWindowDelegate
-{
-
-  @Published var willTerminate = false
+class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+  
   var mainWindowController: WindowController?
   let recordingState = TapeRecorderState.shared
   let storeKitManager = StoreManager.shared
   private var onboardingWindowController: NSWindowController?
   private var hudHostingView: NSHostingView<AnyView>?
+  @MainActor private var confirmOnQuit: Bool {
+    AppState.shared.confirmOnQuit
+  }
+  @Published private var willTerminate = false
 
   private var hudWindow: NSWindow?
   private var mainWindow: NSWindow?
@@ -144,6 +145,42 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate,
     onboardingWindowController = NSWindowController(window: window)
     onboardingWindowController?.showWindow(nil)
     window.center()
+  }
+  
+  func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+    if confirmOnQuit {
+      self.willTerminate = true
+      self.promptQuitConfirmation()
+      return .terminateLater
+    }
+    return .terminateNow
+  }
+  
+  /// dont close (user canceled)
+  func `continue`() {
+    NSApplication.shared.reply(toApplicationShouldTerminate: false)
+  }
+  /// close
+  func close() {
+    NSApplication.shared.reply(toApplicationShouldTerminate: true)
+  }
+  
+  func promptQuitConfirmation() {
+    let alert = NSAlert()
+    alert.messageText = "Really Quit?"
+    alert.informativeText = "You will not be able to use your Global Recording Hotkey to record."
+    alert.alertStyle = .critical
+    alert.addButton(withTitle: "Yes")
+    alert.addButton(withTitle: "No")
+    
+    DispatchQueue.main.async {
+      let response = alert.runModal()
+      if response == .alertFirstButtonReturn {
+        self.close()
+      } else {
+        self.continue()
+      }
+    }
   }
 
   /*

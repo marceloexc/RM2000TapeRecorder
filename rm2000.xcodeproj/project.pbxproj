@@ -222,7 +222,6 @@
 		EB1565102D558F0700A3D339 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */,
 				EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */,
 				EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */,
 				EB8642652DA7587600D4883B /* SampleEditConfiguration.swift */,
@@ -348,6 +347,7 @@
 				EBA1224E2DC722D200E603D3 /* InspectorView.swift */,
 				EB12BC952DC7FE6A0011B7FF /* TagComponent.swift */,
 				EB12BC9A2DC808210011B7FF /* WaveformView.swift */,
+				EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */,
 			);
 			path = "Sample Library";
 			sourceTree = "<group>";

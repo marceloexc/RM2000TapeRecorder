@@ -96,12 +96,15 @@ struct SampleLibraryView: View {
         isAudioPlaying = $0
     }
     .onReceive(
-      NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
-      // window is closed, stop audio playback
-      if viewModel.slAudioPlayer.isPlaying {
-        viewModel.slAudioPlayer.forcePause()
+      NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
+        // window is closed, stop audio playback
+        if let window = newValue.object as? NSWindow {
+          let thisWindowIdentifier = NSUserInterfaceItemIdentifier("recordings-window")
+          if window.identifier == thisWindowIdentifier {
+            viewModel.slAudioPlayer.forcePause()
+          }
+        }
       }
-    }
 //      .debugCompute()
   }
   

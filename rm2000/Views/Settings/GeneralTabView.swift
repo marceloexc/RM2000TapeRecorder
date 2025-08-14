@@ -6,7 +6,7 @@ import SwiftUI
 struct GeneralTabView: View {
   @Environment(\.openURL) private var openURL
   @State private var isDockHidden: Bool = AppState.shared.hideDockIcon
-  @State private var isConfirmOnQuit: Bool = AppState.shared.hideDockIcon
+  @State private var isConfirmOnQuit: Bool = AppState.shared.confirmOnQuit
   
   var body: some View {
     VStack {

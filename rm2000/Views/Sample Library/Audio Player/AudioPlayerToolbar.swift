@@ -44,6 +44,11 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
         isOn: $player.isAutoplay
       ).toggleStyle(.switch)
     }
+    
+    ToolbarItem(id: "rm2000.repeat-toggle", placement: .favoritesBar) {
+      Toggle(isOn: $player.isRepeat) {
+        Label("Repeat", systemImage: "repeat")
+      }
     }
 
   }

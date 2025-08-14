@@ -15,6 +15,7 @@ class SLAudioPlayer: ObservableObject {
 	@Published var currentTime: Double = 0
 	@Published var duration: Double = 1
 	@AppStorage("sl_autoplay") var isAutoplay: Bool = false
+  @AppStorage("sl_repeat") var isRepeat = false
 	
 	private var timeObserver: Any?
 	private var timer: AnyCancellable?
@@ -41,28 +42,44 @@ class SLAudioPlayer: ObservableObject {
 			self.duration = duration
 		}
 		
+    playerItem.preferredForwardBufferDuration = 2
 		// Add time observer
-		timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.05, preferredTimescale: 600), queue: .main) { [weak self] time in
+		timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01, preferredTimescale: 600), queue: .main) { [weak self] time in
 			guard let self = self else { return }
 			let currentSeconds = CMTimeGetSeconds(time)
 			if currentSeconds.isFinite {
 				self.currentTime = currentSeconds
-				// Force object to update, which will refresh dependent views
-//				self.objectWillChange.send()
 			}
 		}
-		
-		// Listen for when the item finishes playing
-		NotificationCenter.default.addObserver(
-			forName: .AVPlayerItemDidPlayToEndTime,
-			object: player?.currentItem,
-			queue: .main) { [weak self] _ in
-				self?.isPlaying = false
-				self?.player?.seek(to: CMTime.zero)
-				self?.currentTime = 0
-				self?.objectWillChange.send()
-			}
+    
+    if isRepeat {
+      self.player!.actionAtItemEnd = .none
+      NotificationCenter.default.addObserver(
+          self,
+          selector: #selector(rewindAudio),
+          name: .AVPlayerItemDidPlayToEndTime,
+          object: player?.currentItem
+     )
+    }
+    else {
+      self.player!.actionAtItemEnd = .pause
+      // Listen for when the item finishes playing
+      NotificationCenter.default.addObserver(
+        forName: .AVPlayerItemDidPlayToEndTime,
+        object: player?.currentItem,
+        queue: .main) { [weak self] _ in
+          guard let self = self else { return }
+            self.isPlaying = false
+            self.player?.seek(to: CMTime.zero)
+            self.currentTime = 0
+          self.objectWillChange.send()
+        }
+    }
 	}
+  
+  @objc private func rewindAudio() {
+    self.player!.seek(to: CMTime(seconds: 0, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
+  }
 	
 	func playPause() {
 		if isPlaying {
@@ -102,15 +119,4 @@ class SLAudioPlayer: ObservableObject {
 	deinit {
 		removeTimeObserver()
 	}
-}
-
-
-struct SampleLibraryAutoPlayer: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    SampleLibraryAutoPlayer()
 }

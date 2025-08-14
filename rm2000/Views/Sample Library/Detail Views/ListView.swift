@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RecordingsListView: View {
-  @ObservedObject var viewModel: SampleLibraryViewModel
+  @StateObject var viewModel: SampleLibraryViewModel
   let predicate: SampleFilterPredicate
   
   private var filteredSamples: [Sample] {
@@ -32,7 +32,7 @@ struct RecordingsListView: View {
 }
 
 struct SampleIndividualListItem: View {
-  @ObservedObject var viewModel: SampleLibraryViewModel
+  @StateObject var viewModel: SampleLibraryViewModel
   @Environment(\.openWindow) var openWindow
   var sample: FileRepresentableItemModel
   

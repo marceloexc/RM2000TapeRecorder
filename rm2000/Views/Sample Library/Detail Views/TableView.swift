@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RecordingsTableView: View {
-  @ObservedObject var viewModel: SampleLibraryViewModel
+  @StateObject var viewModel: SampleLibraryViewModel
   let predicate: SampleFilterPredicate
 
   @SceneStorage("SampleLibraryTableConfig")

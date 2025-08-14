@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import OSLog
 import SwiftUI
+import RenderMeThis
 
 extension ToolbarItemPlacement {
   static let favoritesBar = accessoryBar(id: "com.example.favorites")
@@ -97,6 +98,7 @@ struct SampleLibraryView: View {
         viewModel.slAudioPlayer.forcePause()
       }
     }
+      .debugCompute()
   }
   
   @ToolbarContentBuilder

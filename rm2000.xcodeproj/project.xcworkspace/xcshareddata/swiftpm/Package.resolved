@@ -1,5 +1,5 @@
 {
-  "originHash" : "35d42483c02b222c6dceeca86b38b05e03418f1917b2a844473e8e48aadb775b",
+  "originHash" : "49dfd12d2e1fd017f3cf5a129cf70af07b81af996bc3af0f0014e336ba5a2cb5",
   "pins" : [
     {
       "identity" : "avfaudioextensions",
@@ -143,6 +143,15 @@
       "state" : {
         "revision" : "74201a6af424e7e3a007fd5e401e9d2ce6896628",
         "version" : "0.2.2"
+      }
+    },
+    {
+      "identity" : "rendermethis",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Aeastr/RenderMeThis.git",
+      "state" : {
+        "revision" : "30b5a9a28bb3bffe20a9265296e32138548d0c9a",
+        "version" : "2.0.1"
       }
     },
     {

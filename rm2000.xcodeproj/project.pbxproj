@@ -88,6 +88,7 @@
 		EBE4E94F2C43244F00397EF2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBE4E94E2C43244F00397EF2 /* Preview Assets.xcassets */; };
 		EBF3A1D92DB981FA00BF0944 /* AudioFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */; };
 		EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */; };
+		EBF4939F2E4E75E900D7299C /* RenderMeThis in Frameworks */ = {isa = PBXBuildFile; productRef = EBF4939E2E4E75E900D7299C /* RenderMeThis */; };
 		EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */; };
 		EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB1122D77988600A9A226 /* SettingsAccess */; };
 /* End PBXBuildFile section */
@@ -199,6 +200,7 @@
 			files = (
 				EBAAA3E12E4A951700BD1CF9 /* DSWaveformImage in Frameworks */,
 				EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */,
+				EBF4939F2E4E75E900D7299C /* RenderMeThis in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
 				EBAAA3E32E4A951700BD1CF9 /* DSWaveformImageViews in Frameworks */,
 				EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */,
@@ -532,6 +534,7 @@
 				EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */,
 				EBAAA3E02E4A951700BD1CF9 /* DSWaveformImage */,
 				EBAAA3E22E4A951700BD1CF9 /* DSWaveformImageViews */,
+				EBF4939E2E4E75E900D7299C /* RenderMeThis */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -569,6 +572,7 @@
 				EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */,
 				EB9C7A012DEE4AFE009CDCA2 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				EBAAA3DF2E4A951700BD1CF9 /* XCRemoteSwiftPackageReference "DSWaveformImage-RM2000" */,
+				EBF4939D2E4E75E900D7299C /* XCRemoteSwiftPackageReference "RenderMeThis" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -943,6 +947,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		EBF4939D2E4E75E900D7299C /* XCRemoteSwiftPackageReference "RenderMeThis" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Aeastr/RenderMeThis.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
 		EBFCB1112D77988600A9A226 /* XCRemoteSwiftPackageReference "SettingsAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/orchetect/SettingsAccess";
@@ -988,6 +1000,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */;
 			productName = FluidGradient;
+		};
+		EBF4939E2E4E75E900D7299C /* RenderMeThis */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBF4939D2E4E75E900D7299C /* XCRemoteSwiftPackageReference "RenderMeThis" */;
+			productName = RenderMeThis;
 		};
 		EBFCB1122D77988600A9A226 /* SettingsAccess */ = {
 			isa = XCSwiftPackageProductDependency;

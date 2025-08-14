@@ -30,11 +30,20 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
       .disabled(isDisabled)
     }
     
+    ToolbarItem(id: "rm2000.divider", placement: .favoritesBar) {
+      Divider()
+    }
+    
+    ToolbarItem(id: "rm2000.autoplay.string", placement: .favoritesBar) {
+      Text("Autoplay")
+    }
+    
     ToolbarItem(id: "rm2000.autoplay-toggle", placement: .favoritesBar) {
       Toggle(
         "Autoplay",
         isOn: $player.isAutoplay
-      ).toggleStyle(.checkbox)
+      ).toggleStyle(.switch)
+    }
     }
 
   }

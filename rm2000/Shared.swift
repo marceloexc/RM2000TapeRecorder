@@ -194,11 +194,13 @@ func timeString(_ time: TimeInterval) -> String {
 }
 
 extension Double {
-    var formattedDuration: String {
-        let mins = Int(self) / 60
-        let secs = Int(self) % 60
-        return String(format: "%d:%02d", mins, secs)
-    }
+  var formattedDuration: String {
+    let totalMilliseconds = Int((self * 100).rounded())
+    let mins = totalMilliseconds / 6000
+    let secs = (totalMilliseconds % 6000) / 100
+    let millis = totalMilliseconds % 100
+    return String(format: "%d:%02d.%02d", mins, secs, millis)
+  }
 }
 
 // https://stackoverflow.com/a/56894458

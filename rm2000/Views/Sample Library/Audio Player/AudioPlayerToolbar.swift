@@ -15,9 +15,18 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
       }
       .disabled(isDisabled)
     }
+    
+    ToolbarItem(id: "rm2000.repeat-toggle", placement: .favoritesBar) {
+      Toggle(isOn: $player.isRepeat) {
+        Label("Repeat", systemImage: "repeat")
+      }
+    }
+    
     ToolbarItem(id: "rm2000.duration", placement: .favoritesBar) {
       Text(player.currentTime.formattedDuration)
+        .frame(width: 45, alignment: .leading)
         .disabled(isDisabled)
+      
     }
     ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
       Slider(
@@ -44,13 +53,6 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
         isOn: $player.isAutoplay
       ).toggleStyle(.switch)
     }
-    
-    ToolbarItem(id: "rm2000.repeat-toggle", placement: .favoritesBar) {
-      Toggle(isOn: $player.isRepeat) {
-        Label("Repeat", systemImage: "repeat")
-      }
-    }
-
   }
   
   

@@ -89,6 +89,7 @@
 		EBF3A1D92DB981FA00BF0944 /* AudioFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */; };
 		EBF3A1DB2DB987F800BF0944 /* RecordingStateEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */; };
 		EBF4939F2E4E75E900D7299C /* RenderMeThis in Frameworks */ = {isa = PBXBuildFile; productRef = EBF4939E2E4E75E900D7299C /* RenderMeThis */; };
+		EBF493A12E4E7AB800D7299C /* AudioPlayerToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF493A02E4E7AB300D7299C /* AudioPlayerToolbar.swift */; };
 		EBF950802DA995F30060CF03 /* TokenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */; };
 		EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = EBFCB1122D77988600A9A226 /* SettingsAccess */; };
 /* End PBXBuildFile section */
@@ -190,6 +191,7 @@
 		EBE4E9652C43245000397EF2 /* rm2000UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rm2000UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		EBF3A1D82DB981FA00BF0944 /* AudioFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFormat.swift; sourceTree = "<group>"; };
 		EBF3A1DA2DB987F100BF0944 /* RecordingStateEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingStateEnum.swift; sourceTree = "<group>"; };
+		EBF493A02E4E7AB300D7299C /* AudioPlayerToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerToolbar.swift; sourceTree = "<group>"; };
 		EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -216,6 +218,7 @@
 		EB12BCA12DC813C00011B7FF /* Audio Player */ = {
 			isa = PBXGroup;
 			children = (
+				EBF493A02E4E7AB300D7299C /* AudioPlayerToolbar.swift */,
 				EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */,
 			);
 			path = "Audio Player";
@@ -621,6 +624,7 @@
 				EB467BD62D9209CA007E19E8 /* AppKitWindowManagerDelegate.swift in Sources */,
 				EB8313F22D4DCDD600B343FF /* SidebarView.swift in Sources */,
 				EB801B3B2DB4809B009632D0 /* ErrorGlyph.swift in Sources */,
+				EBF493A12E4E7AB800D7299C /* AudioPlayerToolbar.swift in Sources */,
 				EBBBFE932CA2593900E987B1 /* Protocols.swift in Sources */,
 				EB1A606A2DEA521E0067A4E3 /* PreviewFilenameView.swift in Sources */,
 				EB12BCA32DC813D30011B7FF /* SampleLibraryAutoPlayer.swift in Sources */,

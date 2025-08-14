@@ -193,6 +193,14 @@ func timeString(_ time: TimeInterval) -> String {
 	return String(format: "%02d:%02d", minutes, seconds)
 }
 
+extension Double {
+    var formattedDuration: String {
+        let mins = Int(self) / 60
+        let secs = Int(self) % 60
+        return String(format: "%d:%02d", mins, secs)
+    }
+}
+
 // https://stackoverflow.com/a/56894458
 extension Color {
 	init(hex: UInt, alpha: Double = 1) {

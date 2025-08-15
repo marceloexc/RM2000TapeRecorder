@@ -75,7 +75,8 @@ struct InspectorView: View {
 					.padding()
 			}
 		}
-		.padding(-10)
+    .padding(.leading, -10)
+    .padding(.trailing, -10)
 	}
 }
 

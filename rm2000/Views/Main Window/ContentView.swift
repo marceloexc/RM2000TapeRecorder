@@ -121,4 +121,5 @@ struct ContentView: View {
 #Preview("Main Window") {
   ContentView()
     .environmentObject(TapeRecorderState())
+    .environmentObject(StoreManager.shared)
 }

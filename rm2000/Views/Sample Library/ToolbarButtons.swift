@@ -3,7 +3,7 @@ import SwiftUI
 struct SidebarButton: View {
   var body: some View {
     Button(action: toggleSidebar) {
-      Label("Sidebar", systemImage: "rectangle.leftthird.inset.filled")
+      Label("Sidebar", systemImage: "sidebar.squares.left")
         .foregroundStyle(Color.accentColor)
     }
   }

@@ -24,6 +24,11 @@ struct SampleLibraryView: View {
       if #available(macOS 14.0, *) {
         SidebarView(viewModel: viewModel)
           .toolbar(removing: .sidebarToggle)
+          .toolbar(id: "rm2000.sidebar", content: {
+            ToolbarItem(id: "rm2000.sidebar") {
+              SidebarButton()
+            }.customizationBehavior(.disabled)
+          })
           .navigationSplitViewColumnWidth(min: 200, ideal: 200, max: 300)
       } else {
         SidebarView(viewModel: viewModel)
@@ -32,27 +37,16 @@ struct SampleLibraryView: View {
     } detail: {
       DetailView(viewModel: viewModel, currentView: $detailViewType)
         .navigationSplitViewColumnWidth(min: 500, ideal: 500)
+        .toolbar(id: "rm2000.main-toolbar", content: mainToolbarContent)
+        .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
     }
-    .toolbar(id: "rm2000.main-toolbar", content: mainToolbarContent)
-    .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
     .inspector(isPresented: $viewModel.showInspector) {
       InspectorView(viewModel: viewModel)
         .toolbar(id: "rm2000.inspector.toolbar", content: inspectorToolbarContent)
         .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     }
-    .toolbarRole(.editor)
     .navigationTitle("Sample Library")
     .navigationSubtitle("\(viewModel.filteredSamples.count) Samples")
-    .onAppear {
-      if #available(macOS 14.0, *) {
-        // conditional, bc the style we want causes a crash when hiding the sidebar on macOS 13
-        setToolbarStyle()
-      }
-    }
-    
-    /// if hideDockIcon is enabled, temporarily enable it whenever
-    /// we have this window open
-    
     .onChange(of: controlActiveState) {
       switch controlActiveState {
       case .key, .active:
@@ -110,9 +104,6 @@ struct SampleLibraryView: View {
   
   @ToolbarContentBuilder
   func mainToolbarContent() -> some CustomizableToolbarContent {
-    ToolbarItem(id: "rm2000.sidebar", placement: .navigation) {
-      SidebarButton()
-    }.customizationBehavior(.disabled)
     ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
       ShareSampleButton(selectedItems: viewModel.selectedSamples.map { FileRepresentableItemModel(file: $0.self) } )
     }
@@ -139,7 +130,10 @@ struct SampleLibraryView: View {
   
   @ToolbarContentBuilder
   func inspectorToolbarContent() -> some CustomizableToolbarContent {
-    ToolbarItem(id: "rm2000.inspector.button", placement: .destructiveAction) {
+    ToolbarItem(id: "rm2000.spacer") {
+      Spacer()
+    }
+    ToolbarItem(id: "rm2000.inspector.button", placement: .primaryAction) {
       Button {
         viewModel.showInspector.toggle()
       } label: {
@@ -147,11 +141,12 @@ struct SampleLibraryView: View {
           .foregroundStyle(.cyan)
       }
     }
+    
   }
 }
 
 #Preview {
   SampleLibraryView()
     .environmentObject(SampleStorage.shared)
-    .frame(width: 1000, height: 600)
+    .frame(width: 900, height: 600)
 }

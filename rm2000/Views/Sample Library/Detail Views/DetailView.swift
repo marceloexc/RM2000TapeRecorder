@@ -6,7 +6,7 @@ enum DetailViewType: String {
 }
 
 struct DetailView: View {
-  @ObservedObject var viewModel: SampleLibraryViewModel
+  @StateObject var viewModel: SampleLibraryViewModel
   
   var currentFilter: SampleFilterPredicate {
     viewModel.sidebarSelection

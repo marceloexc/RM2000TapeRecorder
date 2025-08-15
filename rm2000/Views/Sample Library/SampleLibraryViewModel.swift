@@ -105,16 +105,6 @@ class SampleLibraryViewModel: ObservableObject {
         self?.allTokens = newTokens
       }
       .store(in: &cancellables)
-
-    // update music player slider as song plays
-    slAudioPlayer.$currentTime
-      .receive(on: DispatchQueue.main)
-      .debounce(for: .milliseconds(20), scheduler: RunLoop.main)
-      .sink { [weak self] newTime in
-        self?.currentTime = newTime
-      }
-      .store(in: &cancellables)
-
   }
 
   private func matchToSample(id: Set<UUID>?) -> Sample? {

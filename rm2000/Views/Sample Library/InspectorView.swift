@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct InspectorView: View {
-	@ObservedObject var viewModel: SampleLibraryViewModel
+	@StateObject var viewModel: SampleLibraryViewModel
 	
 	var body: some View {
 		VStack(alignment: .leading, spacing: 0) {

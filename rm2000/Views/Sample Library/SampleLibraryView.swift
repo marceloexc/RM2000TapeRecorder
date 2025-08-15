@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import OSLog
 import SwiftUI
+import RenderMeThis
 
 extension ToolbarItemPlacement {
   static let favoritesBar = accessoryBar(id: "com.example.favorites")
@@ -12,6 +13,7 @@ struct SampleLibraryView: View {
   @Environment(\.openURL) private var openURL
   @Environment(\.controlActiveState) private var controlActiveState
   @AppStorage("detailViewType") var detailViewType: DetailViewType = .list
+  @State private var isAudioPlaying = false
 
   init() {
     _viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
@@ -90,13 +92,20 @@ struct SampleLibraryView: View {
           .searchCompletion(suggestion)
       }
     }
-    .onReceive(
-      NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
-      // window is closed, stop audio playback
-      if viewModel.slAudioPlayer.isPlaying {
-        viewModel.slAudioPlayer.forcePause()
-      }
+    .onReceive(viewModel.slAudioPlayer.$isPlaying) {
+        isAudioPlaying = $0
     }
+    .onReceive(
+      NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
+        // window is closed, stop audio playback
+        if let window = newValue.object as? NSWindow {
+          let thisWindowIdentifier = NSUserInterfaceItemIdentifier("recordings-window")
+          if window.identifier == thisWindowIdentifier {
+            viewModel.slAudioPlayer.forcePause()
+          }
+        }
+      }
+//      .debugCompute()
   }
   
   @ToolbarContentBuilder
@@ -121,45 +130,11 @@ struct SampleLibraryView: View {
   
   @ToolbarContentBuilder
   func accessoryBarContent() -> some CustomizableToolbarContent {
-    ToolbarItem(id: "rm2000.playpause", placement: .favoritesBar) {
-      Button {
-        viewModel.slAudioPlayer.playPause()
-      } label: {
-        Image(
-          systemName: viewModel.slAudioPlayer.isPlaying
-          ? "pause.fill" : "play.fill")
-      }
-      .disabled(viewModel.selectedSamples.isEmpty && !viewModel.slAudioPlayer.isPlaying)
-    }
-    ToolbarItem(id: "rm2000.duration", placement: .favoritesBar) {
-      if viewModel.slAudioPlayer.isPlaying {
-        let mins: Int = Int(viewModel.slAudioPlayer.currentTime) / 60
-        let secs: Int = Int(
-          viewModel.slAudioPlayer.currentTime - Double(mins * 60))
-        Text(String(format: "%d:%02d", mins, secs))
-      } else {
-        Text("0:00")
-          .disabled(viewModel.selectedSamples.isEmpty && !viewModel.slAudioPlayer.isPlaying)
-      }
-    }
-    ToolbarItem(id: "rm2000.slider", placement: .favoritesBar) {
-      Slider(
-        value: Binding(
-          get: { viewModel.currentTime },
-          set: { viewModel.slAudioPlayer.seekTo(time: $0) }
-        ),
-        in: 0...viewModel.slAudioPlayer.duration
-      )
-      .disabled(viewModel.selectedSamples.isEmpty && !viewModel.slAudioPlayer.isPlaying)
-    }
-    
-    ToolbarItem(id: "rm2000.autoplay-toggle", placement: .favoritesBar) {
-      Toggle(
-        "Autoplay",
-        isOn: $viewModel.slAudioPlayer.isAutoplay
-      ).toggleStyle(.checkbox)
-    }
-
+    let isDisabled = viewModel.selectedSamples.isEmpty && !isAudioPlaying
+    AudioPlayerToolbar(
+        player: viewModel.slAudioPlayer,
+        isDisabled: isDisabled
+    )
   }
   
   @ToolbarContentBuilder

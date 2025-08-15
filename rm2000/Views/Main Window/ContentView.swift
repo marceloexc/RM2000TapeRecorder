@@ -46,7 +46,7 @@ struct ContentView: View {
               with: SampleEditConfiguration)
             recordingState.showRenameDialogInMainWindow = false
           }
-          .frame(minWidth: 420, maxWidth: 500, minHeight: 320)
+          .frame(minWidth: 500, maxWidth: 700, minHeight: 320)
           .presentationBackground(.thinMaterial)
         }
       }

@@ -327,3 +327,9 @@ extension CMTime {
 		return String(format: "%02d:%02d", minutes, seconds)
 	}
 }
+
+extension View {
+    func modify<Content>(@ViewBuilder _ transform: (Self) -> Content) -> Content {
+        transform(self)
+    }
+}

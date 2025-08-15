@@ -81,6 +81,7 @@
 		EBCF5FEC2CEAD8950047405A /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF5FEB2CEAD8950047405A /* TitleBar.swift */; };
 		EBD114F32DCBFE8D003ABBB9 /* GlobalRecordingPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD114F12DCBFE8D003ABBB9 /* GlobalRecordingPreviewView.swift */; };
 		EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = EBD114F52DCBFEA5003ABBB9 /* FluidGradient */; };
+		EBDD4C4F2E53C463001FCDD8 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = EBDD4C4E2E53C463001FCDD8 /* SwiftUIIntrospect */; };
 		EBDF782E2D80146E00941981 /* Tachyo.otf in Resources */ = {isa = PBXBuildFile; fileRef = EBDF782D2D80146E00941981 /* Tachyo.otf */; };
 		EBE4E9482C43244D00397EF2 /* RM2000 Tape Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE4E9472C43244D00397EF2 /* RM2000 Tape Recorder.swift */; };
 		EBE4E94A2C43244D00397EF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE4E9492C43244D00397EF2 /* ContentView.swift */; };
@@ -203,6 +204,7 @@
 				EBAAA3E12E4A951700BD1CF9 /* DSWaveformImage in Frameworks */,
 				EB90E5A12DAF37AC0067194C /* KeyboardShortcuts in Frameworks */,
 				EBF4939F2E4E75E900D7299C /* RenderMeThis in Frameworks */,
+				EBDD4C4F2E53C463001FCDD8 /* SwiftUIIntrospect in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
 				EBAAA3E32E4A951700BD1CF9 /* DSWaveformImageViews in Frameworks */,
 				EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */,
@@ -538,6 +540,7 @@
 				EBAAA3E02E4A951700BD1CF9 /* DSWaveformImage */,
 				EBAAA3E22E4A951700BD1CF9 /* DSWaveformImageViews */,
 				EBF4939E2E4E75E900D7299C /* RenderMeThis */,
+				EBDD4C4E2E53C463001FCDD8 /* SwiftUIIntrospect */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -576,6 +579,7 @@
 				EB9C7A012DEE4AFE009CDCA2 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				EBAAA3DF2E4A951700BD1CF9 /* XCRemoteSwiftPackageReference "DSWaveformImage-RM2000" */,
 				EBF4939D2E4E75E900D7299C /* XCRemoteSwiftPackageReference "RenderMeThis" */,
+				EBDD4C4D2E53C463001FCDD8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -951,6 +955,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		EBDD4C4D2E53C463001FCDD8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 		EBF4939D2E4E75E900D7299C /* XCRemoteSwiftPackageReference "RenderMeThis" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Aeastr/RenderMeThis.git";
@@ -1004,6 +1016,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */;
 			productName = FluidGradient;
+		};
+		EBDD4C4E2E53C463001FCDD8 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBDD4C4D2E53C463001FCDD8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 		EBF4939E2E4E75E900D7299C /* RenderMeThis */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -1,6 +1,7 @@
 import OSLog
 import SettingsAccess
 import SwiftUI
+import SwiftUIIntrospect
 
 struct ContentView: View {
   @Environment(\.openWindow) var openWindow
@@ -46,8 +47,17 @@ struct ContentView: View {
               with: SampleEditConfiguration)
             recordingState.showRenameDialogInMainWindow = false
           }
-          .frame(minWidth: 420, maxWidth: 500, minHeight: 320)
-          .presentationBackground(.thinMaterial)
+          .frame(minWidth: 500, maxWidth: 700, minHeight: 320)
+          .presentationBackground(.ultraThickMaterial)
+          .modify {
+            if #available(macOS 15.0, *) {
+              $0.presentationSizing(.fitted)
+            } else {
+              $0.introspect(.window, on: .macOS(.v14)) { window in
+                window.styleMask.formUnion(.resizable)
+              }
+            }
+          }
         }
       }
       .sheet(isPresented: $showTrialExpiredSheet) {

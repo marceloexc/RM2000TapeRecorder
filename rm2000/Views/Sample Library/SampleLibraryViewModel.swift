@@ -141,7 +141,7 @@ struct FileRepresentableItemModel: Identifiable, Hashable {
 // necessary extension for draggable objects in sample library window
 extension FileRepresentableItemModel: Transferable {
   static var transferRepresentation: some TransferRepresentation {
-    FileRepresentation(exportedContentType: .data) { fileRepresentable in
+    FileRepresentation(exportedContentType: .fileURL) { fileRepresentable in
       // when dragging from app to finder
       Logger().debug(
         "SentTransferredFile from \(fileRepresentable.file.fileURL)")

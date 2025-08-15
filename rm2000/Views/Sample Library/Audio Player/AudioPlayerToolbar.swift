@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AudioPlayerToolbar: CustomizableToolbarContent {
+  @State private var isShowingPopover: Bool = false
   @ObservedObject var player: SLAudioPlayer
   let isDisabled: Bool
   
@@ -14,6 +15,40 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
           ? "pause.fill" : "play.fill")
       }
       .disabled(isDisabled)
+    }
+    
+    ToolbarItem(id: "rm2000.volume", placement: .favoritesBar) {
+      Button {
+        self.isShowingPopover = true
+      } label: {
+        if player.setVolume == 0 {
+          Image(systemName: "speaker.slash.fill")
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(.red, .secondary)
+        } else if (player.setVolume < 0.45) {
+          Image(systemName: "speaker.wave.1.fill")
+        } else if (player.setVolume < 0.75){
+          Image(systemName: "speaker.wave.2.fill")
+        }
+        else {
+          Image(systemName: "speaker.wave.3.fill")
+        }
+      }
+      .frame(width: 20)
+      .popover(isPresented: $isShowingPopover, arrowEdge: .bottom) {
+        VStack {
+          Slider(
+              value: Binding(
+                  get: { player.setVolume },
+                  set: { player.setVolume = $0 }
+              ),
+              in: 0...1
+          )
+          .frame(width: 200)
+          Text("\(player.setVolume.isFinite ? String(format: "%.1f", player.setVolume * 100) : "0")% Volume")
+        }
+        .padding()
+      }
     }
     
     ToolbarItem(id: "rm2000.repeat-toggle", placement: .favoritesBar) {

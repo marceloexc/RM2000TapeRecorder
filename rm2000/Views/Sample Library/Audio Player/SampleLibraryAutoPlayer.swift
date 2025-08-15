@@ -13,10 +13,19 @@ class SLAudioPlayer: ObservableObject {
 	private var player: AVPlayer?
 	@Published var isPlaying = false
 	@Published var currentTime: Double = 0
+  @Published private var savedVolume: Float = 1
 	@Published var duration: Double = 1
 	@AppStorage("sl_autoplay") var isAutoplay: Bool = false
   @AppStorage("sl_repeat") var isRepeat = false
-	
+  var setVolume: Float {
+      get { player?.volume ?? savedVolume }
+      set {
+        savedVolume = newValue
+        player?.volume = newValue
+        objectWillChange.send()
+      }
+  }
+
 	private var timeObserver: Any?
 	private var timer: AnyCancellable?
 	
@@ -36,7 +45,8 @@ class SLAudioPlayer: ObservableObject {
 		
 		let playerItem = AVPlayerItem(url: url)
 		player = AVPlayer(playerItem: playerItem)
-		
+    self.player?.volume = savedVolume
+    
 		// Get duration
 		if let duration = player?.currentItem?.asset.duration.seconds, !duration.isNaN {
 			self.duration = duration

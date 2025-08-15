@@ -14,6 +14,8 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
           systemName: player.isPlaying
           ? "pause.fill" : "play.fill")
       }
+      .keyboardShortcut(.space, modifiers: [])
+      .frame(width: 20)
       .disabled(isDisabled)
     }
     

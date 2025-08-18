@@ -24,17 +24,20 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
       Button {
         self.isShowingPopover = true
       } label: {
-        if player.setVolume == 0 {
+        ZStack {
+          // Muted
           Image(systemName: "speaker.slash.fill")
             .symbolRenderingMode(.palette)
             .foregroundStyle(.red, .secondary)
-        } else if (player.setVolume < 0.45) {
-          Image(systemName: "speaker.wave.1.fill")
-        } else if (player.setVolume < 0.75){
-          Image(systemName: "speaker.wave.2.fill")
-        }
-        else {
-          Image(systemName: "speaker.wave.3.fill")
+            .opacity(player.setVolume == 0 ? 1 : 0)
+            .animation(Animation.easeInOut(duration: 0.15), value: player.setVolume)
+
+          // not muted
+          Image(systemName: "speaker.wave.3.fill", variableValue: Double(player.setVolume))
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(.primary, .primary)
+            .opacity(player.setVolume > 0 ? 1 : 0)
+            .animation(Animation.easeInOut(duration: 0.15), value: player.setVolume)
         }
       }
       .frame(width: 20)
@@ -75,6 +78,7 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
         in: 0...player.duration
       )
       .disabled(isDisabled)
+      
     }
     
     ToolbarItem(id: "rm2000.divider", placement: .favoritesBar) {
@@ -94,4 +98,10 @@ struct AudioPlayerToolbar: CustomizableToolbarContent {
   }
   
   
+}
+
+#Preview {
+  SampleLibraryView()
+    .environmentObject(SampleStorage.shared)
+    .frame(width: 900, height: 600)
 }

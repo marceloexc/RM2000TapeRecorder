@@ -14,6 +14,16 @@ struct SampleLibraryView: View {
   @Environment(\.controlActiveState) private var controlActiveState
   @AppStorage("detailViewType") var detailViewType: DetailViewType = .list
   @State private var isAudioPlaying = false
+  
+  private var navigationSubtitle: String {
+    if viewModel.predicateSelection.count > 1 {
+      return "\(viewModel.predicateSelection.count) Samples Selected"
+    }
+    else if viewModel.predicateSelection.count == 1  {
+      return "Playing \"\(viewModel.selectedSamples.first!.title)\""
+    }
+    return "\(viewModel.filteredSamples.count) Total Samples"
+  }
 
   init() {
     _viewModel = StateObject(wrappedValue: SampleLibraryViewModel())
@@ -46,7 +56,7 @@ struct SampleLibraryView: View {
         .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     }
     .navigationTitle("Sample Library")
-    .navigationSubtitle("\(viewModel.filteredSamples.count) Samples")
+    .navigationSubtitle(navigationSubtitle)
     .onChange(of: controlActiveState) {
       switch controlActiveState {
       case .key, .active:

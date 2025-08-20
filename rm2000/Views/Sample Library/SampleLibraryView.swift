@@ -33,6 +33,20 @@ struct SampleLibraryView: View {
     NavigationSplitView {
       if #available(macOS 14.0, *) {
         SidebarView(viewModel: viewModel)
+          .searchable(
+            text: $viewModel.searchText,
+            tokens: $viewModel.currentSearchTokens,
+            placement: .sidebar,
+            prompt: Text("Type to search")
+          ) { token in
+            Label("\(token.tag)", systemImage: "number")
+          }
+          .searchSuggestions {
+            ForEach(viewModel.suggestedSearchTokens, id: \.self) { suggestion in
+              Label("\(suggestion.tag)", systemImage: "number")
+                .searchCompletion(suggestion)
+            }
+          }
           .toolbar(removing: .sidebarToggle)
           .toolbar(id: "rm2000.sidebar", content: {
             ToolbarItem(id: "rm2000.sidebar") {
@@ -46,15 +60,16 @@ struct SampleLibraryView: View {
       }
     } detail: {
       DetailView(viewModel: viewModel, currentView: $detailViewType)
-        .navigationSplitViewColumnWidth(min: 500, ideal: 500)
         .toolbar(id: "rm2000.main-toolbar", content: mainToolbarContent)
-        .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
+        .navigationSplitViewColumnWidth(min: 500, ideal: 520)
+
     }
     .inspector(isPresented: $viewModel.showInspector) {
       InspectorView(viewModel: viewModel)
         .toolbar(id: "rm2000.inspector.toolbar", content: inspectorToolbarContent)
         .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     }
+    .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
     .navigationTitle("Sample Library")
     .navigationSubtitle(navigationSubtitle)
     .onChange(of: controlActiveState) {
@@ -79,21 +94,6 @@ struct SampleLibraryView: View {
             NSApp.setActivationPolicy(.accessory)
           }
         }
-      }
-    }
-    
-    .searchable(
-      text: $viewModel.searchText,
-      tokens: $viewModel.currentSearchTokens,
-      placement: .sidebar,
-      prompt: Text("Type to search")
-    ) { token in
-      Label("\(token.tag)", systemImage: "number")
-    }
-    .searchSuggestions {
-      ForEach(viewModel.suggestedSearchTokens, id: \.self) { suggestion in
-        Label("\(suggestion.tag)", systemImage: "number")
-          .searchCompletion(suggestion)
       }
     }
     .onReceive(viewModel.slAudioPlayer.$isPlaying) {

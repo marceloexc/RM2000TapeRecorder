@@ -14,6 +14,7 @@ struct SampleLibraryView: View {
   @Environment(\.controlActiveState) private var controlActiveState
   @AppStorage("detailViewType") var detailViewType: DetailViewType = .list
   @State private var isAudioPlaying = false
+  @State private var isShowingSheet = false
   
   private var navigationSubtitle: String {
     if viewModel.predicateSelection.count > 1 {
@@ -55,6 +56,10 @@ struct SampleLibraryView: View {
         .toolbar(id: "rm2000.inspector.toolbar", content: inspectorToolbarContent)
         .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     }
+    .sheet(isPresented: $isShowingSheet, content: {
+      Text("Helo World")
+        .padding()
+    })
     .navigationTitle("Sample Library")
     .navigationSubtitle(navigationSubtitle)
     .onChange(of: controlActiveState) {

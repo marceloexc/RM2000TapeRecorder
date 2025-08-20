@@ -14,8 +14,8 @@ struct OpenInFinderButton: View {
     Button(action: {
       NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
     }) {
-      Label("Reveal Folder", systemImage: "folder.badge.person.crop.fill")
-        .foregroundStyle(.teal)
+      Label("Reveal Folder", systemImage: "folder.fill")
+        .foregroundStyle(Color.init(hex: 0x7177d5))
     }
     .help("Open in Finder")
   }
@@ -37,9 +37,9 @@ struct ShareSampleButton: View {
     } label: {
       if validURLs.isEmpty {
         Label("Share", systemImage: "arrowshape.turn.up.left.fill")
+          .foregroundStyle(.secondary)
           .fontWeight(.semibold)
           .scaleEffect(x: -1, y: 1) //flip
-
       }
       else {
         Label("Share", systemImage:"arrowshape.turn.up.left.fill")
@@ -53,13 +53,41 @@ struct ShareSampleButton: View {
   }
 }
 
+struct EditSampleButton: View {
+  var selectedItems: [FileRepresentableItemModel]?
+  
+  private var validURLs: [URL] {
+    selectedItems?.compactMap { $0.file.fileURL } ?? []
+  }
+  
+  var body: some View {
+    Button {
+      print("hello world")
+    } label: {
+      if validURLs.isEmpty {
+        Label("Edit", systemImage: "slider.horizontal.3")
+          .foregroundStyle(.secondary)
+          .fontWeight(.bold)
+      }
+      else {
+        Label("Edit", systemImage: "slider.horizontal.3")
+          .foregroundStyle(Color.init(hex: 0xec5962))
+          .fontWeight(.bold)
+      }
+    }
+    .disabled(validURLs.isEmpty)
+  }
+}
+
 struct ImportSampleButton: View {
+  @Binding var isShowingSheet: Bool
+
   var body: some View {
     Button(action: {
-      NSWorkspace.shared.open(SampleStorage.shared.UserDirectory.directory)
+      isShowingSheet = true
     }) {
-      Label("Import", systemImage: "plus.circle.fill")
-        //				.fontWeight(.black)
+      Label("Import", systemImage: "plus")
+        				.fontWeight(.black)
         .foregroundStyle(.green)
     }
     .help("Import a Sample")

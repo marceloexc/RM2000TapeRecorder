@@ -114,15 +114,23 @@ struct SampleLibraryView: View {
   
   @ToolbarContentBuilder
   func mainToolbarContent() -> some CustomizableToolbarContent {
+    ToolbarItem(id: "rm2000.import", placement: .primaryAction) {
+      ImportSampleButton(isShowingSheet: $isShowingSheet)
+    }
+    ToolbarItem(id: "rm2000.edit", placement: .primaryAction) {
+      EditSampleButton(selectedItems: viewModel.selectedSamples.map {
+        FileRepresentableItemModel(file: $0.self)
+      })
+    }
     ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
       ShareSampleButton(selectedItems: viewModel.selectedSamples.map { FileRepresentableItemModel(file: $0.self) } )
     }
-//    ToolbarItem(id: "rm2000.import", placement: .primaryAction) {
-//      ImportSampleButton()
-//    }
     ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction)
     {
       OpenInFinderButton()
+    }
+    ToolbarItem(id: "rm2000.spacer") {
+      Spacer()
     }
     ToolbarItem(id: "rm2000.view-options", placement: .primaryAction) {
       ViewModeButton(selection: $detailViewType)

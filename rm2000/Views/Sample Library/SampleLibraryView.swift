@@ -20,7 +20,7 @@ struct SampleLibraryView: View {
       return "\(viewModel.predicateSelection.count) Samples Selected"
     }
     else if viewModel.predicateSelection.count == 1  {
-      return "Playing \"\(viewModel.selectedSamples.first!.title)\""
+      return "Playing \"\(viewModel.selectedSamples.first?.title ?? "Unknown")\""
     }
     return "\(viewModel.filteredSamples.count) Total Samples"
   }

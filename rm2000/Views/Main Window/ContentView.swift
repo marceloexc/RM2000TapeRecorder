@@ -10,8 +10,10 @@ struct ContentView: View {
   @Environment(\.controlActiveState) private var controlActiveState
 
   @Environment(\.openSettingsLegacy) private var openSettingsLegacy
+  @Environment(\.requestReview) private var requestReview
 
   @State private var showTrialExpiredSheet: Bool = false
+  @State private var recordingsCompleted = AppState.shared.recordingsCompletedCount
 
   var body: some View {
     ZStack {
@@ -46,6 +48,13 @@ struct ContentView: View {
               to: FileRepresentable, for: SampleMetadata,
               with: SampleEditConfiguration)
             recordingState.showRenameDialogInMainWindow = false
+            
+            if recordingsCompleted == 3 {
+              presentReviewDialog()
+              AppState.shared.lastVersionPromptedForReview = AppState.shared.currentAppVersion
+            }
+            recordingsCompleted += 1
+
           }
           .frame(minWidth: 500, maxWidth: 700, minHeight: 320)
           .presentationBackground(.ultraThickMaterial)
@@ -124,6 +133,15 @@ struct ContentView: View {
 
   private func stopRecording() {
     recordingState.stopRecording()
+  }
+  
+  func presentReviewDialog() {
+    
+    Logger.appState.info("presentReviewDialog hit!")
+    Task {
+      try await Task.sleep(for: .seconds(0.5))
+      await requestReview
+    }
   }
 
 }

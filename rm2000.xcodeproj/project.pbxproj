@@ -18,6 +18,7 @@
 		EB12BC9B2DC808210011B7FF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BC9A2DC808210011B7FF /* WaveformView.swift */; };
 		EB12BCA32DC813D30011B7FF /* SampleLibraryAutoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12BCA22DC813D30011B7FF /* SampleLibraryAutoPlayer.swift */; };
 		EB1565122D558F2100A3D339 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1565112D558F1F00A3D339 /* Sample.swift */; };
+		EB16006A2E66581000D4BC8E /* SFBAudioEngine in Frameworks */ = {isa = PBXBuildFile; productRef = EB1600692E66581000D4BC8E /* SFBAudioEngine */; };
 		EB1A606A2DEA521E0067A4E3 /* PreviewFilenameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */; };
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
 		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
@@ -35,7 +36,6 @@
 		EB57F35D2E2ED58A006A5D94 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB57F35C2E2ED588006A5D94 /* ListView.swift */; };
 		EB57F35F2E2EDAB8006A5D94 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB57F35E2E2EDAB8006A5D94 /* TableView.swift */; };
 		EB5BB4382DD6590800DFAA33 /* SampleLibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5BB4372DD6590700DFAA33 /* SampleLibraryViewModel.swift */; };
-		EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */ = {isa = PBXBuildFile; productRef = EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */; };
 		EB5C8FCC2D99DBDD00C4C3C2 /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */; };
 		EB6065192C850A300017CB33 /* TapeRecorderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6065182C850A300017CB33 /* TapeRecorderState.swift */; };
 		EB6127412E04E20300853E4E /* DebugTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6127402E04E20300853E4E /* DebugTabView.swift */; };
@@ -207,10 +207,10 @@
 				EBDD4C4F2E53C463001FCDD8 /* SwiftUIIntrospect in Frameworks */,
 				EBFCB1132D77988600A9A226 /* SettingsAccess in Frameworks */,
 				EBAAA3E32E4A951700BD1CF9 /* DSWaveformImageViews in Frameworks */,
-				EB5BB43B2DD69A9C00DFAA33 /* SFBAudioEngine in Frameworks */,
 				EB4776562DCAA6CF00B6D553 /* SwiftDirectoryWatcher in Frameworks */,
 				EB9C7A032DEE4AFE009CDCA2 /* LaunchAtLogin in Frameworks */,
 				EBD114F62DCBFEA5003ABBB9 /* FluidGradient in Frameworks */,
+				EB16006A2E66581000D4BC8E /* SFBAudioEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,12 +535,12 @@
 				EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */,
 				EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */,
 				EBD114F52DCBFEA5003ABBB9 /* FluidGradient */,
-				EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */,
 				EB9C7A022DEE4AFE009CDCA2 /* LaunchAtLogin */,
 				EBAAA3E02E4A951700BD1CF9 /* DSWaveformImage */,
 				EBAAA3E22E4A951700BD1CF9 /* DSWaveformImageViews */,
 				EBF4939E2E4E75E900D7299C /* RenderMeThis */,
 				EBDD4C4E2E53C463001FCDD8 /* SwiftUIIntrospect */,
+				EB1600692E66581000D4BC8E /* SFBAudioEngine */,
 			);
 			productName = replica;
 			productReference = EBE4E9442C43244D00397EF2 /* RM2000 Tape Recorder.app */;
@@ -575,11 +575,11 @@
 				EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */,
 				EBD114F42DCBFEA5003ABBB9 /* XCRemoteSwiftPackageReference "FluidGradient" */,
-				EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */,
 				EB9C7A012DEE4AFE009CDCA2 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				EBAAA3DF2E4A951700BD1CF9 /* XCRemoteSwiftPackageReference "DSWaveformImage-RM2000" */,
 				EBF4939D2E4E75E900D7299C /* XCRemoteSwiftPackageReference "RenderMeThis" */,
 				EBDD4C4D2E53C463001FCDD8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				EB1600682E66581000D4BC8E /* XCRemoteSwiftPackageReference "SFBAudioEngine" */,
 			);
 			productRefGroup = EBE4E9452C43244D00397EF2 /* Products */;
 			projectDirPath = "";
@@ -907,20 +907,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EB1600682E66581000D4BC8E /* XCRemoteSwiftPackageReference "SFBAudioEngine" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sbooth/SFBAudioEngine";
+			requirement = {
+				kind = exactVersion;
+				version = 0.7.1;
+			};
+		};
 		EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/blackbeltlabs/SwiftDirectoryWatcher";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.1.0;
-			};
-		};
-		EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sbooth/SFBAudioEngine";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.1;
 			};
 		};
 		EB90E59F2DAF37AC0067194C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
@@ -982,15 +982,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EB1600692E66581000D4BC8E /* SFBAudioEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB1600682E66581000D4BC8E /* XCRemoteSwiftPackageReference "SFBAudioEngine" */;
+			productName = SFBAudioEngine;
+		};
 		EB4776552DCAA6CF00B6D553 /* SwiftDirectoryWatcher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB4776542DCAA6CF00B6D553 /* XCRemoteSwiftPackageReference "SwiftDirectoryWatcher" */;
 			productName = SwiftDirectoryWatcher;
-		};
-		EB5BB43A2DD69A9C00DFAA33 /* SFBAudioEngine */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EB5BB4392DD69A8000DFAA33 /* XCRemoteSwiftPackageReference "SFBAudioEngine" */;
-			productName = SFBAudioEngine;
 		};
 		EB90E5A02DAF37AC0067194C /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -10,7 +10,7 @@ class WindowController: NSWindowController {
   }
 }
 
-class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, ObservableObject {
   
   var mainWindowController: WindowController?
   let recordingState = TapeRecorderState.shared

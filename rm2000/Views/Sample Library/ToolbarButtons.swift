@@ -87,10 +87,19 @@ struct ImportSampleButton: View {
       isShowingSheet = true
     }) {
       Label("Import", systemImage: "plus")
-        				.fontWeight(.black)
+        				.fontWeight(.bold)
         .foregroundStyle(.green)
     }
+    .contextMenu {
+      Button {
+        //
+      } label: {
+        Label("Hello", systemImage: "folder")
+      }
+
+    }
     .help("Import a Sample")
+
   }
 }
 

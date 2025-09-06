@@ -72,8 +72,7 @@ struct SampleLibraryView: View {
     }
     .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
     .sheet(isPresented: $isShowingSheet, content: {
-      Text("Helo World")
-        .padding()
+      ImportSampleSheetView()
     })
     .navigationTitle("Sample Library")
     .navigationSubtitle(navigationSubtitle)

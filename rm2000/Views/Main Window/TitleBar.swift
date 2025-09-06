@@ -22,6 +22,10 @@ class SkeuromorphicWindow: NSWindow {
     self.toolbar = toolbar
     self.toolbarStyle = .unified
     self.toolbar?.showsBaselineSeparator = false
+    self.toolbar?.displayMode = .iconOnly
+    if #available(macOS 15.0, *) {
+      self.toolbar?.allowsDisplayModeCustomization = false
+    }
 
     if let zoomButton = standardWindowButton(.zoomButton) {
       zoomButton.isHidden = true

@@ -52,6 +52,14 @@ import SwiftUI
       }
     }
   }
+  
+  var currentAppVersion: String {
+    Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+  }
+  
+  // to ask the user for a review :)
+  @AppStorage("recordings_completed") var recordingsCompletedCount: Int = 0
+  @AppStorage("lastVersionPromptedForReview") var lastVersionPromptedForReview = ""
 
   @Published var storekitManager = StoreManager.shared
 

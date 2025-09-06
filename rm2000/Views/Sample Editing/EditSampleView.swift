@@ -55,10 +55,6 @@ struct EditSampleView<Model: FileRepresentable>: View {
             .onAppear {
               focusedField = true
             }
-            .onChange(of: title) { formattedText in
-              title = formattedText.replacingOccurrences(of: "-", with: " ")
-              sampleExists = doesSampleAlreadyExist()
-            }
         }
 
         VStack(alignment: .leading, spacing: 4) {

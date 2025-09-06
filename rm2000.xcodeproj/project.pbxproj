@@ -43,6 +43,8 @@
 		EB63A3042D6A8E2A00E35AE6 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB63A3032D6A8E2800E35AE6 /* AppState.swift */; };
 		EB64CD122D14FC5200F2B65E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB64CD112D14FC5200F2B65E /* SettingsView.swift */; };
 		EB64CD142D1A0E1500F2B65E /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB64CD132D1A0E1500F2B65E /* Shared.swift */; };
+		EB78E2262E6AADC0006376EB /* ImportSampleSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB78E2242E6AADC0006376EB /* ImportSampleSheetView.swift */; };
+		EB78E2282E6B60FB006376EB /* EditingHUDWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB78E2272E6B60FB006376EB /* EditingHUDWindow.swift */; };
 		EB801B372DB47DDE009632D0 /* RecordingGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB801B362DB47DDE009632D0 /* RecordingGlyph.swift */; };
 		EB801B392DB48011009632D0 /* SourceGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB801B382DB48011009632D0 /* SourceGlyph.swift */; };
 		EB801B3B2DB4809B009632D0 /* ErrorGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB801B3A2DB4809B009632D0 /* ErrorGlyph.swift */; };
@@ -145,6 +147,8 @@
 		EB63A3032D6A8E2800E35AE6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		EB64CD112D14FC5200F2B65E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		EB64CD132D1A0E1500F2B65E /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		EB78E2242E6AADC0006376EB /* ImportSampleSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportSampleSheetView.swift; sourceTree = "<group>"; };
+		EB78E2272E6B60FB006376EB /* EditingHUDWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingHUDWindow.swift; sourceTree = "<group>"; };
 		EB801B362DB47DDE009632D0 /* RecordingGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingGlyph.swift; sourceTree = "<group>"; };
 		EB801B382DB48011009632D0 /* SourceGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceGlyph.swift; sourceTree = "<group>"; };
 		EB801B3A2DB4809B009632D0 /* ErrorGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorGlyph.swift; sourceTree = "<group>"; };
@@ -244,6 +248,7 @@
 		EB296DE52D653468008427DF /* Sample Editing */ = {
 			isa = PBXGroup;
 			children = (
+				EB78E2272E6B60FB006376EB /* EditingHUDWindow.swift */,
 				EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */,
 				EBF9507E2DA995E20060CF03 /* TokenField */,
 				EB296DF22D653556008427DF /* TrimmingPlayerView.swift */,
@@ -294,6 +299,7 @@
 		EB467BD02D92087C007E19E8 /* Main Window */ = {
 			isa = PBXGroup;
 			children = (
+				EB78E2252E6AADC0006376EB /* Sample Importer */,
 				EBB435962DB424F7006F9439 /* Glyphs */,
 				EB2ECD522DADD7F6005D1E06 /* Shaders.metal */,
 				EB467BD72D920D2C007E19E8 /* LCDScreenView.swift */,
@@ -341,6 +347,14 @@
 				EB5C8FCB2D99DBD800C4C3C2 /* Encoder.swift */,
 			);
 			path = Encoder;
+			sourceTree = "<group>";
+		};
+		EB78E2252E6AADC0006376EB /* Sample Importer */ = {
+			isa = PBXGroup;
+			children = (
+				EB78E2242E6AADC0006376EB /* ImportSampleSheetView.swift */,
+			);
+			path = "Sample Importer";
 			sourceTree = "<group>";
 		};
 		EB8313EF2D4DCCD200B343FF /* Sample Library */ = {
@@ -622,9 +636,11 @@
 				EBE4E94A2C43244D00397EF2 /* ContentView.swift in Sources */,
 				EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */,
 				EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */,
+				EB78E2262E6AADC0006376EB /* ImportSampleSheetView.swift in Sources */,
 				EB57F35A2E2DDC13006A5D94 /* GlobalRecordingPreviewWindow.swift in Sources */,
 				EBAF02632C8A132800520D44 /* Logging.swift in Sources */,
 				EB8642662DA7587C00D4883B /* SampleEditConfiguration.swift in Sources */,
+				EB78E2282E6B60FB006376EB /* EditingHUDWindow.swift in Sources */,
 				EB467BD62D9209CA007E19E8 /* AppKitWindowManagerDelegate.swift in Sources */,
 				EB8313F22D4DCDD600B343FF /* SidebarView.swift in Sources */,
 				EB801B3B2DB4809B009632D0 /* ErrorGlyph.swift in Sources */,

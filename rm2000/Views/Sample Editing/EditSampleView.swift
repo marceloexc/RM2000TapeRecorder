@@ -34,20 +34,25 @@ struct EditSampleView<Model: FileRepresentable>: View {
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 12) {
-        Text("Rename Recording")
+      VStack(alignment: .leading) {
+        Text("Edit Sample")
           .font(.headline)
+        Spacer()
+        
         TrimmingPlayerView(
           recording: model,
           forwardEndTime: $forwardEndTime,
           reverseEndTime: $reverseEndTime)
-
+        .cornerRadius(4)
+        
+        Spacer()
+        
         VStack(alignment: .leading, spacing: 4) {
-
+          
           Text("Title")
             .font(.caption)
             .foregroundColor(.secondary)
-
+          
           TextField("New Filename", text: $title)
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .autocorrectionDisabled()
@@ -56,13 +61,15 @@ struct EditSampleView<Model: FileRepresentable>: View {
               focusedField = true
             }
         }
-
+        
+        Spacer()
+        
         VStack(alignment: .leading, spacing: 4) {
           Text("Tags (comma-separated)")
             .font(.caption)
             .foregroundColor(.secondary)
           TokenInputField(tags: $tags)
-
+          
             .onChange(of: tags) { newValue in
               let forbiddenChars = CharacterSet(
                 charactersIn: "_-/:*?\"<>|,;[]{}'&\t\n\r")
@@ -73,64 +80,66 @@ struct EditSampleView<Model: FileRepresentable>: View {
                 })
               sampleExists = doesSampleAlreadyExist()
             }
-
+          
         }
-        //				DisclosureGroup("Additional Settings") {
-        //					VStack(alignment: .leading, spacing: 4) {
-        //						Text("Description (optional)")
-        //							.font(.caption)
-        //							.foregroundColor(.secondary)
-        //						TextEditor(text: .constant("Placeholder"))
-        //							.font(.system(size: 14, weight: .medium, design: .rounded)) // Uses a rounded, medium-weight system font
-        //							.lineSpacing(10) // Sets the line spacing to 10 points
-        //							.border(Color.gray, width: 1)
-        //					}.padding(.top, 8)
-        //				}
-        VStack(alignment: .leading, spacing: 4) {
-          Text("Preview:")
+      }
+      .padding(.horizontal)
+      .padding(.top, 16)
+      .padding(.bottom, 4)
+      Divider()
+
+      VStack(alignment: .trailing) {
+        HStack {
+          Text("Preview Filename")
             .font(.caption)
             .foregroundColor(.secondary)
           PreviewFilenameView(title: $title, tags: $tags)
-        }
-        .padding(.top, 8)
-
-        HStack {
-          Button("Cancel", role: .cancel) {
-            didErrorForCancel = true
-          }.keyboardShortcut(.cancelAction)
-
           Spacer()
-
-          if sampleExists {
-            HStack {
-              Label(
-                "Sample with same title and tags already exists",
-                systemImage: "exclamationmark.triangle"
-              )
-              .id(sampleExists)
-              .foregroundColor(.red)
-              .contentTransition(.opacity)
-              .font(.caption)
-            }
-          }
-
-          Button("Save to Sample Directory") {
-            if title.isEmpty && tags.isEmpty {
-              NSSound.beep()
-            } else {
-              if sampleExists {
-                didErrorForOverride = true
-              } else {
-                gatherAndComplete()
-              }
-            }
-          }
-          .buttonStyle(.borderedProminent)
-          .padding(.top, 8)
-        }.keyboardShortcut(.defaultAction)
+        }
       }
-      .padding()
+      .padding(.horizontal)
+      .padding(.vertical, 1)
+      
+      Divider()
+            
+      HStack {
+        if sampleExists {
+          HStack {
+            Label(
+              "Sample with same title and tags already exists",
+              systemImage: "exclamationmark.triangle"
+            )
+            .id(sampleExists)
+            .foregroundColor(.red)
+            .contentTransition(.opacity)
+            .font(.caption)
+          }
+        }
+
+        Spacer()
+        
+        Button("Cancel", role: .cancel) {
+          didErrorForCancel = true
+        }.keyboardShortcut(.cancelAction)
+
+        Button("Apply Edits and Save") {
+          if title.isEmpty && tags.isEmpty {
+            NSSound.beep()
+          } else {
+            if sampleExists {
+              didErrorForOverride = true
+            } else {
+              gatherAndComplete()
+            }
+          }
+        }
+        .buttonStyle(.borderedProminent)
+      }
+      .keyboardShortcut(.defaultAction)
+      .padding(.horizontal)
+      .padding(.vertical, 16)
     }
+    .frame(minHeight: 200)
     .alert("Replace existing sample?", isPresented: $didErrorForOverride) {
       Button("Replace", role: .destructive) {
         gatherAndComplete()

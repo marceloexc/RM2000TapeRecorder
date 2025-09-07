@@ -90,7 +90,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
     let hostingView = NSHostingView(rootView: AnyView(contentView))
     
     let effectView = NSVisualEffectView()
-    effectView.material = .hudWindow  // or .titlebar / .sidebar if hudWindow doesn’t render
+    effectView.material = .titlebar 
     effectView.blendingMode = .withinWindow
     effectView.state = .active
     

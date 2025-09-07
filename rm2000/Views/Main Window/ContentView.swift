@@ -56,8 +56,8 @@ struct ContentView: View {
             recordingsCompleted += 1
 
           }
-          .frame(minWidth: 500, maxWidth: 700, minHeight: 320)
-          .presentationBackground(.ultraThickMaterial)
+          .frame(minWidth: 500, maxWidth: 700, minHeight: 300)
+          .presentationBackground(.thickMaterial)
           .modify {
             if #available(macOS 15.0, *) {
               $0.presentationSizing(.fitted)

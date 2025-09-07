@@ -8,14 +8,10 @@ struct PreviewFilenameView: View {
 	let audioFormat = TapeRecorderState.shared.sampleRecordAudioFormat.asString
 	
 	var body: some View {
+    
 		Text(generatePreviewFilename())
-			.font(.system(size: 12, weight: .regular, design: .monospaced))
-			.foregroundColor(Color(red: 1, green: 0.6, blue: 0))
-			.padding(4)
-			.frame(maxWidth: .infinity)
-			.background(Color.black)
-			.contentTransition(.numericText())
-			.animation(.easeInOut, value: title)
+      .font(.caption)
+      .foregroundColor(.blue)
 			.onChange(of: tags) { newTags in
 				sortedTagsArray = newTags.sorted()
 			}

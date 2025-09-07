@@ -14,7 +14,7 @@ struct SampleLibraryView: View {
   @Environment(\.controlActiveState) private var controlActiveState
   @AppStorage("detailViewType") var detailViewType: DetailViewType = .list
   @State private var isAudioPlaying = false
-  @State private var isShowingSheet = false
+  @State private var isShowingImportSheet = false
   
   private var navigationSubtitle: String {
     if viewModel.predicateSelection.count > 1 {
@@ -71,8 +71,11 @@ struct SampleLibraryView: View {
         .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     }
     .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
-    .sheet(isPresented: $isShowingSheet, content: {
-      ImportSampleSheetView()
+    .sheet(isPresented: $isShowingImportSheet, content: {
+      ImportSampleSheetView { urls in
+        print(urls)
+//        isShowingImportSheet = false
+      }
     })
     .navigationTitle("Sample Library")
     .navigationSubtitle(navigationSubtitle)
@@ -119,7 +122,7 @@ struct SampleLibraryView: View {
   @ToolbarContentBuilder
   func mainToolbarContent() -> some CustomizableToolbarContent {
     ToolbarItem(id: "rm2000.import", placement: .primaryAction) {
-      ImportSampleButton(isShowingSheet: $isShowingSheet)
+      ImportSampleButton(isShowingSheet: $isShowingImportSheet)
     }
     ToolbarItem(id: "rm2000.edit", placement: .primaryAction) {
       EditSampleButton(selectedItems: viewModel.selectedSamples.map {

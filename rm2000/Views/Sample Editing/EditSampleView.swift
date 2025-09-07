@@ -1,6 +1,7 @@
 import Combine
 import CoreMedia
 import SwiftUI
+import SwiftUIIntrospect
 
 struct EditSampleView<Model: FileRepresentable>: View {
 
@@ -82,10 +83,24 @@ struct EditSampleView<Model: FileRepresentable>: View {
             }
           
         }
+        
+        DisclosureGroup("Additional Fields") {
+          Text("Testing!")
+        }
+        .font(.caption)
+//        
+//        HStack {
+//          Spacer()
+//          Button("", action: {})
+//              .introspect(.button, on: .macOS(.v10_15, .v11, .v12, .v13, .v14, .v15)) {
+//                $0.bezelStyle = .roundedDisclosure
+//                $0.setButtonType(.onOff)
+//              }
+//          }
+//        .padding(.horizontal)
       }
       .padding(.horizontal)
       .padding(.top, 16)
-      .padding(.bottom, 4)
       Divider()
 
       VStack(alignment: .trailing) {

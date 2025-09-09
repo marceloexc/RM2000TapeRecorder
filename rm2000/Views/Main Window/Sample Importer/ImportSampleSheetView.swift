@@ -36,7 +36,9 @@ struct ImportSampleSheetView: View {
       .padding()
       .onDrop(of: [.fileURL], delegate: ImportSampleDropDelegate(URLs: $files, onFilesSelected: onFilesSelected))
     } else {
-      EditSampleView(recording: TemporaryActiveRecording(fileURL: files.first!)) {  _, _, _ in
+      EditSampleView(recording: TemporaryActiveRecording(fileURL: files.first!)) {  FileRepresentable, SampleMetadata, SampleEditConfiguration in
+        
+        SampleStorage.shared.UserDirectory.applySampleEdits(to: FileRepresentable, for: SampleMetadata, with: SampleEditConfiguration)
         //
       }
     }

@@ -132,7 +132,7 @@ struct TrimmingPlayerView<Model: FileRepresentable>: View {
     VStack {
       if let playerView = viewModel.playerView {
         AudioPlayerView(playerView: playerView)
-          .frame(height: 60)
+          .frame(height: 70)
       } else {
         Text("Player not available")
           .foregroundColor(.secondary)

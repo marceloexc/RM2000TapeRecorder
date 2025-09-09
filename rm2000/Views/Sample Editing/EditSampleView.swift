@@ -44,7 +44,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
           recording: model,
           forwardEndTime: $forwardEndTime,
           reverseEndTime: $reverseEndTime)
-        .cornerRadius(4)
+        .cornerRadius(8)
         
         Spacer()
         

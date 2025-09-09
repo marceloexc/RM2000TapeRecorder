@@ -14,6 +14,7 @@ struct SampleLibraryView: View {
   @Environment(\.controlActiveState) private var controlActiveState
   @AppStorage("detailViewType") var detailViewType: DetailViewType = .list
   @State private var isAudioPlaying = false
+  @State private var isShowingImportSheet = false
   
   private var navigationSubtitle: String {
     if viewModel.predicateSelection.count > 1 {
@@ -70,6 +71,12 @@ struct SampleLibraryView: View {
         .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
     }
     .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
+    .sheet(isPresented: $isShowingImportSheet, content: {
+      ImportSampleSheetView { urls in
+        print(urls)
+//        isShowingImportSheet = false
+      }
+    })
     .navigationTitle("Sample Library")
     .navigationSubtitle(navigationSubtitle)
     .onChange(of: controlActiveState) {
@@ -114,15 +121,23 @@ struct SampleLibraryView: View {
   
   @ToolbarContentBuilder
   func mainToolbarContent() -> some CustomizableToolbarContent {
+    ToolbarItem(id: "rm2000.import", placement: .primaryAction) {
+      ImportSampleButton(isShowingSheet: $isShowingImportSheet)
+    }
+    ToolbarItem(id: "rm2000.edit", placement: .primaryAction) {
+      EditSampleButton(selectedItems: viewModel.selectedSamples.map {
+        FileRepresentableItemModel(file: $0.self)
+      })
+    }
     ToolbarItem(id: "rm2000.share.button", placement: .primaryAction) {
       ShareSampleButton(selectedItems: viewModel.selectedSamples.map { FileRepresentableItemModel(file: $0.self) } )
     }
-//    ToolbarItem(id: "rm2000.import", placement: .primaryAction) {
-//      ImportSampleButton()
-//    }
     ToolbarItem(id: "rm2000.open-in-finder-button", placement: .primaryAction)
     {
       OpenInFinderButton()
+    }
+    ToolbarItem(id: "rm2000.spacer") {
+      Spacer()
     }
     ToolbarItem(id: "rm2000.view-options", placement: .primaryAction) {
       ViewModeButton(selection: $detailViewType)

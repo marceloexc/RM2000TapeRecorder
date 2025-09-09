@@ -10,7 +10,7 @@ class WindowController: NSWindowController {
   }
 }
 
-class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, ObservableObject {
   
   var mainWindowController: WindowController?
   let recordingState = TapeRecorderState.shared
@@ -18,6 +18,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
   let mainWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
 
   private var onboardingWindowController: NSWindowController?
+  private var editingWindowController: NSWindowController?
   private var hudHostingView: NSHostingView<AnyView>?
   @MainActor private var confirmOnQuit: Bool {
     AppState.shared.confirmOnQuit
@@ -26,6 +27,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 
   private var hudWindow: NSWindow?
   private var mainWindow: NSWindow?
+  private var editingWindow: NSWindow?
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     AppState.shared.appDelegate = self
@@ -76,6 +78,35 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
     self.mainWindow?.deminiaturize(nil)
     self.mainWindow?.makeKeyAndOrderFront(nil)
     NSApp.activate(ignoringOtherApps: true)
+  }
+  
+  func showEditingWindow() {
+    let window = EditingHUDWindow(contentRect: NSRect(x: 100, y: 100, width: 500 , height: 400))
+    
+    let newRecording = Sample(fileURL: URL(string: "/Users/marceloexc/Music/RM2000 Tape Recorder/trackerrrrrr--tracker.mp3")!)!
+    let contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
+      //
+    }
+    let hostingView = NSHostingView(rootView: AnyView(contentView))
+    
+    let effectView = NSVisualEffectView()
+    effectView.material = .titlebar 
+    effectView.blendingMode = .withinWindow
+    effectView.state = .active
+    
+    effectView.addSubview(hostingView)
+    
+    hostingView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      hostingView.leadingAnchor.constraint(equalTo: effectView.leadingAnchor),
+      hostingView.trailingAnchor.constraint(equalTo: effectView.trailingAnchor),
+      hostingView.topAnchor.constraint(equalTo: effectView.topAnchor),
+      hostingView.bottomAnchor.constraint(equalTo: effectView.bottomAnchor)
+    ])
+    
+    window.contentView = effectView
+    editingWindowController = NSWindowController(window: window)
+    editingWindowController?.showWindow(nil)
   }
 
   func showHUDWindow() {

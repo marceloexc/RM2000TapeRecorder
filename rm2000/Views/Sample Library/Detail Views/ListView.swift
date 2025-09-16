@@ -54,8 +54,10 @@ struct SampleIndividualListItem: View {
       
       Spacer()
       
-      StaticWaveformView(fileURL: sample.file.fileURL)
-        .frame(maxWidth: 200, maxHeight: 20)
+      if #unavailable(macOS 26.0) {
+        StaticWaveformView(fileURL: sample.file.fileURL)
+          .frame(maxWidth: 200, maxHeight: 20)
+      }
       
       Spacer()
       HStack {

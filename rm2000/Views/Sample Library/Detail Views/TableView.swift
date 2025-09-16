@@ -73,11 +73,14 @@ struct RecordingsTableView: View {
       }
       .customizationID("id")
       
-      TableColumn("Waveform") { itemModel in
-        StaticWaveformView(fileURL: itemModel.file.fileURL)
+      if #unavailable(macOS 26.0) {
+        TableColumn("Waveform") { itemModel in
+          StaticWaveformView(fileURL: itemModel.file.fileURL)
+        }
+        .customizationID("waveform")
+        .disabledCustomizationBehavior(.resize)
       }
-      .customizationID("waveform")
-      .disabledCustomizationBehavior(.resize)
+
     } rows: {
       ForEach(sortedFilteredSamples) { itemModel in
         TableRow(itemModel)

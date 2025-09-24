@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Record Button Glow_1x.png",
+      "filename" : "Record Button Glow.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Record Button Glow_2x.png",
+      "filename" : "Record Button Glow@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

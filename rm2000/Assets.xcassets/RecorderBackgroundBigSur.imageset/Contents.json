@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "Background Copy 2fifth@1x.png",
+      "filename" : "Backgroundbigsur_nos@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Background Copy 2fifth@2x.png",
+      "filename" : "Backgroundbigsur_nos@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Background Copy 2@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -50,7 +50,7 @@ struct StandbyRecordButton: View {
 			Image("RecordButtonTemp")
 			Image("RecordButtonGlow")
 				.resizable()
-				.frame(width: 200, height: 200)
+				.frame(width: 180, height: 180)
 				.allowsHitTesting(false)
 			
 			Button(action: onPress) {
@@ -121,3 +121,7 @@ extension View {
 	}
 }
 
+#Preview("RecordingButton") {
+  StandbyRecordButton(onPress: ({print("Hello world")}))
+    .frame(width: 300, height:300)
+}

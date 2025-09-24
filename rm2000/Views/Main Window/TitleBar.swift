@@ -88,12 +88,20 @@ class MicrophoneGrilleView: NSView {
   private func updateAppearance() {
     let isDarkMode =
       effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-
-    if let image = NSImage(named: "MicGrilleBitmap") {
-      image.size = NSSize(width: 130, height: 19)
-      imageView.image = image
+    
+    if #available(macOS 26.0, *) {
+      if let image = NSImage(named: "MicGrilleBitmapTahoe") {
+        image.size = NSSize(width: 130, height: 19)
+        imageView.image = image
+      }
     }
-
+    else {
+      if let image = NSImage(named: "MicGrilleBitmap") {
+        image.size = NSSize(width: 130, height: 19)
+        imageView.image = image
+      }
+    }
+    
     if isDarkMode {
       let shadow = NSShadow()
       shadow.shadowOffset = NSSize(width: 1, height: -2)

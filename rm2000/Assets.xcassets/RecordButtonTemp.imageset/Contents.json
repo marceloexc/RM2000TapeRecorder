@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "RecordButton_1x.png",
+      "filename" : "Record Button Active (Exportable).png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "RecordButton_2x.png",
+      "filename" : "Record Button Active (Exportable)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

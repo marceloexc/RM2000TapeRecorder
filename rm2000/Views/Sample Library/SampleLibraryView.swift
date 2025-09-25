@@ -116,7 +116,6 @@ struct SampleLibraryView: View {
           }
         }
       }
-//      .debugCompute()
   }
   
   @ToolbarContentBuilder

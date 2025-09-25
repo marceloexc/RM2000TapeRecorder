@@ -10,14 +10,14 @@ import OSLog
 
 struct DebugTabView: View {
 
-  @EnvironmentObject var appDelegate: AppKitWindowManagerDelegate
+//  @EnvironmentObject var appDelegate: AppKitWindowManagerDelegate
   
   var body: some View {
     Form {
       Text( "For debug use only")
       
       Button{
-        appDelegate.showEditingWindow()
+//        appDelegate.showEditingWindow(sample: <#T##Sample#>)
         
       } label: {
         Text("Show editing window")

@@ -80,12 +80,11 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
     NSApp.activate(ignoringOtherApps: true)
   }
   
-  func showEditingWindow() {
+  func showEditingWindow(sample: Sample) {
     let window = EditingHUDWindow(contentRect: NSRect(x: 100, y: 100, width: 500 , height: 400))
     
-    let newRecording = Sample(fileURL: URL(string: "/Users/marceloexc/Music/RM2000 Tape Recorder/trackerrrrrr--tracker.mp3")!)!
+    let newRecording = sample
     let contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
-      //
     }
     let hostingView = NSHostingView(rootView: AnyView(contentView))
     

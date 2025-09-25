@@ -27,10 +27,17 @@ struct EditSampleView<Model: FileRepresentable>: View {
     ) -> Void
   ) {
     self.onComplete = onComplete
-    _title = State(initialValue: "")
-    _tags = State(initialValue: Set<String>())
-    _description = State(initialValue: "")
     self.model = recording
+    
+    if let sample = self.model as? Sample {
+      _title = State(initialValue: sample.metadata.title)
+      _tags = State(initialValue: Set(sample.metadata.tags))
+      _description = State(initialValue: sample.metadata.description)
+    } else {
+      _title = State(initialValue: "")
+      _tags = State(initialValue: Set<String>())
+      _description = State(initialValue: "")
+    }
   }
 
   var body: some View {
@@ -88,16 +95,6 @@ struct EditSampleView<Model: FileRepresentable>: View {
           Text("Testing!")
         }
         .font(.caption)
-//        
-//        HStack {
-//          Spacer()
-//          Button("", action: {})
-//              .introspect(.button, on: .macOS(.v10_15, .v11, .v12, .v13, .v14, .v15)) {
-//                $0.bezelStyle = .roundedDisclosure
-//                $0.setButtonType(.onOff)
-//              }
-//          }
-//        .padding(.horizontal)
       }
       .padding(.horizontal)
       .padding(.top, 16)

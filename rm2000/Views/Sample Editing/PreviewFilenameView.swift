@@ -11,7 +11,7 @@ struct PreviewFilenameView: View {
     
 		Text(generatePreviewFilename())
       .font(.caption)
-      .foregroundColor(.blue)
+      .foregroundColor(.accentColor)
 			.onChange(of: tags) { newTags in
 				sortedTagsArray = newTags.sorted()
 			}

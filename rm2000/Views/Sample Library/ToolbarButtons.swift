@@ -54,7 +54,7 @@ struct ShareSampleButton: View {
 }
 
 struct EditSampleButton: View {
-  @EnvironmentObject var appDelegate: AppKitWindowManagerDelegate
+  @EnvironmentObject var appDelegate: AppDelegate
 
   var selectedItems: [FileRepresentableItemModel]?
   

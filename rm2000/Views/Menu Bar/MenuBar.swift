@@ -7,7 +7,7 @@ struct MenuBarView: View {
   @EnvironmentObject private var sampleStorage: SampleStorage
   @Environment(\.openWindow) private var openWindow
 
-  weak var appDelegate: AppKitWindowManagerDelegate?
+  weak var appDelegate: AppDelegate?
 
   var body: some View {
     VStack(spacing: 12) {

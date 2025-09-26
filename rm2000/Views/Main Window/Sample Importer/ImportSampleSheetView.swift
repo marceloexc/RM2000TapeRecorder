@@ -14,7 +14,7 @@ struct ImportSampleSheetView: View {
   
   let onFilesSelected: ([URL]) -> Void
   
-  weak var appDelegate: AppKitWindowManagerDelegate?
+  weak var appDelegate: AppDelegate?
 
   init(onFilesSelected: @escaping ([URL]) -> Void) {
     self.onFilesSelected = onFilesSelected

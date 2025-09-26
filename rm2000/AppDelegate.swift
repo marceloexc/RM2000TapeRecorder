@@ -10,7 +10,7 @@ class WindowController: NSWindowController {
   }
 }
 
-class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, ObservableObject {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, ObservableObject {
   
   var mainWindowController: WindowController?
   let recordingState = TapeRecorderState.shared
@@ -233,7 +233,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
   }
 }
 
-extension AppKitWindowManagerDelegate {
+extension AppDelegate {
   @objc func windowWillClose(_ notification: Notification) {
     if let window = notification.object as? NSWindow,
       window === mainWindowController?.window

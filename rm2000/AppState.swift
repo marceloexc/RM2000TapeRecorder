@@ -70,7 +70,7 @@ import SwiftUI
     storekitManager.hasPurchasedApp
   }
   
-  weak var appDelegate: AppKitWindowManagerDelegate?
+  weak var appDelegate: AppDelegate?
 
   init() {
     Logger.appState.info("Welcome to RM2000 Tape Recorder!")

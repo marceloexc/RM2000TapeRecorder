@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct RecordingsTableView: View {
+  @EnvironmentObject var appDelegate: AppDelegate
+
   @StateObject var viewModel: SampleLibraryViewModel
   let predicate: SampleFilterPredicate
 
@@ -96,6 +98,12 @@ struct RecordingsTableView: View {
             }
             
             Divider()
+            
+            Button("Edit Sample") {
+              
+              // TODO, dont hardcode downcast as sample, need to be able to edit any type of FileRepresentable
+              ContextMenu.editSample(sample: viewModel.selectedSamples.first! as! Sample, appDelegate: appDelegate)
+            }
             
             Button("Move to Trash") {
               ContextMenu.moveToTrash(urls: urls)

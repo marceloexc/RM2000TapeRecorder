@@ -52,6 +52,10 @@ struct ContextMenu {
       try! FileManager.default.trashItem(at: url, resultingItemURL: nil)
     }
   }
+  
+  static func editSample(sample: Sample, appDelegate: AppDelegate) {
+    appDelegate.showEditingWindow(sample: sample)
+  }
 }
 
 #Preview {

@@ -14,8 +14,13 @@ struct EditSampleView<Model: FileRepresentable>: View {
   @State private var sampleExists: Bool = false
   @State private var didErrorForOverride: Bool = false
   @State private var didErrorForCancel: Bool = false
+  @State private var isModified: Bool = false
   @Environment(\.dismiss) private var dismiss
   @FocusState private var focusedField: Bool
+  
+  // needed for having access to the Editing Panel
+  // to close it
+  weak var editingPanel: NSPanel?
 
   private let onComplete:
     (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void
@@ -51,6 +56,8 @@ struct EditSampleView<Model: FileRepresentable>: View {
           recording: model,
           forwardEndTime: $forwardEndTime,
           reverseEndTime: $reverseEndTime)
+        .onChange(of: forwardEndTime) { isModified = true }
+        .onChange(of: reverseEndTime) { isModified = true }
         .cornerRadius(8)
         
         Spacer()
@@ -68,6 +75,9 @@ struct EditSampleView<Model: FileRepresentable>: View {
             .onAppear {
               focusedField = true
             }
+            .onChange(of: title) {
+              isModified = true
+            }
         }
         
         Spacer()
@@ -79,6 +89,8 @@ struct EditSampleView<Model: FileRepresentable>: View {
           TokenInputField(tags: $tags)
           
             .onChange(of: tags) { newValue in
+              isModified = true
+              
               let forbiddenChars = CharacterSet(
                 charactersIn: "_-/:*?\"<>|,;[]{}'&\t\n\r")
               tags = Set(
@@ -86,6 +98,8 @@ struct EditSampleView<Model: FileRepresentable>: View {
                   String(
                     tag.unicodeScalars.filter { !forbiddenChars.contains($0) })
                 })
+              
+              
               sampleExists = doesSampleAlreadyExist()
             }
           
@@ -127,13 +141,28 @@ struct EditSampleView<Model: FileRepresentable>: View {
             .font(.caption)
           }
         }
+        
+        Button("Discard", role: .destructive) {
+          
+          // assuming that every new recording will want to display
+          // the discard confirmation dialog
+          if (model is TemporaryActiveRecording || isModified) {
+            didErrorForCancel = true
+          } else {
+            editingPanel?.close()
+          }
+        }.keyboardShortcut(.cancelAction)
+          .foregroundColor(Color.red)
+          
 
         Spacer()
         
-        Button("Cancel", role: .cancel) {
-          didErrorForCancel = true
-        }.keyboardShortcut(.cancelAction)
-
+        Button("Archive") {
+          
+          //
+        }.buttonStyle(.bordered)
+//          .keyboardShortcut(.cancelAction)
+        
         Button("Apply Edits and Save") {
           if title.isEmpty && tags.isEmpty {
             NSSound.beep()
@@ -146,24 +175,31 @@ struct EditSampleView<Model: FileRepresentable>: View {
           }
         }
         .buttonStyle(.borderedProminent)
+        .keyboardShortcut(.defaultAction)
+
       }
-      .keyboardShortcut(.defaultAction)
       .padding(.horizontal)
       .padding(.vertical, 16)
     }
     .frame(minHeight: 200)
+    
+    
     .alert("Replace existing sample?", isPresented: $didErrorForOverride) {
       Button("Replace", role: .destructive) {
         gatherAndComplete()
       }
-      Button("Cancel", role: .cancel) {}
+      Button("Cancel", role: .cancel) {
+      }
     } message: {
       Text("Another sample with identical title and tags already exists.")
     }
+    
+    
     .alert("Cancel Editing?", isPresented: $didErrorForCancel) {
       Button("Go Back", role: .cancel) {}
       Button("Confirm") {
         dismiss()
+        editingPanel?.close()
       }
     } message: {
       Text("This recording will be lost once the app is quit.")

@@ -84,8 +84,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, Observable
     let window = EditingHUDWindow(contentRect: NSRect(x: 100, y: 100, width: 500 , height: 400))
     
     let newRecording = sample
-    let contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
+    var contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
     }
+    contentView.editingPanel = window
     let hostingView = NSHostingView(rootView: AnyView(contentView))
     
     let effectView = NSVisualEffectView()

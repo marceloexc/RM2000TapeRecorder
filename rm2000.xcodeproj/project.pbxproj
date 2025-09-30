@@ -250,7 +250,7 @@
 			children = (
 				EB78E2272E6B60FB006376EB /* EditingHUDWindow.swift */,
 				EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */,
-				EBF9507E2DA995E20060CF03 /* TokenField */,
+				EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */,
 				EB296DF22D653556008427DF /* TrimmingPlayerView.swift */,
 				EBCA46E12CACBEE700040159 /* EditSampleView.swift */,
 			);
@@ -517,14 +517,6 @@
 				EBE4E9652C43245000397EF2 /* rm2000UITestsLaunchTests.swift */,
 			);
 			path = rm2000UITests;
-			sourceTree = "<group>";
-		};
-		EBF9507E2DA995E20060CF03 /* TokenField */ = {
-			isa = PBXGroup;
-			children = (
-				EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */,
-			);
-			path = TokenField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

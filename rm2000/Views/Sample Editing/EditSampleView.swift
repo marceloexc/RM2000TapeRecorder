@@ -208,11 +208,13 @@ struct EditSampleView<Model: FileRepresentable>: View {
 
   private func gatherAndComplete() {
     var configuration = SampleEditConfiguration()
-    configuration.directoryDestination = SampleStorage.shared.UserDirectory
+    
+    // todo - fix this
     configuration.forwardEndTime = forwardEndTime
     configuration.reverseEndTime = reverseEndTime
 
     var metadata = SampleMetadata()
+    metadata.outputDestination = SampleStorage.shared.UserDirectory
     metadata.title = title
     metadata.tags = tags
     var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)

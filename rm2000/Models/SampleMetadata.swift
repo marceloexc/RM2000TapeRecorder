@@ -7,8 +7,8 @@ struct SampleMetadata {
 	var tags: Set<String> = []
 	var description: String? = ""
 	var fileFormat: AudioFormat = .wav
-	var group: URL?
-	
+  var outputDestination: SampleDirectory? = nil
+
 	init() {
 		
 	}
@@ -33,15 +33,17 @@ struct SampleMetadata {
 				.filter { !$0.isEmpty })
 		}
 	}
-	
-	func finalFilename(fileExtension: String) -> String {
-		// Construct the filename in the format "title--tag1_tag2_tag3.aac"
-		if tags.isEmpty {
-			// tags are empty, use omit them
-			return "\(title).\(fileExtension)"
-		} else {
-			let formattedTags = tags.joined(separator: "_")
-			return "\(title)--\(formattedTags).\(fileExtension)"
-		}
-	}
+  
+  var finalFinalname: String {
+    if tags.isEmpty {
+      return "\(title).\(fileFormat.asString)"
+    } else {
+      let formattedTags = tags.joined(separator: "_")
+      return "\(title)--\(formattedTags).\(fileFormat.asString)"
+    }
+  }
+  
+  var destinedOutput: URL {
+    (outputDestination?.directory.appendingPathComponent(finalFinalname))!
+  }
 }

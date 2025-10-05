@@ -67,46 +67,28 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
     }
   }
 
-  // having a lot of fun with arg labels today :)
   func applySampleEdits(
     to sample: FileRepresentable, for metadata: SampleMetadata,
     with configuration: SampleEditConfiguration
   ) {
-
-    var needsEncoding: Bool = false
-
-    if sample is TemporaryActiveRecording {
-      needsEncoding = true
-    }
-
-    Task {
-      do {
-        let encoder = Encoder(fileURL: sample.fileURL)
-        let audioFormat = TapeRecorderState.shared.sampleRecordAudioFormat
-        let filename = sample.id.uuidString + "." + audioFormat.asString
-        let tempFilePath = await SampleStorage.shared.UserDirectory.directory
-          .appendingPathComponent(filename)
-        //				let tempFilePath = WorkingDirectory.applicationSupportPath().appendingPathComponent(filename)
-
-        let encodingConfig = EncodingConfig(
-          outputFormat: TapeRecorderState.shared.sampleRecordAudioFormat,
-          outputURL: tempFilePath,
-          forwardStartTime: configuration.forwardEndTime,
-          backwardsEndTime: configuration.reverseEndTime)
-
-        try await encoder.encode(with: encodingConfig)
-
-        let finalFilename = metadata.finalFilename(
-          fileExtension: audioFormat.asString)
-
-        try fileManager.moveItem(
-          at: tempFilePath,
-          to: self.directory.appendingPathComponent(finalFilename)
-        )
-
-        indexedTags.formUnion(metadata.tags)
-      }
-    }
+//    Task {
+//      do {
+//        let encoder = Encoder(fileURL: sample.fileURL)
+//        let audioFormat = TapeRecorderState.shared.sampleRecordAudioFormat
+//        try await encoder.encode(with: encodingConfig)
+//
+//        let finalFilename = metadata.finalFilename(
+//          fileExtension: audioFormat.asString)
+//
+//        try fileManager.moveItem(
+//          at: tempFilePath,
+//          to: self.directory.appendingPathComponent(finalFilename)
+//        )
+//
+//        // add new tags to indexedTags in SampleStorage
+//        indexedTags.formUnion(metadata.tags)
+//      }
+//    }
   }
 
   private func setupDirectoryWatching() {

@@ -6,7 +6,7 @@ struct SampleMetadata {
 	var title: String = ""
 	var tags: Set<String> = []
 	var description: String? = ""
-	var fileFormat: AudioFormat = .wav
+	var fileFormat: AudioFormat = TapeRecorderState.shared.sampleRecordAudioFormat
   var outputDestination: SampleDirectory? = nil
 
 	init() {

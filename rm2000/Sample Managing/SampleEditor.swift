@@ -11,7 +11,7 @@ class SampleEditor {
   
   let metadata: SampleMetadata
   
-  let editConfiguration: SampleEditConfiguration
+  let editConfiguration: SampleEditConfiguration?
   
   init(sample: FileRepresentable, metadata: SampleMetadata, editConfiguration: SampleEditConfiguration) {
     self.sample = sample
@@ -19,10 +19,25 @@ class SampleEditor {
     self.editConfiguration = editConfiguration
   }
   
-  func encode() async throws {
+  init(sample: FileRepresentable, metadata: SampleMetadata) {
+    self.sample = sample
+    self.metadata = metadata
+    self.editConfiguration = nil
+  }
+  
+  func processAndConvert() async throws {
     
     // let glyphs update
     await MainActor.run { TapeRecorderState.shared.status = .busy }
+    
+    // TODO: - Don't use (String(describing: ))
+    // when I log this, it gives some very unhelpful stats about what we encode
+    // like `outputDestination: Optional(RM2000_Tape_Recorder.SampleDirectory)`
+    Logger.encoder.info("""
+      Encoder called: \(String(describing: self.sample))
+      \(String(describing: self.metadata))
+      \(String(describing: self.editConfiguration))
+      """)
     
     /// get decodings
     guard let decoder = try? AudioDecoder(url: self.sample.fileURL) else {
@@ -47,8 +62,8 @@ class SampleEditor {
     
     guard let trimmedBuffer = trimPCMBuffer(
       buffer: buffer,
-      forwardsEndTime: self.editConfiguration.forwardEndTime!,
-      reverseEndTime: self.editConfiguration.reverseEndTime!
+      forwardsEndTime: (self.editConfiguration?.forwardEndTime!)!,
+      reverseEndTime: (self.editConfiguration?.reverseEndTime!)!
     )
     else {
       Logger.encoder.error("Failed to trim buffer")
@@ -61,9 +76,10 @@ class SampleEditor {
     
     try writeToAACWithAVAudioFile(buffer: trimmedBuffer, to: temporaryTrimmedFile)
     
-    await RMAudioConverter.convert(
-      input: temporaryTrimmedFile, output: outputFile,
-      format: editConfiguration.audioFormat)
+    await convert(
+      from: temporaryTrimmedFile, to: outputFile,
+      // TODO: - This piece of shit is so ugly
+      format: AudioFormat(rawValue: (self.editConfiguration?.audioFormat)!.rawValue) ?? .mp3)
     
     
     // delete the original file
@@ -72,6 +88,10 @@ class SampleEditor {
     await MainActor.run {
     TapeRecorderState.shared.status = .idle
     }
+  }
+  
+  func convertDirectly() async {
+    await convert(from: self.sample.fileURL, to: self.metadata.destinedOutput, format: self.metadata.fileFormat)
   }
 
   func convert(from fileURL: URL, to output: URL, format: AudioFormat) async {

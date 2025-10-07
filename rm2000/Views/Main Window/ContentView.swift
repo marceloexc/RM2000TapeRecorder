@@ -42,8 +42,6 @@ struct ContentView: View {
         if let newRecording = recordingState.currentActiveRecording {
           EditSampleView(recording: newRecording) {
             FileRepresentable, SampleMetadata, SampleEditConfiguration in
-
-            // TODO - trainwreck. if i already have to pass in the shared.userdirectory, then this probably belongs in samplestorage itself, not sampledirectory
             
             // todo , determine which one to choose (to include sample edit config or not)
             let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)

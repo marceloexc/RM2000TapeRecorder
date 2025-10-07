@@ -38,7 +38,8 @@ struct ImportSampleSheetView: View {
     } else {
       EditSampleView(recording: TemporaryActiveRecording(fileURL: files.first!)) {  FileRepresentable, SampleMetadata, SampleEditConfiguration in
         
-        SampleStorage.shared.UserDirectory.applySampleEdits(to: FileRepresentable, for: SampleMetadata, with: SampleEditConfiguration)
+        // TODO: - Fix this, don't force unwrap SampleEditConfig
+        SampleStorage.shared.UserDirectory.applySampleEdits(to: FileRepresentable, for: SampleMetadata, with: SampleEditConfiguration!)
         //
       }
     }

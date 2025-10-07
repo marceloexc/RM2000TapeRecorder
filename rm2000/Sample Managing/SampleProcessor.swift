@@ -34,19 +34,23 @@ class SampleProcessor {
     // what should it throw?
     
     // if edit config is not nil, then we want to use the encoder
-    if editConfig != nil {
+    if let editConfig = editConfig {
       print("This wants to be edited")
       
-      let encoder = SampleEditor(sample: self.file, metadata: self.metadata, editConfiguration: self.editConfig!)
+      let encoder = SampleEditor(sample: self.file, metadata: self.metadata, editConfiguration: editConfig)
 
       Task {
         do {
-          try await encoder.encode()
+          try await encoder.processAndConvert()
         }
       }
     }
     else {
       print("This doesn't need to be edited.")
+      
+      let encoder = SampleEditor(sample: self.file, metadata: self.metadata)
+      
+      Task { do { await encoder.convertDirectly() }}
     }
   }
 }

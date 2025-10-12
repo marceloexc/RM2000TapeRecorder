@@ -26,10 +26,6 @@ class SampleEditor {
   }
   
   func processAndConvert() async throws {
-    
-    // let glyphs update
-    await MainActor.run { TapeRecorderState.shared.status = .busy }
-    
     // TODO: - Don't use (String(describing: ))
     // when I log this, it gives some very unhelpful stats about what we encode
     // like `outputDestination: Optional(RM2000_Tape_Recorder.SampleDirectory)`
@@ -85,9 +81,6 @@ class SampleEditor {
     // delete the original file
 //    try? FileManager.default.removeItem(at: self.sourceURL!)
     
-    await MainActor.run {
-    TapeRecorderState.shared.status = .idle
-    }
   }
   
   func convertDirectly() async {
@@ -99,6 +92,7 @@ class SampleEditor {
       try AudioConverter.convert(fileURL, to: output)
     } catch {
       Logger.encoder.error("Conversion failed: \(error.localizedDescription)")
+      showNSAlert(error: error)
     }
   }
   
@@ -232,4 +226,9 @@ class SampleEditor {
       forWriting: url, settings: outputFormat.settings)
     try outputFile.write(from: convertedBuffer)
   }
+}
+
+enum SampleEditorError: Error, LocalizedError {
+  case failure
+  var errorDescription: String? { "Failure" }
 }

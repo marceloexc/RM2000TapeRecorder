@@ -9,6 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ImportSampleSheetView: View {
+  @Environment (\.dismiss) var dismiss
   @State private var isBeingDragged: Bool = false
   @State private var files: [URL] = []
   
@@ -38,9 +39,10 @@ struct ImportSampleSheetView: View {
     } else {
       EditSampleView(recording: TemporaryActiveRecording(fileURL: files.first!)) {  FileRepresentable, SampleMetadata, SampleEditConfiguration in
         
-        // TODO: - Fix this, don't force unwrap SampleEditConfig
-        SampleStorage.shared.UserDirectory.applySampleEdits(to: FileRepresentable, for: SampleMetadata, with: SampleEditConfiguration!)
-        //
+        let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+        
+        try? processor.apply()
+        dismiss()
       }
     }
   }
@@ -82,7 +84,6 @@ struct ImportSampleDropDelegate: DropDelegate {
 
 #Preview {
   ImportSampleSheetView { urls in
-    print(urls)
 //    isShowingImportSheet = false
   }
 }

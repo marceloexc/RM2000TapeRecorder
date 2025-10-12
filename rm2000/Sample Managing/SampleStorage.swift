@@ -66,31 +66,7 @@ class SampleDirectory: ObservableObject, DirectoryWatcherDelegate {
       )
     }
   }
-
-  func applySampleEdits(
-    to sample: FileRepresentable, for metadata: SampleMetadata,
-    with configuration: SampleEditConfiguration
-  ) {
-//    Task {
-//      do {
-//        let encoder = Encoder(fileURL: sample.fileURL)
-//        let audioFormat = TapeRecorderState.shared.sampleRecordAudioFormat
-//        try await encoder.encode(with: encodingConfig)
-//
-//        let finalFilename = metadata.finalFilename(
-//          fileExtension: audioFormat.asString)
-//
-//        try fileManager.moveItem(
-//          at: tempFilePath,
-//          to: self.directory.appendingPathComponent(finalFilename)
-//        )
-//
-//        // add new tags to indexedTags in SampleStorage
-//        indexedTags.formUnion(metadata.tags)
-//      }
-//    }
-  }
-
+  
   private func setupDirectoryWatching() {
     let watcher = DirectoryWatcher(url: directory)
     watcher.delegate = self

@@ -29,28 +29,29 @@ class SampleProcessor {
 //  make sure it can `try?`
     
   func apply() throws {
-    let tempFilename = file.id.uuidString + "." + self.metadata.fileFormat.asString
     
     // what should it throw?
-    
     // if edit config is not nil, then we want to use the encoder
-    if let editConfig = editConfig {
-      print("This wants to be edited")
+    Task {
+      do { await MainActor.run { TapeRecorderState.shared.status = .busy }}
       
-      let encoder = SampleEditor(sample: self.file, metadata: self.metadata, editConfiguration: editConfig)
-
-      Task {
+      if let editConfig = editConfig {
+        print("This wants to be edited")
+        
+        let encoder = SampleEditor(sample: self.file, metadata: self.metadata, editConfiguration: editConfig)
         do {
           try await encoder.processAndConvert()
         }
       }
-    }
-    else {
-      print("This doesn't need to be edited.")
+      else {
+        print("This doesn't need to be edited.")
+        
+        let encoder = SampleEditor(sample: self.file, metadata: self.metadata)
+        
+        Task { do { await encoder.convertDirectly() }}
+      }
       
-      let encoder = SampleEditor(sample: self.file, metadata: self.metadata)
-      
-      Task { do { await encoder.convertDirectly() }}
+      do { await MainActor.run { TapeRecorderState.shared.status = .idle }}
     }
   }
 }

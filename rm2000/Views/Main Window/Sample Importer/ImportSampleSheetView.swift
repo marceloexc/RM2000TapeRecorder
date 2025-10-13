@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 import OSLog
 
 struct ImportSampleSheetView: View {
-  @Environment (\.dismiss) var dismiss
+  @Environment(\.dismiss) var dismiss
   @State private var isBeingDragged: Bool = false
   @State private var files: [URL] = []
   
@@ -34,7 +34,7 @@ struct ImportSampleSheetView: View {
           Text(files.first?.absoluteString ?? "No file selected")
         }
       }
-      .frame(minHeight: 300)
+      .frame(minWidth: 500, minHeight: 300)
       .padding()
       .onDrop(of: [.fileURL], delegate: ImportSampleDropDelegate(URLs: $files, onFilesSelected: onFilesSelected))
     } else {

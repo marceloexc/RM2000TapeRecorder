@@ -62,15 +62,7 @@ struct ContentView: View {
           }
           .frame(minWidth: 500, maxWidth: 700, minHeight: 300)
           .presentationBackground(.thickMaterial)
-          .modify {
-            if #available(macOS 15.0, *) {
-              $0.presentationSizing(.fitted)
-            } else {
-              $0.introspect(.window, on: .macOS(.v14)) { window in
-                window.styleMask.formUnion(.resizable)
-              }
-            }
-          }
+          .modifier(StandardSheetSizingModifier())
         }
       }
       .sheet(isPresented: $showTrialExpiredSheet) {

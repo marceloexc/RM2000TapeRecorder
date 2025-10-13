@@ -76,6 +76,7 @@ struct SampleLibraryView: View {
         print(urls)
 //        isShowingImportSheet = false
       }
+      .modifier(StandardSheetSizingModifier())
     })
     .navigationTitle("Sample Library")
     .navigationSubtitle(navigationSubtitle)

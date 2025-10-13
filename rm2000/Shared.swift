@@ -334,6 +334,20 @@ extension View {
     }
 }
 
+struct StandardSheetSizingModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 15.0, *) {
+            content
+                .presentationSizing(.fitted)
+        } else {
+            content
+                .introspect(.window, on: .macOS(.v14)) { window in
+                    window.styleMask.formUnion(.resizable)
+                }
+        }
+    }
+}
+
 func showNSAlert(error: Error) {
   let alert = NSAlert()
   alert.messageText = "Error processing audio"

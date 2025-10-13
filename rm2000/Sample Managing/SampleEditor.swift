@@ -25,7 +25,7 @@ class SampleEditor {
     self.editConfiguration = nil
   }
   
-  func processAndConvert() async throws {
+  func processAndConvert() async throws -> URL? {
     // TODO: - Don't use (String(describing: ))
     // when I log this, it gives some very unhelpful stats about what we encode
     // like `outputDestination: Optional(RM2000_Tape_Recorder.SampleDirectory)`
@@ -38,7 +38,7 @@ class SampleEditor {
     /// get decodings
     guard let decoder = try? AudioDecoder(url: self.sample.fileURL) else {
       Logger.encoder.error("Failed to init decoder for \(self.sample.fileURL)")
-      return
+      return nil
     }
     
     try decoder.open()
@@ -51,7 +51,7 @@ class SampleEditor {
     guard let buffer = AVAudioPCMBuffer(pcmFormat: processingFormat, frameCapacity: frameCount)
     else {
       Logger.encoder.error("Failed to get buffers from the decoder for \(self.sample.fileURL)")
-      return
+      return nil
     }
     
     try decoder.decode(into: buffer, length: frameCount)
@@ -63,55 +63,73 @@ class SampleEditor {
     )
     else {
       Logger.encoder.error("Failed to trim buffer")
-      return
+      return nil
     }
     
-    let temporaryTrimmedFile = try createTemporaryFile()
-    
-    let outputFile = (metadata.outputDestination?.directory.appendingPathComponent(metadata.finalFinalname))!
+    let temporaryTrimmedFile = try createTemporaryFile(type: .forTrim)
     
     try writeToAACWithAVAudioFile(buffer: trimmedBuffer, to: temporaryTrimmedFile)
+    // okay, awesome, the temporary .caf is written to, now lets convert it
     
-    await convert(
+//    let outputFile = (metadata.outputDestination?.directory.appendingPathComponent(metadata.finalFinalname))!
+    
+    let outputFile = try createTemporaryFile(type: .forConversion)
+    
+    let trimmedAndConvertedFile = await convert(
       from: temporaryTrimmedFile, to: outputFile,
       // TODO: - This piece of shit is so ugly
       format: AudioFormat(rawValue: (self.editConfiguration?.audioFormat)!.rawValue) ?? .mp3)
     
-    
-    // delete the original file
-//    try? FileManager.default.removeItem(at: self.sourceURL!)
-    
+    return trimmedAndConvertedFile
   }
   
-  func convertDirectly() async {
-    await convert(from: self.sample.fileURL, to: self.metadata.destinedOutput, format: self.metadata.fileFormat)
+  func convertDirectly() async -> URL? {
+    let convertedFile = await convert(from: self.sample.fileURL, to: self.metadata.destinedOutput, format: self.metadata.fileFormat)
+    return convertedFile
   }
 
-  func convert(from fileURL: URL, to output: URL, format: AudioFormat) async {
+  func convert(from fileURL: URL, to output: URL, format: AudioFormat) async -> URL? {
     do {
       try AudioConverter.convert(fileURL, to: output)
+      return output
     } catch {
       Logger.encoder.error("Conversion failed: \(error.localizedDescription)")
       showNSAlert(error: error)
+      return nil
     }
-  }
-  
-  func convert(from pcm: any PCMDecoding, to output: URL, format: AudioFormat) {
-    
   }
   
   // MARK: - Private stuff
   
-  private func createTemporaryFile() throws -> URL {
+  private func createTemporaryFile(type: TemporaryConvertedFileType) throws -> URL {
+    var temporaryFilename = UUID().uuidString
     let destination = self.metadata.outputDestination
     
-    let temporaryDirectoryURL =
-    try FileManager.default.url(for: .itemReplacementDirectory, in: .userDomainMask, appropriateFor: destination?.directory, create: true)
-    
-    let temporaryFilename = UUID().uuidString + "trimmed.caf"
+    let temporaryDirectoryURL = try FileManager.default.url(for: .itemReplacementDirectory,
+                                                            in: .userDomainMask, appropriateFor: destination?.directory,
+                                                            create: true)
+    /*
+     pretty ugly unfortunately.
+     
+     we always want to use a CAF file when trimming so that we love minimal quality in the process.
+     
+     if we are converting, however, we return a temporary file with the desired fileformat
+     whether that be from the SampleEditConfiguration (if it exists), or from SampleMetadata
+     */
+    if type == .forTrim {
+      temporaryFilename = UUID().uuidString + "trimmed.caf"
+    }
+    else {
+      if let editConfiguration = self.editConfiguration {
+        temporaryFilename = UUID().uuidString + "." + editConfiguration.audioFormat.asString
+      } else {
+        temporaryFilename = UUID().uuidString + "." + self.metadata.fileFormat.asString
+      }
+    }
     
     let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(temporaryFilename)
-    
+
+    Logger.encoder.info("Created temporary file at: \(temporaryFileURL.path)")
     return temporaryFileURL
   }
   
@@ -231,4 +249,9 @@ class SampleEditor {
 enum SampleEditorError: Error, LocalizedError {
   case failure
   var errorDescription: String? { "Failure" }
+}
+
+enum TemporaryConvertedFileType {
+  case forTrim
+  case forConversion
 }

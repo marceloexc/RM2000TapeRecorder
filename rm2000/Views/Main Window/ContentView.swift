@@ -42,13 +42,15 @@ struct ContentView: View {
         if let newRecording = recordingState.currentActiveRecording {
           EditSampleView(recording: newRecording) {
             FileRepresentable, SampleMetadata, SampleEditConfiguration in
-            
-            // todo , determine which one to choose (to include sample edit config or not)
-            let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
-            try? processor.apply()
-//            SampleStorage.shared.UserDirectory.applySampleEdits(
-//              to: FileRepresentable, for: SampleMetadata,
-//              with: SampleEditConfiguration)
+            Task {
+              do {
+                let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+                try await processor.apply() // properly awaits async processing
+              } catch {
+                Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
+                showNSAlert(error: error)
+              }
+            }
             recordingState.showRenameDialogInMainWindow = false
             
             if recordingsCompleted == 3 {

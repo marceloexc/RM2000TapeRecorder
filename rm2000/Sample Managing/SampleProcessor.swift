@@ -1,10 +1,4 @@
-//
-//  SampleProcessor.swift
-//  rm2000
-//
-//  Created by Marcelo Mendez on 10/5/25.
-//
-
+import Foundation
 
 class SampleProcessor {
   
@@ -13,45 +7,27 @@ class SampleProcessor {
   let editConfig: SampleEditConfiguration?
   
   // handle making filename and tempfilepath in here
-  
-  init(file: FileRepresentable, metadata: SampleMetadata) {
-    self.file = file
-    self.metadata = metadata
-    self.editConfig = nil
-  }
-  
-  init(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration?) {
+  init(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration? = nil) {
     self.file = file
     self.metadata = metadata
     self.editConfig = editConfig
   }
-  
-//  make sure it can `try?`
     
-  func apply() throws {
+  func apply() async throws {
+    await MainActor.run { TapeRecorderState.shared.status = .busy }
+    defer { Task { await MainActor.run { TapeRecorderState.shared.status = .idle } } }
     
-    // what should it throw?
-    // if edit config is not nil, then we want to use the encoder
-    Task {
-      do { await MainActor.run { TapeRecorderState.shared.status = .busy }}
-      
-      if let editConfig = editConfig {
-        print("This wants to be edited")
-        
-        let encoder = SampleEditor(sample: self.file, metadata: self.metadata, editConfiguration: editConfig)
-        do {
-          try await encoder.processAndConvert()
-        }
-      }
-      else {
-        print("This doesn't need to be edited.")
-        
-        let encoder = SampleEditor(sample: self.file, metadata: self.metadata)
-        
-        Task { do { await encoder.convertDirectly() }}
-      }
-      
-      do { await MainActor.run { TapeRecorderState.shared.status = .idle }}
-    }
+    let outputFile = metadata.outputDestination!.directory.appendingPathComponent(metadata.finalFinalname)
+    let stagedFile: URL
+    
+    let editor = editConfig != nil
+    ? SampleEditor(sample: file, metadata: metadata, editConfiguration: editConfig!)
+    : SampleEditor(sample: file, metadata: metadata)
+    
+    stagedFile = try await (editConfig != nil
+                            ? editor.processAndConvert()
+                            : editor.convertDirectly()) ?? { throw SampleEditorError.failure }()
+    
+    try FileManager.default.moveItem(at: stagedFile, to: outputFile)
   }
 }

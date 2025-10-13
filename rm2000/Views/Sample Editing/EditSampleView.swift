@@ -2,6 +2,7 @@ import Combine
 import CoreMedia
 import SwiftUI
 import SwiftUIIntrospect
+import OSLog
 
 struct EditSampleView<Model: FileRepresentable>: View {
 
@@ -23,12 +24,12 @@ struct EditSampleView<Model: FileRepresentable>: View {
   weak var editingPanel: NSPanel?
 
   private let onComplete:
-    (FileRepresentable, SampleMetadata, SampleEditConfiguration) -> Void
+    (FileRepresentable, SampleMetadata, SampleEditConfiguration?) -> Void
 
   init(
     recording: Model,
     onComplete: @escaping (
-      FileRepresentable, SampleMetadata, SampleEditConfiguration
+      FileRepresentable, SampleMetadata, SampleEditConfiguration?
     ) -> Void
   ) {
     self.onComplete = onComplete
@@ -207,16 +208,29 @@ struct EditSampleView<Model: FileRepresentable>: View {
   }
 
   private func gatherAndComplete() {
-    var configuration = SampleEditConfiguration()
-    configuration.directoryDestination = SampleStorage.shared.UserDirectory
-    configuration.forwardEndTime = forwardEndTime
-    configuration.reverseEndTime = reverseEndTime
-
+    /// send all information to the SampleProcessor to get encoded.
+    
     var metadata = SampleMetadata()
+    metadata.outputDestination = SampleStorage.shared.UserDirectory
     metadata.title = title
     metadata.tags = tags
-    var createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
-    onComplete(createdSample, metadata, configuration)
+    
+    let createdSample = Sample(fileURL: model.fileURL, metadata: metadata)
+    
+    /// if we did change the trim points, then we need a sample edit config
+    if let forwardEndTime = forwardEndTime, let reverseEndTime = reverseEndTime {
+      Logger.encoder.info("Trim detected")
+      
+      var configuration = SampleEditConfiguration()
+      configuration.forwardEndTime = forwardEndTime
+      configuration.reverseEndTime = reverseEndTime
+      onComplete(createdSample, metadata, configuration)
+
+    } else {
+      onComplete(createdSample, metadata, nil)
+
+    }
+    
   }
 
   @MainActor private func doesSampleAlreadyExist() -> Bool {

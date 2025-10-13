@@ -333,3 +333,12 @@ extension View {
         transform(self)
     }
 }
+
+func showNSAlert(error: Error) {
+  let alert = NSAlert()
+  alert.messageText = "Error processing audio"
+  alert.informativeText = error.localizedDescription
+  alert.alertStyle = .critical
+  alert.addButton(withTitle: "OK")
+  alert.runModal()
+}

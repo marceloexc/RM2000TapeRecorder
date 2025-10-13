@@ -42,11 +42,15 @@ struct ContentView: View {
         if let newRecording = recordingState.currentActiveRecording {
           EditSampleView(recording: newRecording) {
             FileRepresentable, SampleMetadata, SampleEditConfiguration in
-
-            // TODO - trainwreck. if i already have to pass in the shared.userdirectory, then this probably belongs in samplestorage itself, not sampledirectory
-            SampleStorage.shared.UserDirectory.applySampleEdits(
-              to: FileRepresentable, for: SampleMetadata,
-              with: SampleEditConfiguration)
+            Task {
+              do {
+                let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+                try await processor.apply() // properly awaits async processing
+              } catch {
+                Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
+                showNSAlert(error: error)
+              }
+            }
             recordingState.showRenameDialogInMainWindow = false
             
             if recordingsCompleted == 3 {

@@ -7,8 +7,10 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import OSLog
 
 struct ImportSampleSheetView: View {
+  @Environment (\.dismiss) var dismiss
   @State private var isBeingDragged: Bool = false
   @State private var files: [URL] = []
   
@@ -37,9 +39,19 @@ struct ImportSampleSheetView: View {
       .onDrop(of: [.fileURL], delegate: ImportSampleDropDelegate(URLs: $files, onFilesSelected: onFilesSelected))
     } else {
       EditSampleView(recording: TemporaryActiveRecording(fileURL: files.first!)) {  FileRepresentable, SampleMetadata, SampleEditConfiguration in
-        
-        SampleStorage.shared.UserDirectory.applySampleEdits(to: FileRepresentable, for: SampleMetadata, with: SampleEditConfiguration)
-        //
+        // dismiss sheet first, do the encoding in the background
+        dismiss()
+
+        // detached task because dismissing the sheet wouldve caused it to cancel normally
+        Task.detached {
+          do {
+            let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+            try await processor.apply() // properly awaits async processing
+          } catch {
+            Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
+            showNSAlert(error: error)
+          }
+        }
       }
     }
   }
@@ -81,7 +93,6 @@ struct ImportSampleDropDelegate: DropDelegate {
 
 #Preview {
   ImportSampleSheetView { urls in
-    print(urls)
 //    isShowingImportSheet = false
   }
 }

@@ -85,6 +85,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, Observable
     
     let newRecording = sample
     var contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
+      
+      Task {
+        do {
+          let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+          try await processor.apply() // properly awaits async processing
+        } catch {
+          Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
+          showNSAlert(error: error)
+        }
+      }
     }
     contentView.editingPanel = window
     let hostingView = NSHostingView(rootView: AnyView(contentView))

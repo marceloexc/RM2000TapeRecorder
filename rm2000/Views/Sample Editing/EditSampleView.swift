@@ -172,6 +172,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
               didErrorForOverride = true
             } else {
               gatherAndComplete()
+              editingPanel?.close()
             }
           }
         }

@@ -18,6 +18,9 @@ class EditingHUDWindow: NSPanel {
       super.close()
       return
     }
+    
+    NotificationCenter.default.post(name: .editingHUDWillClose, object: self)
+    
     //fade-out
     NSAnimationContext.runAnimationGroup({ context in
       context.duration = 0.20
@@ -31,4 +34,8 @@ class EditingHUDWindow: NSPanel {
   deinit {
     print("denint")
   }
+}
+
+extension Notification.Name {
+  static let editingHUDWillClose = Notification.Name("editingHUDWillClose")
 }

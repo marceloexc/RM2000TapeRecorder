@@ -100,7 +100,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, Observable
     let hostingView = NSHostingView(rootView: AnyView(contentView))
     
     let effectView = NSVisualEffectView()
-    effectView.material = .toolTip
+    effectView.material = .titlebar
     effectView.blendingMode = .withinWindow
     effectView.state = .active
     

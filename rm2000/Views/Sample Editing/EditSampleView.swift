@@ -184,8 +184,6 @@ struct EditSampleView<Model: FileRepresentable>: View {
       .padding(.vertical, 16)
     }
     .frame(minHeight: 200)
-    
-    
     .alert("Replace existing sample?", isPresented: $didErrorForOverride) {
       Button("Replace", role: .destructive) {
         gatherAndComplete()
@@ -195,8 +193,6 @@ struct EditSampleView<Model: FileRepresentable>: View {
     } message: {
       Text("Another sample with identical title and tags already exists.")
     }
-    
-    
     .alert("Cancel Editing?", isPresented: $didErrorForCancel) {
       Button("Go Back", role: .cancel) {}
       Button("Confirm") {

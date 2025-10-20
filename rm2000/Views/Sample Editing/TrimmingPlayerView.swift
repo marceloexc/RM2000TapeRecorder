@@ -77,6 +77,13 @@ class PlayerViewModel: ObservableObject {
         self?.objectWillChange.send()
       }
       .store(in: &cancellables)
+    
+    NotificationCenter.default.publisher(for: .editingHUDWillClose)
+      .sink { [weak self] _ in
+        self?.player?.pause()
+        self?.player?.replaceCurrentItem(with: nil)
+      }
+      .store(in: &cancellables)
   }
 
   func beginTrimming() {
@@ -137,6 +144,9 @@ struct TrimmingPlayerView<Model: FileRepresentable>: View {
         Text("Player not available")
           .foregroundColor(.secondary)
       }
+    }
+    .onDisappear {
+      viewModel.player?.pause()
     }
   }
 }

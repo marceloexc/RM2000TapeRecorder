@@ -60,7 +60,7 @@ struct ContentView: View {
             recordingsCompleted += 1
 
           }
-          .frame(minWidth: 500, maxWidth: 700, minHeight: 300)
+          .frame(minWidth: 500, maxWidth: 700, minHeight: 100)
           .presentationBackground(.thickMaterial)
           .modifier(StandardSheetSizingModifier())
         }

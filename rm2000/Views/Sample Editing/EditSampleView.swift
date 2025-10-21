@@ -131,7 +131,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
         Divider()
       }
       EditSampleFooter(model: model, sampleExists: sampleExists, isModified: isModified, onDiscard: handleDiscard, onArchive: handleArchive, onApply: handleApply)
-        .padding(.horizontal, 12)
+        .padding(.horizontal)
         .padding(.bottom, 12)
     }
     .frame(minHeight: 200)
@@ -199,7 +199,6 @@ struct EditSampleView<Model: FileRepresentable>: View {
 
     } else {
       onComplete(createdSample, metadata, nil)
-
     }
     
   }
@@ -211,16 +210,6 @@ struct EditSampleView<Model: FileRepresentable>: View {
       }
     }
     return false
-  }
-}
-
-struct TokenInputField: View {
-  @Binding var tags: Set<String>
-  let suggestions = SampleStorage.shared.UserDirectory.indexedTags
-
-  var body: some View {
-    TokenField(.init(get: { Array(tags) }, set: { tags = Set($0) }))  // converting set<string> to [string]...stupid...
-      .completions([String](suggestions))
   }
 }
 
@@ -248,23 +237,57 @@ struct EditSampleFooter: View {
         .font(.caption)
         .contentTransition(.opacity)
       }
+      
+      /*
+       Archiving should only be available for new samples
+       (aka whenever model is TemporaryActiveRecording).
+       */
 
-      Button("Archive", action: onArchive)
-        .buttonStyle(.bordered)
+      if model is TemporaryActiveRecording {
+        Button("Archive", action: onArchive)
+          .buttonStyle(.bordered)
+        Button("Apply and Save", action: onApply)
+          .buttonStyle(.borderedProminent)
+          .keyboardShortcut(.defaultAction)
+      } else {
+        Button("Apply and Replace", action: onApply)
+          .buttonStyle(.bordered)
 
-      Button("Apply Edits and Save", action: onApply)
-        .buttonStyle(.borderedProminent)
-        .keyboardShortcut(.defaultAction)
+        Button("Apply and Copy", action: onApply)
+          .buttonStyle(.borderedProminent)
+          .keyboardShortcut(.defaultAction)
+      }
     }
   }
 }
 
-#Preview {
+fileprivate struct TokenInputField: View {
+  @Binding var tags: Set<String>
+  let suggestions = SampleStorage.shared.UserDirectory.indexedTags
+
+  var body: some View {
+    TokenField(.init(get: { Array(tags) }, set: { tags = Set($0) }))  // converting set<string> to [string]...stupid...
+      .completions([String](suggestions))
+  }
+}
+
+#Preview("New Recording") {
   let testFile = URL(
     fileURLWithPath:
       "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")
   let recording = TemporaryActiveRecording(fileURL: testFile)
   return EditSampleView(recording: recording) { _, _, _ in
+    // Empty completion handler
+  }
+}
+
+
+#Preview("Existing Recording") {
+  let testFile = URL(
+    fileURLWithPath:
+      "/Users/marceloexc/Developer/replica/rm2000Tests/Example--sample.aac")
+  let recording = Sample(fileURL: testFile)
+  EditSampleView(recording: recording!) { _, _, _ in
     // Empty completion handler
   }
 }

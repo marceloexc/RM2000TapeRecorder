@@ -47,141 +47,92 @@ struct EditSampleView<Model: FileRepresentable>: View {
   }
 
   var body: some View {
-    ScrollView {
-      VStack(alignment: .leading) {
-        Text("Edit Sample")
-          .font(.headline)
-        Spacer()
-        
-        TrimmingPlayerView(
-          recording: model,
-          forwardEndTime: $forwardEndTime,
-          reverseEndTime: $reverseEndTime)
-        .onChange(of: forwardEndTime) { isModified = true }
-        .onChange(of: reverseEndTime) { isModified = true }
-        .cornerRadius(8)
-        
-        Spacer()
-        
-        VStack(alignment: .leading, spacing: 4) {
-          
-          Text("Title")
-            .font(.caption)
-            .foregroundColor(.secondary)
-          
-          TextField("New Filename", text: $title)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .autocorrectionDisabled()
-            .focused($focusedField)
-            .onAppear {
-              focusedField = true
-            }
-            .onChange(of: title) {
-              isModified = true
-            }
-        }
-        
-        Spacer()
-        
-        VStack(alignment: .leading, spacing: 4) {
-          Text("Tags (comma-separated)")
-            .font(.caption)
-            .foregroundColor(.secondary)
-          TokenInputField(tags: $tags)
-          
-            .onChange(of: tags) { newValue in
-              isModified = true
-              
-              let forbiddenChars = CharacterSet(
-                charactersIn: "_-/:*?\"<>|,;[]{}'&\t\n\r")
-              tags = Set(
-                newValue.map { tag in
-                  String(
-                    tag.unicodeScalars.filter { !forbiddenChars.contains($0) })
-                })
-              
-              
-              sampleExists = doesSampleAlreadyExist()
-            }
-          
-        }
-        
-        DisclosureGroup("Additional Fields") {
-          Text("Testing!")
-        }
-        .font(.caption)
-      }
-      .padding(.horizontal)
-      .padding(.top, 16)
-      Divider()
-
-      VStack(alignment: .trailing) {
-        HStack {
-          Text("Preview Filename")
-            .font(.caption)
-            .foregroundColor(.secondary)
-          PreviewFilenameView(title: $title, tags: $tags)
+    VStack {
+      ScrollView {
+        VStack(alignment: .leading) {
+          Text("Edit Sample")
+            .font(.headline)
           Spacer()
-        }
-      }
-      .padding(.horizontal)
-      .padding(.vertical, 1)
-      
-      Divider()
+          
+          TrimmingPlayerView(
+            recording: model,
+            forwardEndTime: $forwardEndTime,
+            reverseEndTime: $reverseEndTime)
+          .onChange(of: forwardEndTime) { isModified = true }
+          .onChange(of: reverseEndTime) { isModified = true }
+          .cornerRadius(8)
+          
+          Spacer()
+          
+          VStack(alignment: .leading, spacing: 4) {
             
-      HStack {
-        if sampleExists {
+            Text("Title")
+              .font(.caption)
+              .foregroundColor(.secondary)
+            
+            TextField("New Filename", text: $title)
+              .textFieldStyle(RoundedBorderTextFieldStyle())
+              .autocorrectionDisabled()
+              .focused($focusedField)
+              .onAppear {
+                focusedField = true
+              }
+              .onChange(of: title) {
+                isModified = true
+              }
+          }
+          
+          Spacer()
+          
+          VStack(alignment: .leading, spacing: 4) {
+            Text("Tags (comma-separated)")
+              .font(.caption)
+              .foregroundColor(.secondary)
+            TokenInputField(tags: $tags)
+            
+              .onChange(of: tags) { newValue in
+                isModified = true
+                
+                let forbiddenChars = CharacterSet(
+                  charactersIn: "_-/:*?\"<>|,;[]{}'&\t\n\r")
+                tags = Set(
+                  newValue.map { tag in
+                    String(
+                      tag.unicodeScalars.filter { !forbiddenChars.contains($0) })
+                  })
+                
+                
+                sampleExists = doesSampleAlreadyExist()
+              }
+            
+          }
+          
+          DisclosureGroup("Additional Fields") {
+            Text("Testing!")
+          }
+          .font(.caption)
+        }
+        .padding(.horizontal)
+        .padding(.top, 16)
+        Divider()
+        
+        VStack(alignment: .trailing) {
           HStack {
-            Label(
-              "Sample with same title and tags already exists",
-              systemImage: "exclamationmark.triangle"
-            )
-            .id(sampleExists)
-            .foregroundColor(.red)
-            .contentTransition(.opacity)
-            .font(.caption)
+            Text("Preview Filename")
+              .font(.caption)
+              .foregroundColor(.secondary)
+            PreviewFilenameView(title: $title, tags: $tags)
+            Spacer()
           }
         }
+        .padding(.horizontal)
+        .padding(.vertical, 1)
         
-        Button("Discard", role: .destructive) {
-          
-          // assuming that every new recording will want to display
-          // the discard confirmation dialog
-          if (model is TemporaryActiveRecording || isModified) {
-            didErrorForCancel = true
-          } else {
-            editingPanel?.close()
-          }
-        }.keyboardShortcut(.cancelAction)
-          .foregroundColor(Color.red)
-          
-
-        Spacer()
-        
-        Button("Archive") {
-          
-          //
-        }.buttonStyle(.bordered)
-//          .keyboardShortcut(.cancelAction)
-        
-        Button("Apply Edits and Save") {
-          if title.isEmpty && tags.isEmpty {
-            NSSound.beep()
-          } else {
-            if sampleExists {
-              didErrorForOverride = true
-            } else {
-              gatherAndComplete()
-              editingPanel?.close()
-            }
-          }
-        }
-        .buttonStyle(.borderedProminent)
-        .keyboardShortcut(.defaultAction)
-
+        Divider()
       }
-      .padding(.horizontal)
-      .padding(.vertical, 16)
+      EditSampleFooter(model: model, sampleExists: sampleExists, isModified: isModified, onDiscard: handleDiscard, onArchive: handleArchive, onApply: handleApply)
+        .padding(.horizontal, 12)
+        .padding(.bottom, 12)
     }
     .frame(minHeight: 200)
     .alert("Replace existing sample?", isPresented: $didErrorForOverride) {
@@ -203,7 +154,30 @@ struct EditSampleView<Model: FileRepresentable>: View {
       Text("This recording will be lost once the app is quit.")
     }
   }
+  
+  private func handleDiscard() {
+    if (model is TemporaryActiveRecording || isModified) {
+      didErrorForCancel = true
+    } else {
+      editingPanel?.close()
+    }
+  }
 
+  private func handleArchive() {
+    // Add archive logic later
+  }
+
+  private func handleApply() {
+    if title.isEmpty && tags.isEmpty {
+      NSSound.beep()
+    } else if sampleExists {
+      didErrorForOverride = true
+    } else {
+      gatherAndComplete()
+      editingPanel?.close()
+    }
+  }
+  
   private func gatherAndComplete() {
     /// send all information to the SampleProcessor to get encoded.
     
@@ -241,13 +215,47 @@ struct EditSampleView<Model: FileRepresentable>: View {
 }
 
 struct TokenInputField: View {
-
   @Binding var tags: Set<String>
   let suggestions = SampleStorage.shared.UserDirectory.indexedTags
 
   var body: some View {
     TokenField(.init(get: { Array(tags) }, set: { tags = Set($0) }))  // converting set<string> to [string]...stupid...
       .completions([String](suggestions))
+  }
+}
+
+struct EditSampleFooter: View {
+  let model: FileRepresentable
+  let sampleExists: Bool
+  let isModified: Bool
+  let onDiscard: () -> Void
+  let onArchive: () -> Void
+  let onApply: () -> Void
+
+  var body: some View {
+    HStack {
+      Button("Discard", role: .destructive, action: onDiscard)
+        .keyboardShortcut(.cancelAction)
+        .foregroundColor(.red)
+
+      Spacer()
+      if sampleExists {
+        Label(
+          "Sample with same title and tags already exists",
+          systemImage: "exclamationmark.triangle"
+        )
+        .foregroundColor(.red)
+        .font(.caption)
+        .contentTransition(.opacity)
+      }
+
+      Button("Archive", action: onArchive)
+        .buttonStyle(.bordered)
+
+      Button("Apply Edits and Save", action: onApply)
+        .buttonStyle(.borderedProminent)
+        .keyboardShortcut(.defaultAction)
+    }
   }
 }
 

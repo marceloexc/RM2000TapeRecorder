@@ -23,6 +23,7 @@
 		EB296DF32D65355C008427DF /* TrimmingPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB296DF22D653556008427DF /* TrimmingPlayerView.swift */; };
 		EB2ECD532DADD7FD005D1E06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EB2ECD522DADD7F6005D1E06 /* Shaders.metal */; };
 		EB32A24F2E144BE00082B7FD /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB32A24E2E144BE00082B7FD /* WhatsNewView.swift */; };
+		EB3A578B2EA709E4000DDCD1 /* EditingSheetWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3A578A2EA709E1000DDCD1 /* EditingSheetWindow.swift */; };
 		EB3DF85A2DDBFFC900198AAB /* CoreAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */; };
 		EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */; };
 		EB467BCF2D920849007E19E8 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB467BCD2D920849007E19E8 /* OnboardingView.swift */; };
@@ -128,6 +129,7 @@
 		EB296DF22D653556008427DF /* TrimmingPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmingPlayerView.swift; sourceTree = "<group>"; };
 		EB2ECD522DADD7F6005D1E06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		EB32A24E2E144BE00082B7FD /* WhatsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewView.swift; sourceTree = "<group>"; };
+		EB3A578A2EA709E1000DDCD1 /* EditingSheetWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingSheetWindow.swift; sourceTree = "<group>"; };
 		EB3DF8592DDBFFC900198AAB /* CoreAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAudio.swift; sourceTree = "<group>"; };
 		EB3DF85F2DDD114A00198AAB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		EB4467CB2D07C52F000DDE5A /* SampleLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLibraryView.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -247,6 +249,7 @@
 		EB296DE52D653468008427DF /* Sample Editing */ = {
 			isa = PBXGroup;
 			children = (
+				EB3A578A2EA709E1000DDCD1 /* EditingSheetWindow.swift */,
 				EB78E2272E6B60FB006376EB /* EditingHUDWindow.swift */,
 				EB1A60692DEA521E0067A4E3 /* PreviewFilenameView.swift */,
 				EBF9507F2DA995EF0060CF03 /* TokenFieldView.swift */,
@@ -629,6 +632,7 @@
 				EB63A3022D6A88AB00E35AE6 /* SampleStorage.swift in Sources */,
 				EB63A3042D6A8E2A00E35AE6 /* AppState.swift in Sources */,
 				EBE4E94A2C43244D00397EF2 /* ContentView.swift in Sources */,
+				EB3A578B2EA709E4000DDCD1 /* EditingSheetWindow.swift in Sources */,
 				EBACB7DB2DAB213E00160799 /* RecordingTabView.swift in Sources */,
 				EB4467CC2D07C52F000DDE5A /* SampleLibraryView.swift in Sources */,
 				EB78E2262E6AADC0006376EB /* ImportSampleSheetView.swift in Sources */,

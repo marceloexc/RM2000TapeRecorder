@@ -32,7 +32,7 @@ class EditingHUDWindow: NSPanel {
   }
   
   deinit {
-    print("denint")
+    //
   }
 }
 

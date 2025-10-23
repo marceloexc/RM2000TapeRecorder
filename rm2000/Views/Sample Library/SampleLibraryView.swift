@@ -12,7 +12,7 @@ struct SampleLibraryView: View {
   @StateObject private var viewModel: SampleLibraryViewModel
   @Environment(\.openURL) private var openURL
   @Environment(\.controlActiveState) private var controlActiveState
-  @AppStorage("detailViewType") var detailViewType: DetailViewType = .list
+  @AppStorage("detailViewType") var detailViewType: DetailViewType = .table
   @State private var isAudioPlaying = false
   @State private var isShowingImportSheet = false
   

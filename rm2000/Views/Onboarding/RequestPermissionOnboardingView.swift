@@ -32,7 +32,10 @@ struct RequestPermissionOnboardingView: View {
         }
       } label: {
         Text("Grant Permission")
-      }.controlSize(.extraLarge)
+      }
+      .controlSize(.extraLarge)
+      .buttonStyle(.borderedProminent)
+      .tint(.red)
 
     }
     .frame(width: 700, height: 550)

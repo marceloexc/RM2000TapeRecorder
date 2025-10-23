@@ -62,7 +62,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
           .onChange(of: reverseEndTime) { isModified = true }
           .modifier { content in
             if #available(macOS 26.0 , *) {
-              content.cornerRadius(12)
+              content.cornerRadius(20)
             } else {
               content.cornerRadius(8)
             }

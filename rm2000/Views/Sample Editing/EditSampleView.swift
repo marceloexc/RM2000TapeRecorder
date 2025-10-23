@@ -60,7 +60,13 @@ struct EditSampleView<Model: FileRepresentable>: View {
             reverseEndTime: $reverseEndTime)
           .onChange(of: forwardEndTime) { isModified = true }
           .onChange(of: reverseEndTime) { isModified = true }
-          .cornerRadius(8)
+          .modifier { content in
+            if #available(macOS 26.0 , *) {
+              content.cornerRadius(12)
+            } else {
+              content.cornerRadius(8)
+            }
+          }
           
           Spacer()
           

@@ -328,12 +328,6 @@ extension CMTime {
 	}
 }
 
-extension View {
-    func modify<Content>(@ViewBuilder _ transform: (Self) -> Content) -> Content {
-        transform(self)
-    }
-}
-
 struct StandardSheetSizingModifier: ViewModifier {
     func body(content: Content) -> some View {
         if #available(macOS 15.0, *) {
@@ -355,4 +349,20 @@ func showNSAlert(error: Error) {
   alert.alertStyle = .critical
   alert.addButton(withTitle: "OK")
   alert.runModal()
+}
+public extension View {
+  /// Modifies a view using a `ViewBuilder` closure.
+  ///
+  /// This streamlines the traditional
+  /// [`modifier`](https://developer.apple.com/documentation/swiftui/view/modifier(_:))
+  /// + [`ViewModifier`](https://developer.apple.com/documentation/swiftui/viewmodifier)
+  /// pattern.
+  ///
+  /// - Note: Use this only when you don't need to reuse the closure.
+  ///   If you do, turn the closure into an extension instead. ♻️
+  func modifier<ModifiedContent: View>(
+    @ViewBuilder body: (_ content: Self) -> ModifiedContent
+  ) -> ModifiedContent {
+    body(self)
+  }
 }

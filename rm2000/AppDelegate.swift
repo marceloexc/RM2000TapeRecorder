@@ -4,7 +4,13 @@ import OSLog
 import SwiftUI
 import SettingsAccess
 
-class WindowController: NSWindowController {
+class EditingWindowController: NSWindowController {
+  override func windowDidLoad() {
+    super.windowDidLoad()
+  }
+}
+
+class MainWindowController: NSWindowController {
   override func windowDidLoad() {
     super.windowDidLoad()
   }
@@ -12,13 +18,13 @@ class WindowController: NSWindowController {
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, ObservableObject {
   
-  var mainWindowController: WindowController?
+  var mainWindowController: MainWindowController?
   let recordingState = TapeRecorderState.shared
   let storeKitManager = StoreManager.shared
   let mainWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
 
   private var onboardingWindowController: NSWindowController?
-  private var editingWindowController: NSWindowController?
+  private var editingWindowController: EditingWindowController?
   private var hudHostingView: NSHostingView<AnyView>?
   @MainActor private var confirmOnQuit: Bool {
     AppState.shared.confirmOnQuit
@@ -69,7 +75,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, Observable
 
     self.mainWindow?.isReleasedWhenClosed = false
     self.mainWindow?.identifier = mainWindowIdentifier
-    self.mainWindowController = WindowController(window: window)
+    self.mainWindowController = MainWindowController(window: window)
     self.mainWindowController?.window?.center()
     self.mainWindowController?.showWindow(nil)
   }
@@ -115,8 +121,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, Observable
     ])
     
     window.contentView = effectView
-    editingWindowController = NSWindowController(window: window)
-    editingWindowController?.showWindow(nil)
+    self.editingWindowController = EditingWindowController(window: window)
+    self.editingWindowController?.window?.center()
+    self.editingWindowController?.showWindow(nil)
   }
 
   func showHUDWindow() {

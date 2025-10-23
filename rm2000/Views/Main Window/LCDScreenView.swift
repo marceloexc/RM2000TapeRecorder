@@ -21,9 +21,13 @@ struct LCDScreenView: View {
       }
       LCDSymbolGlyphs()
 
-      Image("LCDOuterGlow")
-        .resizable()
-        .frame(width: 330)
+      VStack {
+        Image("LCDOuterGlow")
+          .resizable()
+          .frame(width: 360, height: 270)
+          .clipped()
+      }
+      .frame(width: 330)
     }
   }
 }

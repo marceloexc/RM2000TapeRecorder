@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "LCDScreenFrameRecording_1x.png",
+      "filename" : "LCD Screen Active (Exportable).png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "LCDScreenFrameRecording_2x.png",
+      "filename" : "LCD Screen Active (Exportable)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

@@ -17,13 +17,35 @@ struct ContentView: View {
 
   var body: some View {
     ZStack {
-      Image("BodyBackgroundTemp")
-        .scaledToFill()
-        .ignoresSafeArea(.all)  // extend under the titlebar
+      if #available(macOS 26.0, *) {
+        Image("RecorderBackgroundTahoe")
+          .scaledToFill()
+          .ignoresSafeArea(.all)
+          .padding(.horizontal, 4)
+          .padding(.bottom, 4)
+          .shadow(color: Color.init(hex: 0x000000, alpha: 0.7), radius: 12, y: 9)
+      } else {
+        Image("RecorderBackgroundBigSur")
+          .scaledToFill()
+          .ignoresSafeArea(.all)
+          .padding(.horizontal, 4)
+          .padding(.bottom, 4)
+          .shadow(color: Color.init(hex: 0x000000, alpha: 0.7), radius: 12, y: 9)
+          // ill fix this later. this update has taken too long.
+      }
+      // extend under the titlebar
       VStack(spacing: 10) {
-        LCDScreenView()
-          .frame(height: 225)
-          .padding(.top, -45)
+        
+        if #available(macOS 26.0, *) {
+          LCDScreenView()
+            .frame(height: 225)
+            .padding(.top, -41)
+        } else {
+          LCDScreenView()
+            .frame(height: 225)
+            .padding(.top, -45)
+        }
+
 
         HStack(spacing: 5) {
           UtilityButtons()

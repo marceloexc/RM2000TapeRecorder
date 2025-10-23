@@ -4,21 +4,27 @@ import OSLog
 import SwiftUI
 import SettingsAccess
 
-class WindowController: NSWindowController {
+class EditingWindowController: NSWindowController {
   override func windowDidLoad() {
     super.windowDidLoad()
   }
 }
 
-class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, ObservableObject {
+class MainWindowController: NSWindowController {
+  override func windowDidLoad() {
+    super.windowDidLoad()
+  }
+}
+
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, ObservableObject {
   
-  var mainWindowController: WindowController?
+  var mainWindowController: MainWindowController?
   let recordingState = TapeRecorderState.shared
   let storeKitManager = StoreManager.shared
   let mainWindowIdentifier = NSUserInterfaceItemIdentifier("mainWindow")
 
   private var onboardingWindowController: NSWindowController?
-  private var editingWindowController: NSWindowController?
+  private var editingWindowController: EditingWindowController?
   private var hudHostingView: NSHostingView<AnyView>?
   @MainActor private var confirmOnQuit: Bool {
     AppState.shared.confirmOnQuit
@@ -69,7 +75,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
 
     self.mainWindow?.isReleasedWhenClosed = false
     self.mainWindow?.identifier = mainWindowIdentifier
-    self.mainWindowController = WindowController(window: window)
+    self.mainWindowController = MainWindowController(window: window)
     self.mainWindowController?.window?.center()
     self.mainWindowController?.showWindow(nil)
   }
@@ -80,17 +86,27 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
     NSApp.activate(ignoringOtherApps: true)
   }
   
-  func showEditingWindow() {
+  func showEditingWindow(sample: Sample) {
     let window = EditingHUDWindow(contentRect: NSRect(x: 100, y: 100, width: 500 , height: 400))
     
-    let newRecording = Sample(fileURL: URL(string: "/Users/marceloexc/Music/RM2000 Tape Recorder/trackerrrrrr--tracker.mp3")!)!
-    let contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
-      //
+    let newRecording = sample
+    var contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
+      
+      Task {
+        do {
+          let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+          try await processor.apply() // properly awaits async processing
+        } catch {
+          Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
+          showNSAlert(error: error)
+        }
+      }
     }
+    contentView.editingPanel = window
     let hostingView = NSHostingView(rootView: AnyView(contentView))
     
     let effectView = NSVisualEffectView()
-    effectView.material = .titlebar 
+    effectView.material = .titlebar
     effectView.blendingMode = .withinWindow
     effectView.state = .active
     
@@ -105,8 +121,9 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
     ])
     
     window.contentView = effectView
-    editingWindowController = NSWindowController(window: window)
-    editingWindowController?.showWindow(nil)
+    self.editingWindowController = EditingWindowController(window: window)
+    self.editingWindowController?.window?.center()
+    self.editingWindowController?.showWindow(nil)
   }
 
   func showHUDWindow() {
@@ -234,7 +251,7 @@ class AppKitWindowManagerDelegate: NSObject, NSApplicationDelegate, NSWindowDele
   }
 }
 
-extension AppKitWindowManagerDelegate {
+extension AppDelegate {
   @objc func windowWillClose(_ notification: Notification) {
     if let window = notification.object as? NSWindow,
       window === mainWindowController?.window

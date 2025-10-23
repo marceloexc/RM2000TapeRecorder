@@ -54,15 +54,17 @@ struct ShareSampleButton: View {
 }
 
 struct EditSampleButton: View {
+  @EnvironmentObject var appDelegate: AppDelegate
+
   var selectedItems: [FileRepresentableItemModel]?
   
-  private var validURLs: [URL] {
-    selectedItems?.compactMap { $0.file.fileURL } ?? []
+  private var validURLs: [FileRepresentable] {
+    selectedItems?.compactMap { $0.file } ?? []
   }
   
   var body: some View {
     Button {
-      print("hello world")
+      appDelegate.showEditingWindow(sample: validURLs.first as! Sample)
     } label: {
       if validURLs.isEmpty {
         Label("Edit", systemImage: "slider.horizontal.3")
@@ -133,4 +135,10 @@ func setToolbarStyle() {
       toolbar.autosavesConfiguration = true
     }
   #endif
+}
+
+#Preview {
+  SampleLibraryView()
+    .environmentObject(SampleStorage.shared)
+    .frame(width: 900, height: 600)
 }

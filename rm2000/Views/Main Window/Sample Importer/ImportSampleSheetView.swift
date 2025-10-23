@@ -7,14 +7,16 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import OSLog
 
 struct ImportSampleSheetView: View {
+  @Environment(\.dismiss) var dismiss
   @State private var isBeingDragged: Bool = false
   @State private var files: [URL] = []
   
   let onFilesSelected: ([URL]) -> Void
   
-  weak var appDelegate: AppKitWindowManagerDelegate?
+  weak var appDelegate: AppDelegate?
 
   init(onFilesSelected: @escaping ([URL]) -> Void) {
     self.onFilesSelected = onFilesSelected
@@ -32,14 +34,24 @@ struct ImportSampleSheetView: View {
           Text(files.first?.absoluteString ?? "No file selected")
         }
       }
-      .frame(minHeight: 300)
+      .frame(minWidth: 500, minHeight: 300)
       .padding()
       .onDrop(of: [.fileURL], delegate: ImportSampleDropDelegate(URLs: $files, onFilesSelected: onFilesSelected))
     } else {
       EditSampleView(recording: TemporaryActiveRecording(fileURL: files.first!)) {  FileRepresentable, SampleMetadata, SampleEditConfiguration in
-        
-        SampleStorage.shared.UserDirectory.applySampleEdits(to: FileRepresentable, for: SampleMetadata, with: SampleEditConfiguration)
-        //
+        // dismiss sheet first, do the encoding in the background
+        dismiss()
+
+        // detached task because dismissing the sheet wouldve caused it to cancel normally
+        Task.detached {
+          do {
+            let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+            try await processor.apply() // properly awaits async processing
+          } catch {
+            Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
+            showNSAlert(error: error)
+          }
+        }
       }
     }
   }
@@ -81,7 +93,6 @@ struct ImportSampleDropDelegate: DropDelegate {
 
 #Preview {
   ImportSampleSheetView { urls in
-    print(urls)
 //    isShowingImportSheet = false
   }
 }

@@ -33,6 +33,8 @@ struct RecordingsListView: View {
 
 struct SampleIndividualListItem: View {
   @StateObject var viewModel: SampleLibraryViewModel
+  @EnvironmentObject var appDelegate: AppDelegate
+
   @Environment(\.openWindow) var openWindow
   var sample: FileRepresentableItemModel
   
@@ -54,8 +56,10 @@ struct SampleIndividualListItem: View {
       
       Spacer()
       
-      StaticWaveformView(fileURL: sample.file.fileURL)
-        .frame(maxWidth: 200, maxHeight: 20)
+      if #unavailable(macOS 26.0) {
+        StaticWaveformView(fileURL: sample.file.fileURL)
+          .frame(maxWidth: 200, maxHeight: 20)
+      }
       
       Spacer()
       HStack {
@@ -97,6 +101,14 @@ struct SampleIndividualListItem: View {
       }
       
       Divider()
+      
+      if let sample = viewModel.selectedSamples.first as? Sample {
+        Button("Edit Sample") {
+          ContextMenu.editSample(sample: sample, appDelegate: appDelegate)
+        }
+        
+        Divider()
+      }
       
       Button("Move to Trash") {
         ContextMenu.moveToTrash(urls: urls)

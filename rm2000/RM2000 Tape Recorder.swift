@@ -6,7 +6,7 @@ struct RM2000TapeRecorderApp: App {
   @StateObject var appState = AppState.shared
   @StateObject var sampleStorage = SampleStorage.shared
   @StateObject private var recordingState = TapeRecorderState.shared
-  @NSApplicationDelegateAdaptor(AppKitWindowManagerDelegate.self) var appDelegate
+  @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
   var body: some Scene {
     MenuBarExtra {
@@ -22,6 +22,7 @@ struct RM2000TapeRecorderApp: App {
       SampleLibraryView()
         .environmentObject(sampleStorage)
     }
+
     Window("Getting Started", id: "onboarding") {
       OnboardingView(pages: OnboardingStep.fullOnboarding)
         .environmentObject(appState)

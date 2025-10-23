@@ -42,11 +42,15 @@ struct ContentView: View {
         if let newRecording = recordingState.currentActiveRecording {
           EditSampleView(recording: newRecording) {
             FileRepresentable, SampleMetadata, SampleEditConfiguration in
-
-            // TODO - trainwreck. if i already have to pass in the shared.userdirectory, then this probably belongs in samplestorage itself, not sampledirectory
-            SampleStorage.shared.UserDirectory.applySampleEdits(
-              to: FileRepresentable, for: SampleMetadata,
-              with: SampleEditConfiguration)
+            Task {
+              do {
+                let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+                try await processor.apply() // properly awaits async processing
+              } catch {
+                Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
+                showNSAlert(error: error)
+              }
+            }
             recordingState.showRenameDialogInMainWindow = false
             
             if recordingsCompleted == 3 {
@@ -56,17 +60,9 @@ struct ContentView: View {
             recordingsCompleted += 1
 
           }
-          .frame(minWidth: 500, maxWidth: 700, minHeight: 300)
+          .frame(minWidth: 500, maxWidth: 700, minHeight: 100)
           .presentationBackground(.thickMaterial)
-          .modify {
-            if #available(macOS 15.0, *) {
-              $0.presentationSizing(.fitted)
-            } else {
-              $0.introspect(.window, on: .macOS(.v14)) { window in
-                window.styleMask.formUnion(.resizable)
-              }
-            }
-          }
+          .modifier(StandardSheetSizingModifier())
         }
       }
       .sheet(isPresented: $showTrialExpiredSheet) {

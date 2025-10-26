@@ -87,9 +87,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, Observable
   }
   
   func showEditingWindow(sample: Sample) {
-    let window = EditingHUDWindow(contentRect: NSRect(x: 100, y: 100, width: 500 , height: 400))
-    
     let newRecording = sample
+
+    let editingWindowIdentifier = NSUserInterfaceItemIdentifier(newRecording.id.uuidString)
+    
+    if let existingWindow = NSApp.windows.first(where: { $0.identifier == editingWindowIdentifier }) {
+        existingWindow.makeKeyAndOrderFront(nil)
+        return
+    }
+
+    let window = EditingHUDWindow(contentRect: NSRect(x: 100, y: 100, width: 500 , height: 300))
+    window.identifier = editingWindowIdentifier
     var contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in
       
       Task {

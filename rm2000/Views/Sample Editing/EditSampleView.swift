@@ -48,7 +48,7 @@ struct EditSampleView<Model: FileRepresentable>: View {
 
   var body: some View {
     VStack {
-      ScrollView {
+      VStack {
         VStack(alignment: .leading) {
           Text("Edit Sample")
             .font(.headline)
@@ -113,10 +113,10 @@ struct EditSampleView<Model: FileRepresentable>: View {
             
           }
           
-          DisclosureGroup("Additional Fields") {
-            Text("Testing!")
-          }
-          .font(.caption)
+//          DisclosureGroup("Additional Fields") {
+//            Text("Testing!")
+//          }
+//          .font(.caption)
         }
         .padding(.horizontal)
         .padding(.top, 16)
@@ -136,11 +136,12 @@ struct EditSampleView<Model: FileRepresentable>: View {
         
         Divider()
       }
-      EditSampleFooter(model: model, sampleExists: sampleExists, isModified: isModified, onDiscard: handleDiscard, onArchive: handleArchive, onApply: handleApply)
+      EditSampleFooter(model: model, sampleExists: sampleExists, isModified: isModified, onDiscard: handleDiscard, onArchive: handleArchive, onApply: handleApply, onReplace: handleReplace)
         .padding(.horizontal)
         .padding(.bottom, 12)
     }
-    .frame(minHeight: 200)
+    .fixedSize(horizontal: false, vertical: true)
+
     .alert("Replace existing sample?", isPresented: $didErrorForOverride) {
       Button("Replace", role: .destructive) {
         gatherAndComplete()
@@ -171,6 +172,13 @@ struct EditSampleView<Model: FileRepresentable>: View {
 
   private func handleArchive() {
     // Add archive logic later
+  }
+  
+  private func handleReplace() {
+    defer {
+      editingPanel?.close()
+    }
+    print("Replaced")
   }
 
   private func handleApply() {
@@ -226,6 +234,7 @@ struct EditSampleFooter: View {
   let onDiscard: () -> Void
   let onArchive: () -> Void
   let onApply: () -> Void
+  let onReplace: () -> Void
 
   var body: some View {
     HStack {
@@ -250,18 +259,20 @@ struct EditSampleFooter: View {
        */
 
       if model is TemporaryActiveRecording {
-        Button("Archive", action: onArchive)
-          .buttonStyle(.bordered)
+//        Button("Archive", action: onArchive)
+//          .buttonStyle(.bordered)
         Button("Apply and Save", action: onApply)
           .buttonStyle(.borderedProminent)
           .keyboardShortcut(.defaultAction)
       } else {
-        Button("Apply and Replace", action: onApply)
-          .buttonStyle(.bordered)
+//        Button("Apply and Replace", action: onReplace)
+//          .buttonStyle(.bordered)
+//          .disabled(!isModified)
 
         Button("Apply and Copy", action: onApply)
           .buttonStyle(.borderedProminent)
           .keyboardShortcut(.defaultAction)
+          .disabled(!isModified)
       }
     }
   }

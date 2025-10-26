@@ -73,8 +73,7 @@ struct SampleLibraryView: View {
     .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
     .sheet(isPresented: $isShowingImportSheet, content: {
       ImportSampleSheetView { urls in
-        print(urls)
-//        isShowingImportSheet = false
+        // 
       }
       .modifier(StandardSheetSizingModifier())
     })

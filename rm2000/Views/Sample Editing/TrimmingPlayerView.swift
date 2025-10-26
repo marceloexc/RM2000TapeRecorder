@@ -3,7 +3,6 @@ import AVKit
 import Combine
 import CoreMedia
 import OSLog
-// TrimmablePlayerView.swift
 import SwiftUI
 
 class PlayerViewModel: ObservableObject {
@@ -136,10 +135,19 @@ struct TrimmingPlayerView<Model: FileRepresentable>: View {
   }
 
   var body: some View {
+    let isVideo = self.model.fileURL.isVideo()
+    
     VStack {
       if let playerView = viewModel.playerView {
         AudioPlayerView(playerView: playerView)
-          .frame(height: 70)
+          .modifier { content in
+            if #available(macOS 26.0 , *) {
+              content.cornerRadius(20)
+            } else {
+              content.cornerRadius(8)
+            }
+          }
+          .frame(height: isVideo ? 270 : 70)
       } else {
         Text("Player not available")
           .foregroundColor(.secondary)

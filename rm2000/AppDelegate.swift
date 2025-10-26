@@ -87,7 +87,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, Observable
   }
   
   func showEditingWindow(sample: Sample) {
-    let window = EditingHUDWindow(contentRect: NSRect(x: 100, y: 100, width: 500 , height: 400))
+    let window = EditingHUDWindow(contentRect: NSRect(x: 100, y: 100, width: 500 , height: 300))
     
     let newRecording = sample
     var contentView = EditSampleView(recording: newRecording) { FileRepresentable, SampleMetadata, SampleEditConfiguration in

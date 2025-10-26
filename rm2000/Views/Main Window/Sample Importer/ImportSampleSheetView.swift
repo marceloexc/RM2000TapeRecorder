@@ -34,24 +34,27 @@ struct ImportSampleSheetView: View {
           Text(files.first?.absoluteString ?? "No file selected")
         }
       }
-      .frame(minWidth: 500, minHeight: 300)
+      .frame(minWidth: 500, minHeight: 250)
       .padding()
       .onDrop(of: [.fileURL], delegate: ImportSampleDropDelegate(URLs: $files, onFilesSelected: onFilesSelected))
     } else {
-      EditSampleView(recording: TemporaryActiveRecording(fileURL: files.first!)) {  FileRepresentable, SampleMetadata, SampleEditConfiguration in
-        // dismiss sheet first, do the encoding in the background
-        dismiss()
+      GeometryReader { geometry in
+        EditSampleView(recording: TemporaryActiveRecording(fileURL: files.first!)) {  FileRepresentable, SampleMetadata, SampleEditConfiguration in
+          // dismiss sheet first, do the encoding in the background
+          dismiss()
 
-        // detached task because dismissing the sheet wouldve caused it to cancel normally
-        Task.detached {
-          do {
-            let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
-            try await processor.apply() // properly awaits async processing
-          } catch {
-            Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
-            showNSAlert(error: error)
+          // detached task because dismissing the sheet wouldve caused it to cancel normally
+          Task.detached {
+            do {
+              let processor = SampleProcessor(file: FileRepresentable, metadata: SampleMetadata, editConfig: SampleEditConfiguration)
+              try await processor.apply() // properly awaits async processing
+            } catch {
+              Logger.encoder.error("Error applying sample processing: \(error.localizedDescription)")
+              showNSAlert(error: error)
+            }
           }
         }
+        .frame(width: geometry.size.width, height: geometry.size.height)
       }
     }
   }

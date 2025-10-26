@@ -373,3 +373,13 @@ extension URL {
     return ["mov", "mp4", "avi"].contains(fileExtension)
   }
 }
+
+extension ProcessInfo {
+    var isTahoe: Bool {
+        if #available(macOS 26.0, *) {
+            return true
+        } else {
+            return false
+        }
+    }
+}

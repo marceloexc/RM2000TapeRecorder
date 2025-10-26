@@ -102,7 +102,7 @@ class MicrophoneGrilleView: NSView {
       }
     }
     
-    if isDarkMode {
+    if isDarkMode || ProcessInfo.processInfo.isTahoe {
       let shadow = NSShadow()
       shadow.shadowOffset = NSSize(width: 1, height: -2)
       shadow.shadowBlurRadius = 3.0

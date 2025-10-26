@@ -301,7 +301,6 @@
 		EB467BD02D92087C007E19E8 /* Main Window */ = {
 			isa = PBXGroup;
 			children = (
-				EB78E2252E6AADC0006376EB /* Sample Importer */,
 				EBB435962DB424F7006F9439 /* Glyphs */,
 				EB2ECD522DADD7F6005D1E06 /* Shaders.metal */,
 				EB467BD72D920D2C007E19E8 /* LCDScreenView.swift */,
@@ -354,6 +353,7 @@
 		EB8313EF2D4DCCD200B343FF /* Sample Library */ = {
 			isa = PBXGroup;
 			children = (
+				EB78E2252E6AADC0006376EB /* Sample Importer */,
 				EB57F35B2E2ED57B006A5D94 /* Detail Views */,
 				EB12BCA12DC813C00011B7FF /* Audio Player */,
 				EBA122512DC7230C00E603D3 /* ToolbarButtons.swift */,

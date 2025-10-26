@@ -47,6 +47,8 @@ struct EditSampleView<Model: FileRepresentable>: View {
   }
 
   var body: some View {
+    let isVideo = self.model.fileURL.isVideo()
+    
     VStack {
       ScrollView {
         VStack(alignment: .leading) {
@@ -60,13 +62,6 @@ struct EditSampleView<Model: FileRepresentable>: View {
             reverseEndTime: $reverseEndTime)
           .onChange(of: forwardEndTime) { isModified = true }
           .onChange(of: reverseEndTime) { isModified = true }
-          .modifier { content in
-            if #available(macOS 26.0 , *) {
-              content.cornerRadius(20)
-            } else {
-              content.cornerRadius(8)
-            }
-          }
           
           Spacer()
           
@@ -140,7 +135,8 @@ struct EditSampleView<Model: FileRepresentable>: View {
         .padding(.horizontal)
         .padding(.bottom, 12)
     }
-    .frame(minHeight: 200)
+    .frame(minHeight: isVideo ? 400 : 200)
+    
     .alert("Replace existing sample?", isPresented: $didErrorForOverride) {
       Button("Replace", role: .destructive) {
         gatherAndComplete()

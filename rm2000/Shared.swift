@@ -366,3 +366,10 @@ public extension View {
     body(self)
   }
 }
+
+extension URL {
+  func isVideo() -> Bool {
+    let fileExtension = self.pathExtension.lowercased()
+    return ["mov", "mp4", "avi"].contains(fileExtension)
+  }
+}

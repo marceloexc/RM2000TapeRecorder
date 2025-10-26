@@ -34,7 +34,7 @@ struct ImportSampleSheetView: View {
           Text(files.first?.absoluteString ?? "No file selected")
         }
       }
-      .frame(minWidth: 500, minHeight: 300)
+      .frame(minWidth: 500, minHeight: 350)
       .padding()
       .onDrop(of: [.fileURL], delegate: ImportSampleDropDelegate(URLs: $files, onFilesSelected: onFilesSelected))
     } else {

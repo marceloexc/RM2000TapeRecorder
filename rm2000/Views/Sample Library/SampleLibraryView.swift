@@ -63,12 +63,11 @@ struct SampleLibraryView: View {
       DetailView(viewModel: viewModel, currentView: $detailViewType)
         .toolbar(id: "rm2000.main-toolbar", content: mainToolbarContent)
         .navigationSplitViewColumnWidth(min: 500, ideal: 520)
-
-    }
-    .inspector(isPresented: $viewModel.showInspector) {
-      InspectorView(viewModel: viewModel)
-        .toolbar(id: "rm2000.inspector.toolbar", content: inspectorToolbarContent)
-        .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
+        .inspector(isPresented: $viewModel.showInspector) {
+          InspectorView(viewModel: viewModel)
+            .toolbar(id: "rm2000.inspector.toolbar", content: inspectorToolbarContent)
+            .inspectorColumnWidth(min: 300, ideal: 400, max: 500)
+        }
     }
     .toolbar(id: "rm2000.favorites-toolbar", content: accessoryBarContent)
     .sheet(isPresented: $isShowingImportSheet, content: {

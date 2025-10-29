@@ -266,7 +266,7 @@ struct EditSampleFooter: View {
 //          .buttonStyle(.bordered)
 //          .disabled(!isModified)
 
-        Button("Apply and Copy", action: onApply)
+        Button("Apply and Save as New", action: onApply)
           .buttonStyle(.borderedProminent)
           .keyboardShortcut(.defaultAction)
           .disabled(!isModified)
